@@ -1,2 +1,3 @@
 sqlmodel==0.0.22
 fastapi[all]
+psycopg2==2.9.10

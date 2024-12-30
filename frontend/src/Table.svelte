@@ -5,11 +5,13 @@
   let loading = false;
   let error = null;
 
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   async function fetchData() {
     loading = true;
     error = null;
     try {
-      const response = await fetch('http://localhost:8000/testGet');
+      const response = await fetch(backendUrl+'/testGet');
 
       if (!response.ok) {
         throw new Error(`Failed to fetch: ${response.status}`);

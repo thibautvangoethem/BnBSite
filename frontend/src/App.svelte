@@ -1,8 +1,10 @@
 <script>
   // Define a function to handle the button click
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   async function fetchData() {
     try {
-      const response = await fetch('http://localhost:8000/testAdd', {
+      const response = await fetch(backendUrl+'/testAdd', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

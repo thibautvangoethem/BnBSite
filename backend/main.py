@@ -4,14 +4,20 @@ from fastapi import Depends, FastAPI, HTTPException, Query
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from contextlib import asynccontextmanager
 import uuid
+import logging
 from fastapi.middleware.cors import CORSMiddleware
+import os
+LOG = logging.getLogger(__name__)
 
 origins = [
     "http://localhost",
-    "http://localhost:8000",
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
 ]
+if "VITE_FRONTEND_URL" in os.environ:
+    origins.append(str(os.environ["VITE_FRONTEND_URL"]))
+else:
+    LOG.info("FAILING")
+    LOG.info(str(os.environ["VITE_FRONTEND_URL"]))
+    LOG.info(str(origins))
 
 
 class Hero(SQLModel, table=True):
@@ -21,11 +27,14 @@ class Hero(SQLModel, table=True):
     secret_name: str
 
 
-sqlite_file_name = "database.db"
-sqlite_url = f"sqlite:///{sqlite_file_name}"
-
 connect_args = {"check_same_thread": False}
-engine = create_engine(sqlite_url, connect_args=connect_args)
+DATABASE_URL = "postgresql+psycopg2://postgres:postgres@localhost:5432/bnbsite"
+if "DATABASE_URL" in os.environ:
+    DATABASE_URL = os.environ["DATABASE_URL"]
+else:
+    LOG.info("WARNING, DATABASE_URL environ not found, assuming local execution")
+
+engine = create_engine(DATABASE_URL, echo=True)
 
 
 def create_db_and_tables():
@@ -49,11 +58,12 @@ app = FastAPI(lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    #allow_origins=["*"],
+    # allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.get("/testAdd")
 def test(session: SessionDep) -> Hero:
