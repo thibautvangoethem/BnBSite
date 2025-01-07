@@ -1,5 +1,6 @@
 from typing import Annotated
 
+import uvicorn
 from fastapi import Depends, FastAPI, HTTPException, Query
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from contextlib import asynccontextmanager
@@ -7,16 +8,18 @@ import uuid
 import logging
 from fastapi.middleware.cors import CORSMiddleware
 import os
+
 LOG = logging.getLogger(__name__)
 
 origins = [
-    "http://localhost",
+    # "http://localhost",
+    "*",
 ]
 if "VITE_FRONTEND_URL" in os.environ:
-    origins.append(str(os.environ["VITE_FRONTEND_URL"]))
+    # origins.append(str(os.environ["VITE_FRONTEND_URL"]))
+    pass
 else:
     LOG.info("FAILING")
-    LOG.info(str(os.environ["VITE_FRONTEND_URL"]))
     LOG.info(str(origins))
 
 
@@ -55,14 +58,6 @@ async def lifespan(app: FastAPI):
 SessionDep = Annotated[Session, Depends(get_session)]
 
 app = FastAPI(lifespan=lifespan)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    # allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 @app.get("/testAdd")
@@ -118,3 +113,17 @@ def delete_hero(hero_id: int, session: SessionDep):
     session.delete(hero)
     session.commit()
     return {"ok": True}
+
+
+app = CORSMiddleware(
+    app=app,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+
+if __name__ == '__main__':
+    uvicorn.run(app, host=None, port=8000)
