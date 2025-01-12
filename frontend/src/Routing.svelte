@@ -1,6 +1,7 @@
 <script>
   import App from './App.svelte';
   import Table from './Table.svelte';
+  import Login from './Login.svelte';
 
   // Reactive variable for tracking the current route
   let currentRoute = 'home';
@@ -8,7 +9,8 @@
   // Route mapping: Map route names to components
   const routes = {
     home: App,
-    table: Table
+    table: Table,
+    login: Login,
   };
 
   // Get the current page's component
@@ -46,6 +48,13 @@
     on:click={() => currentRoute = 'table'}
   >
     Table
+  </a>
+  <a
+    href="#"
+    class:active={currentRoute === 'login'}
+    on:click={() => currentRoute = 'login'}
+  >
+    Login
   </a>
 </nav>
 
