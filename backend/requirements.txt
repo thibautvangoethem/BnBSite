@@ -1,4 +1,0 @@
-sqlmodel==0.0.22
-fastapi[all]
-psycopg2==2.9.10
-uvicorn==0.34.0

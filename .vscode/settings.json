@@ -1,4 +1,4 @@
 {
     "python.terminal.activateEnvInCurrentTerminal": true,
-    "python.defaultInterpreterPath": "~backend/.venv/bin/python"
+    "python.defaultInterpreterPath": "\\.venv\\Scripts\\python.exe",
 }

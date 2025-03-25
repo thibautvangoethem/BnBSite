@@ -10,15 +10,21 @@
             "name": "Run Frontend",
             "runtimeExecutable": "npm",
             "runtimeArgs": ["run", "dev"],
-            "cwd": "${workspaceFolder}/frontend"
+            "cwd": "${workspaceFolder}/frontend",
+            "console": "integratedTerminal",
+            "args": [],
         },
         {
             "name": "Run Backend",
             "type": "debugpy",
             "request": "launch",
-            "program": "./backend/main.py",
+            "program": "${workspaceFolder}/backend/main.py",
             "console": "integratedTerminal",
-            "args": []
+            "args": [],
+            "justMyCode": true,
+            "env": {
+                "DATABASE_URL": "postgresql+psycopg2://postgres:postgres@localhost:5432/bnbsite"
+              }
         },
         {
             "type": "node",
@@ -34,5 +40,11 @@
             "preLaunchTask": "dockerCompose_upbuild",
             "program": ""
           }
+    ],
+    "compounds": [
+        {
+            "name": "Run Frontend & Backend",
+            "configurations": ["Run Frontend", "Run Backend"]
+        }
     ]
 }
