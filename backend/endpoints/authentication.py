@@ -33,7 +33,7 @@ async def get_current_user(
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
-        try:
+    try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         userid: str = payload.get("sub")
         if userid is None:

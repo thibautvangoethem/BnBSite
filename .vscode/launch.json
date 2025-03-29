@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "Run Frontend",
             "runtimeExecutable": "npm",
-            "runtimeArgs": ["run", "dev"],
+            "runtimeArgs": ["run", "start"],
             "cwd": "${workspaceFolder}/frontend",
             "console": "integratedTerminal",
             "args": [],
@@ -47,4 +47,4 @@
             "configurations": ["Run Frontend", "Run Backend"]
         }
     ]
-}
+} 
