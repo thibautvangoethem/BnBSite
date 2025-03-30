@@ -60,7 +60,7 @@ const Login = () => {
     <Container component="main" maxWidth="xs">
       <Paper elevation={3} style={{ padding: '20px', marginTop: '50px' }}>
         <Typography component="h1" variant="h5">
-          Sign in
+          Toegang verlenen voor degene die willen
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField

@@ -6,7 +6,7 @@ import logging
 from fastapi.middleware.cors import CORSMiddleware
 import os
 
-from endpoints import authentication, hero
+from endpoints import authentication, hero, gun, meta
 from appglobals import engine
 
 LOG = logging.getLogger(__name__)
@@ -37,6 +37,8 @@ app = FastAPI(lifespan=lifespan)
 
 app.include_router(authentication.router)
 app.include_router(hero.router)
+app.include_router(gun.router)
+app.include_router(meta.router)
 
 
 app = CORSMiddleware(

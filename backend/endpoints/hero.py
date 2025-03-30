@@ -8,7 +8,11 @@ from sqlmodel import select
 
 import uuid
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/hero",
+    tags=["hero"],
+    responses={404: {"description": "Not found"}},
+)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 

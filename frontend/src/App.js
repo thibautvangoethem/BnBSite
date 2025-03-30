@@ -8,6 +8,7 @@ import CasinoOutlinedIcon from '@mui/icons-material/CasinoOutlined';
 import FaceUnlockOutlinedIcon from '@mui/icons-material/FaceUnlockOutlined';
 import CustomRollingInputs from './subComponents/customRolling/CustomRollingInputs';
 import QuickLootMenu from './subComponents/quickLoot/QuickLootMenu';
+import GunRoll from './subComponents/quickLoot/gun/GunRoll';
 import CottageIcon from '@mui/icons-material/Cottage';
 import AutoModeIcon from '@mui/icons-material/AutoMode';
 import DiceRollsPopup from './rolling/DiceRollsPopup';
@@ -58,11 +59,11 @@ const App = () => {
                 element={<CustomRollingInputs onSerialize={handleSerialize} />}
               />
               <Route path="/quickloot" element={<QuickLootMenu />} />
-              {/* <Route path="/quickloot/gun" element={<CardPage1 />} />
-              <Route path="/quickloot/shield" element={<CardPage2 />} />
+              <Route path="/quickloot/gun" element={<GunRoll />} />
+              {/* <Route path="/quickloot/shield" element={<CardPage2 />} />
               <Route path="/quickloot/classmod" element={<CardPage3 />} />
               <Route path="/quickloot/grenade" element={<CardPage3 />} />
-              <Route path="/quickloot/potion" element={<CardPage3 />} /> */}
+              <Route path="/quickloot/potion" element={<CardPage3 />} />  */}
             </Routes>
           </div>
         </div>
