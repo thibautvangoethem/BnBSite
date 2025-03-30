@@ -1,17 +1,27 @@
 import React, { useState } from 'react';
 import { TextField, Typography, Grid, Box, Button } from '@mui/material';
+import { DiceEnum } from '../../rolling/DiceEnum';
+import { v4 as uuidv4 } from 'uuid';
 
 const CustomRollingInputs = ({ onSerialize }) => {
-  const labels = ["D2", "D4", "D6", "D8", "D10", "D12", "D20", "D100"];
+  // Generate labels dynamically from DiceEnum keys
+  const labels = Object.keys(DiceEnum);
   const [values, setValues] = useState(Array(labels.length).fill(0));
 
   const handleSerialize = () => {
-    const serializedData = labels.map((label, index) => ({
-      [label]: values[index],
+    // Create the entries array with optional labels
+    console.log("halo")
+    const entries = labels.map((label, index) => ({
+      diceType: label,
+      count: values[index],
+      ...(label && { label }), // Include label only if it exists
     }));
 
-    // Convert the array of objects into a single object
-    const rollsConfig = serializedData.reduce((acc, curr) => ({ ...acc, ...curr }), {});
+    // Create the rollsConfig object
+    const rollsConfig = {
+      uuid: uuidv4(),
+      entries,
+    };
 
     // Call the onSerialize function with the rollsConfig
     onSerialize(rollsConfig);
@@ -19,7 +29,7 @@ const CustomRollingInputs = ({ onSerialize }) => {
 
   return (
     <Box>
-      <h1>Hoeveel rolls van welke dice?</h1>
+      <Typography variant="h4">Hoeveel rolls van welke dice?</Typography>
       {labels.map((label, index) => (
         <Grid container alignItems="center" spacing={2} key={index} mb={2}>
           <Grid item>
@@ -36,7 +46,6 @@ const CustomRollingInputs = ({ onSerialize }) => {
               }}
               fullWidth
               variant="outlined"
-              inputProps={{ min: 0, step: 1 }}
             />
           </Grid>
         </Grid>

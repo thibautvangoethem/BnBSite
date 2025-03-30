@@ -69,7 +69,7 @@ const Login = () => {
             required
             fullWidth
             id="name"
-            label="Name lol"
+            label="Papier hier (of naam)"
             name="name"
             autoComplete="name"
             autoFocus
