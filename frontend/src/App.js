@@ -38,7 +38,7 @@ const App = () => {
 
   const handleRerollAll = () => {
     console.log("Rerolling all dice...");
-  
+
     // Create a new rollsConfig object to ensure a re-render
     const newRollsConfig = { ...rollsConfig, uuid: uuidv4() };
 

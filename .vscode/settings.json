@@ -1,4 +1,11 @@
 {
     "python.terminal.activateEnvInCurrentTerminal": true,
     "python.defaultInterpreterPath": "\\.venv\\Scripts\\python.exe",
+    "editor.formatOnSave": true,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    }
 }
