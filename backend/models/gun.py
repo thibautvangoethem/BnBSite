@@ -26,6 +26,13 @@ class GunPostfixLink(SQLModel, table=True):
     )
 
 
+class GunRedTextLink(SQLModel, table=True):
+    gun_id: Optional[str] = Field(default=None, foreign_key="gun.id", primary_key=True)
+    redtext_id: Optional[str] = Field(
+        default=None, foreign_key="redtext.id", primary_key=True
+    )
+
+
 class Gun(SQLModel, table=True):
     id: str = Field(primary_key=True)
     name: str
@@ -44,13 +51,16 @@ class Gun(SQLModel, table=True):
     highNormal: int
     highCrit: int
 
-    # Relationship to Prefix through the association table
     prefixes: List["Prefix"] = Relationship(
         back_populates="guns", link_model=GunPrefixLink
     )
 
     postfixes: List["Postfix"] = Relationship(
         back_populates="guns", link_model=GunPostfixLink
+    )
+
+    postfixes: List["RedText"] = Relationship(
+        back_populates="guns", link_model=GunRedTextLink
     )
 
 
@@ -72,6 +82,15 @@ class Postfix(SQLModel, table=True):
     guns: List[Gun] = Relationship(
         back_populates="postfixes", link_model=GunPostfixLink
     )
+
+
+class RedText(SQLModel, table=True):
+    id: str = Field(primary_key=True)
+    name: str
+    effect: str
+
+    # Relationship to Gun through the association table
+    guns: List[Gun] = Relationship(back_populates="redtexts", link_model=GunRedTextLink)
 
 
 Gun.model_rebuild()
