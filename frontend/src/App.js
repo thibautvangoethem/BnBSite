@@ -9,6 +9,7 @@ import FaceUnlockOutlinedIcon from '@mui/icons-material/FaceUnlockOutlined';
 import CustomRollingInputs from './subComponents/customRolling/CustomRollingInputs';
 import QuickLootMenu from './subComponents/quickLoot/QuickLootMenu';
 import GunRoll from './subComponents/quickLoot/gun/GunRoll';
+import HomePage from './subComponents/homePage/HomePage';
 import CottageIcon from '@mui/icons-material/Cottage';
 import AutoModeIcon from '@mui/icons-material/AutoMode';
 import DiceRollsPopup from './rolling/DiceRollsPopup';
@@ -20,8 +21,6 @@ const menuItems = [
   { text: 'Free Rolling', route: '/rolling', icon: <CasinoOutlinedIcon /> },
   { text: 'Quick Loot', route: '/quickloot', icon: <AutoModeIcon /> },
 ];
-
-const Home = () => <h2>Home Page</h2>;
 
 const App = () => {
   const [rollsConfig, setRollsConfig] = useState(null);
@@ -52,7 +51,7 @@ const App = () => {
           <SideBar items={menuItems} />
           <div style={{ padding: '20px', width: '100%' }}>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<Login />} />
               <Route
                 path="/rolling"
