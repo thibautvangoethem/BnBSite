@@ -23,8 +23,17 @@ const CustomRollingInputs = ({ onSerialize }) => {
       entries,
     };
 
+    const rollmodal = {
+      level: false,
+      selections: {
+        mandatory: [],
+        optional: [],
+      },
+      rolls: rollsConfig
+    }
+
     // Call the onSerialize function with the rollsConfig
-    onSerialize(rollsConfig);
+    onSerialize(rollmodal);
   };
 
   return (

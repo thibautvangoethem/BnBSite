@@ -9,6 +9,7 @@ import json
 
 from endpoints import authentication, hero, gun, meta
 from appglobals import engine
+from database_utils.create_tables import load_prefab_data
 
 LOG = logging.getLogger(__name__)
 
@@ -27,23 +28,7 @@ else:
 def create_db_and_tables():
     # create tables if they didnt exist yet, note wont recreate tables on model change
     SQLModel.metadata.create_all(engine)
-
-    # get and upsert default data in model
-    datapath = "./backend/models/data/"
-    # for model_name, model_class in SQLModel.metadata.tables.items():
-    #     json_file_path = datapath + f"{model_name}.json"
-
-    #     # Check if the JSON file exists
-    #     if os.path.exists(json_file_path):
-    #         # Load default data from JSON file
-    #         with open(json_file_path, "r") as file:
-    #             default_data = json.load(file)
-
-    #         # Insert default data into the database
-    #         with Session(engine) as session:
-    #             for record in default_data:
-    #                 session.add(model_class(**record))
-    #             session.commit()
+    load_prefab_data(engine)
 
 
 @asynccontextmanager

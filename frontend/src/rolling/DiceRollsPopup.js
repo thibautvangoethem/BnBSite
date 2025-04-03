@@ -3,7 +3,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Box, Typogra
 import CloseIcon from '@mui/icons-material/Close';
 import DiceRolls from './DiceRolls';
 
-const DiceRollsPopup = ({ open, onClose, rollsConfig, onRerollAll }) => {
+const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
   return (
     <Dialog
       open={open}
@@ -31,13 +31,13 @@ const DiceRollsPopup = ({ open, onClose, rollsConfig, onRerollAll }) => {
           </IconButton>
         </DialogTitle>
         <DialogContent style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <DiceRolls rollsConfig={rollsConfig} />
+          <DiceRolls rollsConfig={rollsModal.rolls} />
         </DialogContent>
         <DialogActions style={{ justifyContent: 'space-between', padding: '16px' }}>
           <Button onClick={onRerollAll} color="secondary" variant="contained">
             Reroll All
           </Button>
-          <Button onClick={() => {}} color="primary" variant="contained">
+          <Button onClick={() => { }} color="primary" variant="contained">
             Submit
           </Button>
         </DialogActions>

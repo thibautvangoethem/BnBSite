@@ -23,11 +23,12 @@ const menuItems = [
 ];
 
 const App = () => {
-  const [rollsConfig, setRollsConfig] = useState(null);
+  const [rollModal, setRollModal] = useState(null);
   const [open, setOpen] = useState(false);
 
   const handleSerialize = (config) => {
-    setRollsConfig(config);
+    console.log("serialize");
+    setRollModal(config);
     setOpen(true);
   };
 
@@ -39,10 +40,10 @@ const App = () => {
     console.log("Rerolling all dice...");
 
     // Create a new rollsConfig object to ensure a re-render
-    const newRollsConfig = { ...rollsConfig, uuid: uuidv4() };
+    const newRollModal = { ...rollModal };
+    newRollModal.rolls.uuid = uuidv4();
 
-
-    setRollsConfig({ ...newRollsConfig });
+    setRollModal({ ...newRollModal });
   };
   return (
     <AuthProvider>
@@ -66,12 +67,14 @@ const App = () => {
             </Routes>
           </div>
         </div>
-        <DiceRollsPopup
-          open={open}
-          onClose={handleClose}
-          rollsConfig={rollsConfig}
-          onRerollAll={handleRerollAll}
-        />
+        {rollModal !== null && (
+          <DiceRollsPopup
+            open={open}
+            onClose={handleClose}
+            rollsModal={rollModal}
+            onRerollAll={handleRerollAll}
+          />
+        )}
       </Router>
     </AuthProvider>
   );

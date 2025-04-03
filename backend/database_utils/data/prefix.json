@@ -1,0 +1,502 @@
+[
+    {
+        "id": "e1aaf32a-3cbb-4fe7-b459-ca50623cbe95",
+        "name": "One",
+        "effect": "Can only be fired once per day. Deals 10x Damage."
+    },
+    {
+        "id": "82bb0ab8-16e4-40a2-ac32-043e73f250b2",
+        "name": "Normal",
+        "effect": "Appearance of a Common gun."
+    },
+    {
+        "id": "d4264663-0198-4056-b89a-57b0b17b0114",
+        "name": "Adorable",
+        "effect": "25% chance to distract Enemies with baby animal hallucinations."
+    },
+    {
+        "id": "4fa37f53-afec-4139-a4fd-4a492269ba61",
+        "name": "Gaudy",
+        "effect": "Highly reflective, which can be used to temporarily blind Enemies, giving them \u00e2\u20ac\u201c3 on Attack Rolls."
+    },
+    {
+        "id": "97475409-6624-48e2-8fc1-ec86662a7ac1",
+        "name": "Cheerful",
+        "effect": "Grants +1 to all Talk Checks while equipped."
+    },
+    {
+        "id": "217d88d9-785a-45c1-8095-355ec400aebc",
+        "name": "Jumbled",
+        "effect": "Has the Accuracy and Damage of one gun type, but the Range and bonuses of another."
+    },
+    {
+        "id": "62b6225d-8e94-4fce-aec1-5b7e12dbc773",
+        "name": "Classy",
+        "effect": "Gun will only fire if the wielder has the pinky of their shooting hand out."
+    },
+    {
+        "id": "d49b7685-7008-4e39-8851-ff5e2bda919c",
+        "name": "Economic",
+        "effect": "Enemies drop 2 gold per Hit and 5 gold per Crit."
+    },
+    {
+        "id": "749a08d6-a009-4b4f-a9e0-94fa5fbefc26",
+        "name": "Certain",
+        "effect": "Grants a +2 bonus during Badass attempts."
+    },
+    {
+        "id": "1ba728e9-ae02-416b-9867-ab052a4a8448",
+        "name": "Humdrum",
+        "effect": "Enemies Hit experience ennui."
+    },
+    {
+        "id": "ea83b6a5-e882-41d1-a449-c26e7d67334e",
+        "name": "Lively",
+        "effect": "This gun has an AI that thinks it's alive. It can open any door once per day."
+    },
+    {
+        "id": "03bbc52a-3d27-42ed-97c1-703a086db2ba",
+        "name": "Bitter",
+        "effect": "Enemies get \u00e2\u20ac\u201c1 to their Attack Rolls for each Enemy killed by this gun in this encounter."
+    },
+    {
+        "id": "eab53fe4-dc1d-4517-b6c7-ee5ebdedae9d",
+        "name": "Sleepy",
+        "effect": "Enemies Hit are Slowed."
+    },
+    {
+        "id": "8d5f3270-c3ed-4d8f-885d-2d5c33248386",
+        "name": "Deafening",
+        "effect": "Screams when fired, dealing 1 Damage to all adjacent targets."
+    },
+    {
+        "id": "bce9a338-e87c-4b9a-b588-a2b293b564eb",
+        "name": "Selfish",
+        "effect": "Deals 1d6 Damage to wielder when changing to another equipped gun."
+    },
+    {
+        "id": "84f15d75-8cb0-4b2b-bbca-a9c21f3426e4",
+        "name": "Obtainable",
+        "effect": "Must be picked up using an Interact (17+) Check. Deals 2x Damage."
+    },
+    {
+        "id": "c282d6d3-d876-4c2e-981d-5414358c44c0",
+        "name": "Abrasive",
+        "effect": "Adds +1 Crit to Melee Attacks."
+    },
+    {
+        "id": "747417f0-5066-433a-acc8-386322dd45a0",
+        "name": "Smelly",
+        "effect": "Enemies Hit take 1d6 Radiation Damage."
+    },
+    {
+        "id": "991c425b-674a-406f-8303-efc1cc75388d",
+        "name": "Tart",
+        "effect": "Enemies react as if they have eaten something tart, getting \u00e2\u20ac\u201c1 to their next Attack Roll."
+    },
+    {
+        "id": "f6c8ad5f-e60c-41a4-a1bc-7ef181746241",
+        "name": "Worried",
+        "effect": "Crits have a 50% chance to make BR 8 or less Enemies flee."
+    },
+    {
+        "id": "1f126a15-4ea7-4b6b-bb0b-a08624acb565",
+        "name": "Swift",
+        "effect": "Grants a free Melee Attack each turn."
+    },
+    {
+        "id": "809b9818-4283-42e1-9687-222c4d27fbe1",
+        "name": "Two",
+        "effect": "Creates a duplicate gun. Must be fired at the same time. 3x Damage."
+    },
+    {
+        "id": "ab67b396-7f3c-4121-86a2-5f46f1533b6f",
+        "name": "Toothsome",
+        "effect": "Gets a Bite Attack each turn for 1d6 Damage to an adjacent target."
+    },
+    {
+        "id": "b62b7760-8fa8-425b-91b9-eecf59810c25",
+        "name": "Light",
+        "effect": "Fires rays of light that deal +1d6 Incendiary Damage."
+    },
+    {
+        "id": "1ee64dc1-2975-4938-bfcc-b444c95fcccf",
+        "name": "Boundless",
+        "effect": "Generates a Loot Pile when it Hits an Enemy."
+    },
+    {
+        "id": "ef4570d4-e7ec-4f64-8100-b43803f72392",
+        "name": "Incandescent",
+        "effect": "Shines brighter when being fired."
+    },
+    {
+        "id": "808706a1-58c2-4ed0-8bfe-aa956ace6766",
+        "name": "Elfin",
+        "effect": "Increases Movement by 1 square while firing."
+    },
+    {
+        "id": "f97f5dfc-a118-445f-bf52-8d33e0486a0e",
+        "name": "Splendid",
+        "effect": "Deals 2x Damage to Badass-type Enemies."
+    },
+    {
+        "id": "c99a7843-d307-442e-8634-f35e2829763c",
+        "name": "Small",
+        "effect": "Can have a 4th gun equipped as long as this gun is equipped."
+    },
+    {
+        "id": "bffaa323-33e2-49bc-ab8f-c2219dc2fd51",
+        "name": "Pumped",
+        "effect": "Lifts Enemies Hit a foot off of the ground."
+    },
+    {
+        "id": "ddc1e594-732c-426e-a2a8-9db2acac11ec",
+        "name": "Horrible",
+        "effect": "Enemies killed by this gun explode."
+    },
+    {
+        "id": "f3e4bcc8-f164-405b-9db8-ae5a6ca8b5d8",
+        "name": "Fresh",
+        "effect": "First Attack of an encounter deals 2x Damage."
+    },
+    {
+        "id": "a1cb3108-1f80-4831-bf61-d3483fda749c",
+        "name": "Zesty",
+        "effect": "Enemies killed by this gun grant the wielder 1 Badass Token."
+    },
+    {
+        "id": "75b6a484-84b7-43db-8649-11c19f199379",
+        "name": "Utter",
+        "effect": "There is a secret password that activates 3x Damage for the next 2 turns. Wielder can guess once per encounter."
+    },
+    {
+        "id": "e53bd868-8be0-470a-976b-b437187647d6",
+        "name": "Far-Flung",
+        "effect": "Double the Range of any Thrown item while this gun is equipped."
+    },
+    {
+        "id": "a061acde-7ef2-460d-9ad3-953e053624e5",
+        "name": "Superb",
+        "effect": "Grants +1 to Mods on the gun."
+    },
+    {
+        "id": "97f790a1-e9cd-4636-a48f-cacdd17b5380",
+        "name": "Knotty",
+        "effect": "Ties an Enemy\u00e2\u20ac\u2122s shoes together, reducing their Movement by 1."
+    },
+    {
+        "id": "358e3244-5fe0-4d44-97de-3b7fce54c93b",
+        "name": "Wrathful",
+        "effect": "Deals 2x Damage to Enemies that have Damaged the wielder."
+    },
+    {
+        "id": "740a6fa5-2698-4919-9601-5cb8089f302a",
+        "name": "Panoramic",
+        "effect": "Fires in a 180 degree arc. Hits/Crits can each be applied to a different Enemy in Range."
+    },
+    {
+        "id": "586f2b1c-e0b3-4a47-9eb6-0edd8d768dcc",
+        "name": "Critical",
+        "effect": "Rolled Hits become Crits. Rolled Crits become misses."
+    },
+    {
+        "id": "474c5dd4-b2cf-4fb0-b35e-d3507aa7aa8c",
+        "name": "Practical",
+        "effect": "Swapping to a different gun grants the wielder a Badass Token."
+    },
+    {
+        "id": "1568b27d-04d1-4603-923c-e72cf53c1a2c",
+        "name": "Strong",
+        "effect": "Grants +1 to all Interact Checks while equipped."
+    },
+    {
+        "id": "f72f4a01-34bb-406b-8ea4-233a36a72147",
+        "name": "Relevant",
+        "effect": "Will deliver cryptic information on a topic up to 3x a day."
+    },
+    {
+        "id": "3399cc5c-10f3-46e8-8a44-51bd24529b83",
+        "name": "Tense",
+        "effect": "30% chance to taze the Enemy, dealing 1d6 Shock Damage."
+    },
+    {
+        "id": "70712b5c-8250-4912-9459-f27d0e1f2528",
+        "name": "Stupendous",
+        "effect": "Double the Hits of this gun. Attacks deal 2d4 Damage to the wielder."
+    },
+    {
+        "id": "b8d556f0-2fa3-4a92-8013-e02d34c9bc80",
+        "name": "Suitable",
+        "effect": "Can disguise the wielder in a suit of any kind once per day."
+    },
+    {
+        "id": "54526e87-7978-436b-b477-702b3dc90269",
+        "name": "Unwieldy",
+        "effect": "Twice the size of a normal gun. 2x Damage. Reloading takes 2 turns."
+    },
+    {
+        "id": "b0c98b20-3788-4203-b50f-6585c889d077",
+        "name": "Woozy",
+        "effect": "Each time an Enemy is Hit by this gun, 10% chance they pass out."
+    },
+    {
+        "id": "65583927-344a-4e94-8f2f-60df8dd241ac",
+        "name": "Grotesque",
+        "effect": "Gun looks horrific, possibly cursed. A counter increases every time it kills an Enemy."
+    },
+    {
+        "id": "4b588464-64f5-40aa-9ca9-ada09af6d9d7",
+        "name": "Puny",
+        "effect": "Appearance of a miniature gun."
+    },
+    {
+        "id": "c7a911e4-2a77-4a54-950a-6b1305bf8ac7",
+        "name": "Tawdry",
+        "effect": "When Reloaded, becomes a grenade that deals 3d8 Damage."
+    },
+    {
+        "id": "3824a4af-45b3-4af5-aa24-aadd03cd9867",
+        "name": "Nutty",
+        "effect": "Instantly kills any Enemy with a nut allergy."
+    },
+    {
+        "id": "0b7400ec-2911-4d35-a32d-5b25745922e3",
+        "name": "Adhesive",
+        "effect": "Enemies Hit begin to stick to anything they come into contact with."
+    },
+    {
+        "id": "960d0da8-9948-4e2a-ad9c-92286a650c80",
+        "name": "Exciting",
+        "effect": "50% chance for Explosive rounds."
+    },
+    {
+        "id": "6499a299-3598-4083-8e8e-2ca65210e10d",
+        "name": "Mixed",
+        "effect": "For each Hit/Crit, gather the next die for Damage. d6, d8, d10, d12, d20."
+    },
+    {
+        "id": "d32d0b43-c5a0-4a0e-aa51-ebb48586ed6e",
+        "name": "Aback",
+        "effect": "Enemies Hit in the front are spun backwards."
+    },
+    {
+        "id": "f94b0408-fda5-4a89-b5f6-d0069525ff38",
+        "name": "Labored",
+        "effect": "Adds +3 DMG Mod if standing still."
+    },
+    {
+        "id": "50d3e074-39a7-47fd-b6f6-d97afd688eec",
+        "name": "Questionable",
+        "effect": "Deals 2x Damage to Enemies that can question their existence."
+    },
+    {
+        "id": "8a5a765e-fdc6-4608-a2b2-8e4169773c1a",
+        "name": "Aberrant",
+        "effect": "Gains the stats of a random gun type."
+    },
+    {
+        "id": "ef9d9b8a-e392-4b83-9a2a-73ce25a95277",
+        "name": "Resolute",
+        "effect": "Cannot be fired on the first turn of an encounter. Deals 2x Damage."
+    },
+    {
+        "id": "f75854e6-b6f7-4a15-a8ee-aaebc3a85afd",
+        "name": "Far",
+        "effect": "Double the Range of this gun."
+    },
+    {
+        "id": "bbf69473-0bd2-40d8-896c-722013f06bee",
+        "name": "Mad",
+        "effect": "Enemies Hit have a 50% chance of being Taunted."
+    },
+    {
+        "id": "21037e76-3b06-429d-8521-6b859fa63ca8",
+        "name": "Grey",
+        "effect": "Deals 2x Damage. Enemies Hit drop 1 less Loot Pile and only drop Common items."
+    },
+    {
+        "id": "1b850461-1f9a-4a91-a5fa-9746da7024e8",
+        "name": "Damp",
+        "effect": "Creates puddles of water under Enemies Hit."
+    },
+    {
+        "id": "5c1f9a73-6dc5-4ca5-8d3f-1e550448fea3",
+        "name": "Actually",
+        "effect": "Can reroll Accuracy once per turn when firing this gun."
+    },
+    {
+        "id": "b9ac7819-7728-47b2-b94a-9f89f2bfa09d",
+        "name": "Jazzy",
+        "effect": "10% chance the non-Boss Enemy lets go of any weapons and starts doing 'jazz hands.'"
+    },
+    {
+        "id": "4afb3787-e0ef-463f-a651-46ec993b9eff",
+        "name": "Frightening",
+        "effect": "Enemies within 2 squares are compelled to take Cover."
+    },
+    {
+        "id": "f7b5ce01-35db-4db5-b0b9-debeede88db1",
+        "name": "Shaky",
+        "effect": "Gun shakes uncontrollably; Enemies Hit also shake uncontrollably."
+    },
+    {
+        "id": "d00cfd1e-7608-41e3-8dee-ec058e99f6a6",
+        "name": "Scintillating",
+        "effect": "50% chance to Hit the chest or groin of Enemy."
+    },
+    {
+        "id": "1004dfb6-7d2a-46ed-ba2b-678c6ca6a79f",
+        "name": "Handsomely",
+        "effect": "Add Damage equal to your Talk modifier."
+    },
+    {
+        "id": "1e9c7267-1bcf-4021-888c-9001084f0498",
+        "name": "Hysterical",
+        "effect": "Enemies Hit burst out laughing, causing \u00e2\u20ac\u201c1 to Attack Rolls."
+    },
+    {
+        "id": "799d699c-937e-4359-8591-365a94606139",
+        "name": "Impolite",
+        "effect": "Randomly burps out a Loot Pile when fired."
+    },
+    {
+        "id": "37492938-b2ff-461a-b16e-203d731c4dee",
+        "name": "Unable",
+        "effect": "Enemies Hit cannot take Mayhem Actions."
+    },
+    {
+        "id": "54f9e0a4-a41b-4ae2-a2a2-6cf5f158271b",
+        "name": "Towering",
+        "effect": "Wielder appears twice their size while gun is equipped."
+    },
+    {
+        "id": "09e1e03b-9722-4550-9de3-5d311fe9ef7d",
+        "name": "Parallel",
+        "effect": "Rounds split into 2 parallel lines that can Hit Enemies in 2 adjacent squares."
+    },
+    {
+        "id": "4db51c64-722a-401c-966f-e06048c7f6e9",
+        "name": "Mundane",
+        "effect": "Grants +1 to all Sneak Checks while equipped."
+    },
+    {
+        "id": "c3479b07-095c-4077-9c93-4002a8d4394c",
+        "name": "Breezy",
+        "effect": "Enemies targeted are struck by a gust of wind that pushes them 1 square backwards."
+    },
+    {
+        "id": "dd88ce13-7527-413c-947c-fa5ea0202842",
+        "name": "Disgusted",
+        "effect": "Deals +1d6 Corrosive Damage. Enemies killed die badly."
+    },
+    {
+        "id": "97b983b7-4449-4731-b6f1-6fecbe9becec",
+        "name": "Imaginary",
+        "effect": "Appears as if you are not holding any gun. Makes fake firing noises when fired."
+    },
+    {
+        "id": "95175b15-f936-4658-9c0a-3686a5eec4a1",
+        "name": "Knowing",
+        "effect": "Knows all. Can ask the gun a question once per day."
+    },
+    {
+        "id": "42cac2ec-3366-4643-8217-717e2841db82",
+        "name": "Joyous",
+        "effect": "Plays upbeat music when being fired."
+    },
+    {
+        "id": "3e4af49b-060a-4f7f-a5bb-8f6328324e51",
+        "name": "Clever",
+        "effect": "Grants +1 to all Insight Checks while equipped."
+    },
+    {
+        "id": "4ef8d5ba-3ede-45de-9bc3-c5520fb82030",
+        "name": "Abhorrent",
+        "effect": "Enemies cannot stay within 1 square while this gun is equipped."
+    },
+    {
+        "id": "469750ce-62f0-4602-9808-79e0255f7557",
+        "name": "Open",
+        "effect": "Once per turn, you may Reload this gun as a free Action without generating Mayhem."
+    },
+    {
+        "id": "d9faa1db-ed2d-48db-8792-09ae1cca03a6",
+        "name": "Several",
+        "effect": "Splits into 2 guns that are dual wielded."
+    },
+    {
+        "id": "91d5b1e5-c3f5-459a-8722-38cf555f81e7",
+        "name": "Honorable",
+        "effect": "All rounds Hit Enemies in the front."
+    },
+    {
+        "id": "4d03717b-3060-4924-8bd8-4da4649a5edb",
+        "name": "Synonymous",
+        "effect": "Grants Guild bonuses twice."
+    },
+    {
+        "id": "dcde0bf6-2fea-435c-90c7-f37f82192d96",
+        "name": "Madly",
+        "effect": "Enemies Hit have 50% chance of becoming Confused."
+    },
+    {
+        "id": "154882e4-d4b6-4265-878f-4e0509483aea",
+        "name": "Obnoxious",
+        "effect": "Guaranteed Insight Check once per day at the cost of having to listen to the gun drone on and on and on."
+    },
+    {
+        "id": "0bbbc39a-c5ce-46c8-a98c-befa682f5db7",
+        "name": "Holistic",
+        "effect": "Damage is dealt to Shield, Armor, and Health."
+    },
+    {
+        "id": "378b1819-bc75-4e57-9bd2-971a48a278ff",
+        "name": "Few",
+        "effect": "Max 1 Hit. Deal an additional 3 Damage for each unused Hit."
+    },
+    {
+        "id": "15177619-34ac-40e6-a819-744cc00fcdc5",
+        "name": "Legal",
+        "effect": "Enemies Hit are considered to be under a legally binding contract to drop 1 extra Loot Pile when they die."
+    },
+    {
+        "id": "fdc1f9ac-db23-4145-9878-7d82df5dc1e0",
+        "name": "Abiding",
+        "effect": "Grants +1 to all Search Checks while equipped."
+    },
+    {
+        "id": "e460901d-bfbe-4ded-99bf-1a3e340402cf",
+        "name": "Unfair",
+        "effect": "An Extra Attack with this gun does not generate Mayhem."
+    },
+    {
+        "id": "7a8dad06-b706-4cde-8bbb-c0659b6f82c8",
+        "name": "Tender",
+        "effect": "Converts 10% of Damage dealt into Health for an adjacent ally."
+    },
+    {
+        "id": "688a16f8-9428-417f-91f6-f63e7dbb49a4",
+        "name": "Same",
+        "effect": "Enemies Hit will take an equal amount of Damage from the gun for each Attack."
+    },
+    {
+        "id": "2c18f103-921a-4cf8-b5f0-7cb469d55d77",
+        "name": "Overconfident",
+        "effect": "If Accuracy Roll is 10 or less, all Hits are Crits."
+    },
+    {
+        "id": "10461992-fc19-4fa0-b10d-81c6e8a5b1c5",
+        "name": "Eatable",
+        "effect": "Can consume the gun when Reloading to gain 2d4 Health."
+    },
+    {
+        "id": "6df48c3e-d984-4e34-8b73-0963c35a1aa3",
+        "name": "Thirsty",
+        "effect": "Converts 10% of Damage dealt into Health."
+    },
+    {
+        "id": "f5f42d7d-ded3-45b4-bfac-08b59bb6343a",
+        "name": "Imminent",
+        "effect": "Enemies Hit take increasing Damage each turn. Damage starts at 1 and increases by 1 with each Hit/turn."
+    }
+]

@@ -59,7 +59,7 @@ class Gun(SQLModel, table=True):
         back_populates="guns", link_model=GunPostfixLink
     )
 
-    postfixes: List["RedText"] = Relationship(
+    redtexts: List["RedText"] = Relationship(
         back_populates="guns", link_model=GunRedTextLink
     )
 
