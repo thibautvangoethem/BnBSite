@@ -6,7 +6,7 @@ import { AuthProvider } from './subComponents/login/AuthContext';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import CasinoOutlinedIcon from '@mui/icons-material/CasinoOutlined';
 import FaceUnlockOutlinedIcon from '@mui/icons-material/FaceUnlockOutlined';
-import CustomRollingInputs from './subComponents/customRolling/CustomRollingInputs';
+import CustomRollingInputs from './subComponents/customRolling/CustomRollingInputs'; //dat geeft nen error hier op dat iets in folder "CustomRolling"  (grote C) all included is, maar dat bestaat niet??
 import QuickLootMenu from './subComponents/quickLoot/QuickLootMenu';
 import GunRoll from './subComponents/quickLoot/gun/GunRoll';
 import HomePage from './subComponents/homePage/HomePage';
@@ -58,7 +58,7 @@ const App = () => {
                 path="/rolling"
                 element={<CustomRollingInputs onSerialize={handleSerialize} />}
               />
-              <Route path="/quickloot" element={<QuickLootMenu />} />
+              <Route path="/quickloot" element={<QuickLootMenu onSerialize={handleSerialize} />} />
               <Route path="/quickloot/gun" element={<GunRoll />} />
               {/* <Route path="/quickloot/shield" element={<CardPage2 />} />
               <Route path="/quickloot/classmod" element={<CardPage3 />} />

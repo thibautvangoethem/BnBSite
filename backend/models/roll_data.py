@@ -4,13 +4,19 @@ from models.common import Dice
 
 
 class roll_description(BaseModel):
-    name: str
-    dice: Dice
+    label: str
+    diceList: list[Dice]
 
 
 class selection_description(BaseModel):
-    name: str
+    label: str
     options: list[str]
+
+
+# uuid used for funny hack to trigger front end rerenders rerolling dices
+class rollswrapper(BaseModel):
+    entries: list[roll_description]
+    uuid: str
 
 
 class selection_descriptions(BaseModel):
@@ -22,7 +28,7 @@ class selection_descriptions(BaseModel):
 class random_create_description(BaseModel):
     level: bool
     selections: selection_descriptions
-    rolls: list[roll_description]
+    rolls: rollswrapper
 
 
 #### ^ roll description

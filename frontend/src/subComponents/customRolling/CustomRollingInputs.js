@@ -10,12 +10,13 @@ const CustomRollingInputs = ({ onSerialize }) => {
 
   const handleSerialize = () => {
     // Create the entries array with optional labels
-    console.log("halo")
-    const entries = labels.map((label, index) => ({
-      diceType: label,
-      count: values[index],
-      ...(label && { label }), // Include label only if it exists
-    }));
+    const entries = labels.map((label, index) => {
+      const diceArray = Array(values[index]).fill(label);
+      return {
+        diceList: diceArray,
+        ...(label && { label }), // Include label only if it exists
+      };
+    });
 
     // Create the rollsConfig object
     const rollsConfig = {

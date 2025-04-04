@@ -8,6 +8,7 @@ from appglobals import SessionDep, oauth2_scheme
 from sqlmodel import select
 from sqlalchemy.orm import selectinload
 from models.roll_data import *
+from uuid import uuid4
 
 
 import uuid
@@ -58,25 +59,26 @@ def get_create_descritpion(session: SessionDep) -> random_create_description:
         selections=selection_descriptions(
             mandatory=[
                 selection_description(
-                    name="favoured_manufacturer",
+                    label="favoured_manufacturer",
                     options=[member.value for member in Manufacturer],
                 ),
                 selection_description(
-                    name="favoured_guns",
+                    label="favoured_guns",
                     options=[member.value for member in GunType],
                 ),
             ],
             optional=[],  # todo optional choice later
         ),
-        rolls=[
-            roll_description(name="gun1", dice=Dice.D8),
-            roll_description(name="gun2", dice=Dice.D8),
-            roll_description(name="rarity1", dice=Dice.D4),
-            roll_description(name="rarity2", dice=Dice.D6),
-            roll_description(name="element", dice=Dice.D100),
-            roll_description(name="prefix", dice=Dice.D100),
-            roll_description(name="redtext", dice=Dice.D100),
-        ],
+        rolls=rollswrapper(
+            entries=[
+                roll_description(label="Gun roll", diceList=[Dice.D8, Dice.D8]),
+                roll_description(label="Rarity roll", diceList=[Dice.D4, Dice.D6]),
+                roll_description(label="Element roll", diceList=[Dice.D100]),
+                roll_description(label="Prefix", diceList=[Dice.D100]),
+                roll_description(label="Redtext", diceList=[Dice.D100]),
+            ],
+            uuid=str(uuid4()),
+        ),
     )
     return description
 

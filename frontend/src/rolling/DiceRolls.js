@@ -1,11 +1,8 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import DiceRoller from './DiceRoller';
+import DiceRoller from './DiceRoller'; // Assuming DiceRoller is a separate component
 
 const DiceRolls = ({ rollsConfig }) => {
-  console.log("DiceRolls Component Rendered");
-  console.log("rollsConfig:", rollsConfig);
-
   if (!rollsConfig) {
     return <Box>rollsConfig is empty.</Box>;
   }
@@ -33,15 +30,15 @@ const DiceRolls = ({ rollsConfig }) => {
       }}
     >
       {rollsConfig.entries.map((entry, typeIndex) => (
-        <Box key={`${entry.diceType}-${rollsConfig.uuid}-${typeIndex}`} width="100%">
+        <Box key={`${entry.label}-${rollsConfig.uuid}-${typeIndex}`} width="100%">
           {entry.label && (
             <Box sx={{ marginBottom: '8px', fontWeight: 'bold' }}>
               {entry.label}
             </Box>
           )}
-          {Array.from({ length: entry.count }, (_, index) => (
+          {entry.diceList.map((diceType, index) => (
             <Box
-              key={`${entry.diceType}-${rollsConfig.uuid}-${typeIndex}-${index}`}
+              key={`${diceType}-${rollsConfig.uuid}-${typeIndex}-${index}`}
               sx={{
                 border: '1px solid #ddd',
                 borderRadius: '4px',
@@ -54,7 +51,7 @@ const DiceRolls = ({ rollsConfig }) => {
                 marginBottom: '8px', // Add some space between dice boxes
               }}
             >
-              <DiceRoller diceType={entry.diceType} />
+              <DiceRoller diceType={diceType} />
             </Box>
           ))}
         </Box>

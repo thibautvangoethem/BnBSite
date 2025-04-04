@@ -1,41 +1,46 @@
 import React from 'react';
 import { Card, CardActionArea, CardContent, Typography, Grid, Box } from '@mui/material';
-import { useNavigate } from 'react-router';
 
-const ClickableCardsPage = () => {
-  const navigate = useNavigate();
+const ClickableCardsPage = ({ onSerialize }) => {
+
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   const itemData = [
-    { id: 1, title: 'Gun', description: 'GUNS GUNS GUNS.', route: '/quickloot/gun' },
-    { id: 2, title: 'Class Mod', description: 'Den Arne heeft er veel werk in gestoken.', route: '/quickloot/classmod' },
-    { id: 3, title: 'Shield', description: 'Schild en knuffel.', route: '/quickloot/shield' },
-    { id: 4, title: 'Grenade', description: 'Bruno Mars simulator', route: '/quickloot/grenade' },
-    { id: 5, title: 'potion', description: '100 Push ups en 2 vuisten', route: '/quickloot/potion' },
+    {
+      id: 1, title: 'Gun', description: 'GUNS GUNS GUNS.', endpoint: '/guns/rolldescription'
+    },
+    { id: 2, title: 'Class Mod', description: 'Den Arne heeft er veel werk in gestoken.', endpoint: '/api/quickloot/classmod' },
+    { id: 3, title: 'Shield', description: 'Schild en knuffel.', endpoint: '/api/quickloot/shield' },
+    { id: 4, title: 'Grenade', description: 'Bruno Mars simulator', endpoint: '/api/quickloot/grenade' },
+    { id: 5, title: 'potion', description: '100 Push ups en 2 vuisten', endpoint: '/api/quickloot/potion' },
   ];
 
-  // TODO
-  // const MonsterData = [
-  //   { id: 1, title: 'Gun', description: 'This is the description for card 1.', route: '/quickloot/gun' },
-  //   { id: 2, title: 'Class Mod', description: 'This is the description for card 2.', route: '/quickloot/classmod' },
-  //   { id: 3, title: 'Shield', description: 'This is the description for card 3.', route: '/quickloot/shield' },
-  //   { id: 4, title: 'Grenade', description: 'This is the description for card 3.', route: '/quickloot/grenade' },
-  //   { id: 5, title: 'potion', description: 'This is the description for card 3.', route: '/quickloot/potion' },
-  // ];
-
-  const handleCardClick = (route) => {
-    navigate(route);
+  const handleCardClick = async (title, endpoint) => {
+    try {
+      const response = await fetch(backendUrl + endpoint);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const rollmodal = await response.json();
+      console.log('Data received:', rollmodal);
+      rollmodal.label = title + " roll input";
+      onSerialize(rollmodal);
+      // Handle the data as needed
+    } catch (error) {
+      console.error('Fetch error:', error);
+    }
   };
 
   return (
     <Box p={2}>
-      <Typography variant="h4" gutterBottom >
+      <Typography variant="h4" gutterBottom>
         Big boy items
       </Typography>
       <Grid container spacing={3} style={{ paddingTop: '20px', paddingBottom: '20px' }}>
         {itemData.map((card) => (
           <Grid item key={card.id} xs={12} sm={6} md={4}>
             <Card>
-              <CardActionArea onClick={() => handleCardClick(card.route)}>
+              <CardActionArea onClick={() => handleCardClick(card.title, card.endpoint)}>
                 <CardContent>
                   <Typography variant="h5" component="div">
                     {card.title}
@@ -52,8 +57,8 @@ const ClickableCardsPage = () => {
       <Typography variant="h4" gutterBottom style={{ paddingTop: '40px', paddingBottom: '10px' }}>
         Monster Loot woop woop
       </Typography>
-      <Typography variant="h5" gutterBottom >
-        Eigenlijk nog niet zo woop woop, kmoet het nog maken
+      <Typography variant="h5" gutterBottom>
+        Eigenlijk nog niet zo woop woop, moet het nog maken
       </Typography>
     </Box>
   );

@@ -41,9 +41,6 @@ const Homepage = () => {
                             <Typography variant="h5">
                                 Eindelijk kunnen we dat spel wat sneller doen gaan
                             </Typography>
-                            <Button variant="contained" color="primary" size="large">
-                                kijk een knop
-                            </Button>
                             <img
                                 src={foto}
                                 alt="Description of image"

@@ -10,7 +10,7 @@ const GunRoll = () => {
     // Fetch data from the backend
     const fetchData = async () => {
       try {
-        const response = await fetch(backendUrl+'/gun/options')
+        const response = await fetch(backendUrl + '/gun/options')
         const result = await response.json();
         setData(result);
       } catch (error) {
