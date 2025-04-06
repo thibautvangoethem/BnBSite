@@ -37,27 +37,28 @@ class random_create_description(BaseModel):
 
 
 class selection_mandatory(BaseModel):
-    name: str
+    label: str
     options: Optional[list[str]]
 
 
-class selection_optional(BaseModel):
-    name: str
-    options: Optional[list[str]]
+# class selection_optional(BaseModel):
+#     label: str
+#     options: Optional[list[str]]
 
 
-class selection(BaseModel):
-    mandatory: list[selection_mandatory]
-    optional: list[selection_optional]
+# class selection(BaseModel):
+#     mandatory: list[selection_mandatory]
+#     optional: list[selection_optional]
 
 
 class roll_result(BaseModel):
-    name: str
-    result: int
+    label: str
+    # I assume the dice type is correct, I have probably assumed incorrectly
+    result: list[int]
 
 
 ## main class that contains the full result of a roll (returned from frontend)
 class random_create_result(BaseModel):
     level: int
-    selections: selection
+    selections: list[selection_mandatory]
     rolls: list[roll_result]

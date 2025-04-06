@@ -83,6 +83,12 @@ def get_create_descritpion(session: SessionDep) -> random_create_description:
     return description
 
 
+@router.post("/guns_roll")
+def roll_gun(create_result: random_create_result, session: SessionDep) -> Gun:
+    print(create_result)
+    pass
+
+
 @router.get("/{gun_id}", response_model=Gun)
 def get_gun(gun_id: str, session: SessionDep) -> Prefix:
     statement = (

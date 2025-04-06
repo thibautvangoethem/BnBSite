@@ -5,7 +5,54 @@ import DiceRolls from './DiceRolls';
 import MultiSelectComponent from './MultiSelectComponent';
 
 const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const [level, setLevel] = useState(null);
+  const [selections, setSelections] = useState([]);
+  const [diceResults, setDiceResults] = useState([]);
+
+  const handleRollResult = (diceType, rollResult) => {
+    setDiceResults((prevResults) => ({
+      ...prevResults,
+      [diceType]: rollResult,
+    }));
+  };
+
+  const handleSubmit = async () => {
+    // Gather all necessary data
+    const selectedLevel = level;
+    // Assuming MultiSelectComponent and DiceRolls have methods to get their current state
+    // const selections = /* Get selections from MultiSelectComponent */;
+    const diceRolls = diceResults;
+
+    // Data to be sent in the POST request
+    const submitData = {
+      level: selectedLevel,
+      selection: selections,
+      rolls: diceRolls,
+    };
+
+    try {
+      const response = await fetch(backendUrl + "/guns/guns_roll", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submitData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Submit successful:', result);
+        onClose();
+
+      } else {
+        console.error('Submit failed:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error during submit:', error);
+
+    }
+  };
   return (
     <Dialog
       open={open}
@@ -67,7 +114,7 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
               </Typography>
             </DialogTitle>
             <DialogContent style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <MultiSelectComponent selectionData={rollsModal.selections.mandatory} />
+              <MultiSelectComponent selectionData={rollsModal.selections.mandatory} onSelectionChange={setSelections} />
             </DialogContent>
           </>
         }
@@ -77,13 +124,13 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
           </Typography>
         </DialogTitle>
         <DialogContent style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <DiceRolls rollsConfig={rollsModal.rolls} />
+          <DiceRolls rollsConfig={rollsModal.rolls} onRollResults={handleRollResult} />
         </DialogContent>
         <DialogActions style={{ justifyContent: 'space-between', padding: '16px' }}>
           <Button onClick={onRerollAll} color="secondary" variant="contained">
             Reroll All
           </Button>
-          <Button onClick={() => { }} color="primary" variant="contained">
+          <Button onClick={handleSubmit} color="primary" variant="contained">
             Submit
           </Button>
         </DialogActions>

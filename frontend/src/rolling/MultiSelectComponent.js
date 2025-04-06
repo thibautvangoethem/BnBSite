@@ -9,7 +9,7 @@ import {
     Box,
 } from '@mui/material';
 
-const MultiSelectComponent = ({ selectionData }) => {
+const MultiSelectComponent = ({ selectionData, onSelectionChange }) => {
     const [selectedItems, setSelectedItems] = useState(
         selectionData.map(() => [])
     );
@@ -20,6 +20,8 @@ const MultiSelectComponent = ({ selectionData }) => {
         newSelectedItems[index] =
             typeof value === 'string' ? value.split(',') : value;
         setSelectedItems(newSelectedItems);
+
+        onSelectionChange(newSelectedItems);
     };
 
     return (
