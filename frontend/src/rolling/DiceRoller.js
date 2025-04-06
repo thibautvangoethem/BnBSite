@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Grid } from '@mui/material';
 import { DiceEnum } from './DiceEnum';
 
-const DiceRoller = ({ diceType }) => {
+const DiceRoller = ({ diceType, onRollResult }) => {
   const [result, setResult] = useState(null);
 
   useEffect(() => {
@@ -12,6 +12,8 @@ const DiceRoller = ({ diceType }) => {
         const roll = Math.floor(Math.random() * sides) + 1;
         setResult(roll);
         console.log(`Rolled a ${diceType}-sided die: ${roll}`); // Debugging log
+
+        onRollResult(roll);
       } else {
         console.error('Invalid dice type:', diceType);
       }

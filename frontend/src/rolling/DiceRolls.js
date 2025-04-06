@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@mui/material';
 import DiceRoller from './DiceRoller'; // Assuming DiceRoller is a separate component
 
-const DiceRolls = ({ rollsConfig }) => {
+const DiceRolls = ({ rollsConfig, onRollResults }) => {
   if (!rollsConfig) {
     return <Box>rollsConfig is empty.</Box>;
   }
@@ -12,6 +12,11 @@ const DiceRolls = ({ rollsConfig }) => {
   if (rollsConfig.entries.length === 0) {
     return <Box>rollsConfig.entries.length is empty.</Box>;
   }
+
+  const handleRollResult = (diceType, rollResult) => {
+    // Notify the parent component (DiceRollsPopup) about the roll result
+    onRollResults(diceType, rollResult);
+  };
 
   return (
     <Box
@@ -51,7 +56,7 @@ const DiceRolls = ({ rollsConfig }) => {
                 marginBottom: '8px', // Add some space between dice boxes
               }}
             >
-              <DiceRoller diceType={diceType} />
+              <DiceRoller diceType={diceType} onRollResult={handleRollResult} />
             </Box>
           ))}
         </Box>
