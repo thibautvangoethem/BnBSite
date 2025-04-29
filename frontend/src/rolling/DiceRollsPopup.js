@@ -10,11 +10,19 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
   const [selections, setSelections] = useState([]);
   const [diceResults, setDiceResults] = useState([]);
 
-  const handleRollResult = (diceType, rollResult) => {
-    setDiceResults((prevResults) => ({
-      ...prevResults,
-      [diceType]: rollResult,
-    }));
+  const handleRollResult = (label, index, rollResult) => {
+    setDiceResults((prevResults) => {
+      console.log("teaf");
+      const newResults = { ...prevResults };
+      if (!newResults[label]) {
+        newResults[label] = [];
+      }
+      const resultsArray = [...newResults[label]];
+      resultsArray[index] = rollResult;
+      newResults[label] = resultsArray;
+
+      return newResults;
+    });
   };
 
   const handleSubmit = async () => {
@@ -22,17 +30,21 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
     const selectedLevel = level;
     // Assuming MultiSelectComponent and DiceRolls have methods to get their current state
     // const selections = /* Get selections from MultiSelectComponent */;
-    const diceRolls = diceResults;
+
+    const diceRolls = Object.entries(diceResults).map(([label, rolls]) => ({
+      label: label,
+      result: rolls
+    }));
 
     // Data to be sent in the POST request
     const submitData = {
       level: selectedLevel,
-      selection: selections,
+      selections: selections,
       rolls: diceRolls,
     };
-
+    console.log('asfgfdasg');
     try {
-      const response = await fetch(backendUrl + "/guns/guns_roll", {
+      const response = await fetch(backendUrl + rollsModal.post, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
