@@ -9,7 +9,8 @@ from sqlmodel import select
 from sqlalchemy.orm import selectinload
 from models.roll_data import *
 from uuid import uuid4
-
+from models.shield import Shield
+import json
 
 import uuid
 
@@ -41,3 +42,112 @@ def get_create_descritpion(session: SessionDep) -> random_create_description:
         ),
     )
     return description
+
+
+class random_create_result(BaseModel):
+    level: int
+    selections: list[selection_mandatory]
+    rolls: list[roll_result]
+
+
+def combine_roles(results):
+    result_str = ""
+    for item in results:
+        result_str += str(item)
+
+    return int(result_str)
+
+
+def get_roll_for_label(result, label):
+    for roll in result.rolls:
+        if roll.label == label:
+            return combine_roles(roll.results)
+
+
+@router.post("/generate")
+def create_shield(create_result=random_create_result):
+
+    level = create_result.level
+    recharge_delay = 1
+
+    with open("./data/shields/shield_base_values.json", "r") as file:
+        base_values = json.load(file)
+        for value in base_values:
+            if level <= value["Level"]:
+                capacity = value["Capacity"]
+                recharge_rate = value["RechargeRate"]
+
+    with open("./data/shields/shield_rarities.json", "r") as file:
+        shield_rarities_data = json.load(file)
+        for entry in shield_rarities_data:
+            roll = get_roll_for_label("Rarity roll")
+            if entry[0] <= roll and roll <= entry[1]:
+                rarity = entry["name"]
+
+    with open("./data/shields/shield_manifacturer.json", "r") as file:
+        manifacturer_data = json.load(file)
+
+        for roll in create_result.rolls:
+            if roll.label == "Manufacturer":
+                manufacturer = manifacturer_data[combine_roles(roll.results)]["name"]
+                manufacturer_effect_data = manifacturer_data[
+                    combine_roles(roll.results)
+                ][rarity]
+
+                if cap_mod := manufacturer_effect_data.get("capacity_modifier"):
+                    capacity = capacity * (cap_mod / 100)
+
+                if rate_mod := manufacturer_effect_data.get("recharge_rate_modifier"):
+                    recharge_rate = recharge_rate * (rate_mod / 100)
+
+                if delay_mod := manufacturer_effect_data.get("recharge_delay_modifier"):
+                    recharge_rate = recharge_rate * (delay_mod / 100)
+
+                manufacturer_effect = manufacturer_effect_data["special_effects"]
+
+    with open("./data/shields/shield_battery.json", "r") as file:
+        all_battery_data = json.load(file)
+
+        roll = get_roll_for_label("Baterry")
+        battery = all_battery_data[roll]
+        battery_rarity_data = battery["effects"][rarity]
+
+        if cap_mod := battery_rarity_data.get("capacity_modifier"):
+            capacity = capacity * (cap_mod / 100)
+
+        if rate_mod := battery_rarity_data.get("recharge_rate_modifier"):
+            recharge_rate = recharge_rate * (rate_mod / 100)
+
+        if delay_mod := battery_rarity_data.get("recharge_delay_modifier"):
+            recharge_rate = recharge_rate * (delay_mod / 100)
+
+        battery_effect = battery_rarity_data["special_effects"]
+
+    with open("./data/shields/shield_capacitor.json", "r") as file:
+        all_capacitor_data = json.load(file)
+
+        roll = get_roll_for_label("Capacitor")
+        capacitor = all_capacitor_data[roll]
+        capacitor_rarity_data = capacitor["effects"][rarity]
+
+        if cap_mod := capacitor_rarity_data.get("capacity_modifier"):
+            capacity = capacity * (cap_mod / 100)
+
+        if rate_mod := capacitor_rarity_data.get("recharge_rate_modifier"):
+            recharge_rate = recharge_rate * (rate_mod / 100)
+
+        if delay_mod := capacitor_rarity_data.get("recharge_delay_modifier"):
+            recharge_rate = recharge_rate * (delay_mod / 100)
+
+        capacitor_effect = capacitor_rarity_data["special_effects"]
+
+    shield = Shield(
+        rarity=rarity,
+        manufacturer=manufacturer,
+        capacity=int(capacity),
+        recharge_rate=int(recharge_rate),
+        recharge_delay=int(recharge_delay),
+        manufacturer_effect=manufacturer_effect,
+        battery_effect=battery_effect,
+        capacitor_effect=capacitor_effect,
+    )

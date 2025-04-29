@@ -1,0 +1,53 @@
+[
+    {
+      "Level": 1,
+      "Capacity": 100,
+      "RechargeRate": 12
+    },
+    {
+      "Level": 6,
+      "Capacity": 250,
+      "RechargeRate": 18
+    },
+    {
+      "Level": 12,
+      "Capacity": 500,
+      "RechargeRate": 25
+    },
+    {
+      "Level": 18,
+      "Capacity": 900,
+      "RechargeRate": 33
+    },
+    {
+      "Level": 24,
+      "Capacity": 1400,
+      "RechargeRate": 42
+    },
+    {
+      "Level": 30,
+      "Capacity": 2000,
+      "RechargeRate": 52
+    },
+    {
+      "Level": 36,
+      "Capacity": 2800,
+      "RechargeRate": 63
+    },
+    {
+      "Level": 42,
+      "Capacity": 3700,
+      "RechargeRate": 75
+    },
+    {
+      "Level": 48,
+      "Capacity": 4800,
+      "RechargeRate": 88
+    },
+    {
+      "Level": 50,
+      "Capacity": 5500,
+      "RechargeRate": 100
+    }
+  ]
+  
