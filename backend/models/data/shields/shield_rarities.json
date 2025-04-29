@@ -1,0 +1,7 @@
+[
+    { "name": "COMMON", "range": [1, 40] },
+    { "name": "UNCOMMON", "range": [41, 70] },
+    { "name": "RARE", "range": [71, 85] },
+    { "name": "EPIC", "range": [86, 95] },
+    { "name": "LEGENDARY", "range": [96, 100] }
+  ]
