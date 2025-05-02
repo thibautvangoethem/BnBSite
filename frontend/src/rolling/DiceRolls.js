@@ -13,9 +13,9 @@ const DiceRolls = ({ rollsConfig, onRollResults }) => {
     return <Box>rollsConfig.entries.length is empty.</Box>;
   }
 
-  const handleRollResult = (diceType, rollResult) => {
+  const handleRollResult = (label, index, rollResult) => {
     // Notify the parent component (DiceRollsPopup) about the roll result
-    onRollResults(diceType, rollResult);
+    onRollResults(label, index, rollResult);
   };
 
   return (
@@ -56,7 +56,7 @@ const DiceRolls = ({ rollsConfig, onRollResults }) => {
                 marginBottom: '8px', // Add some space between dice boxes
               }}
             >
-              <DiceRoller diceType={diceType} onRollResult={handleRollResult} />
+              <DiceRoller diceType={diceType} onRollResult={(result) => handleRollResult(entry.label, index, result)} />
             </Box>
           ))}
         </Box>

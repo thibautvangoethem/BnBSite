@@ -13,6 +13,8 @@ import HomePage from './subComponents/homePage/HomePage';
 import CottageIcon from '@mui/icons-material/Cottage';
 import AutoModeIcon from '@mui/icons-material/AutoMode';
 import DiceRollsPopup from './rolling/DiceRollsPopup';
+import ShieldModal from './subComponents/quickLoot/ShieldModal';
+
 import { v4 as uuidv4 } from 'uuid';
 
 const menuItems = [
@@ -25,6 +27,8 @@ const menuItems = [
 const App = () => {
   const [rollModal, setRollModal] = useState(null);
   const [open, setOpen] = useState(false);
+  const [resultOpen, setResultOpen] = useState(false);
+  const [shieldData, setShieldData] = useState(null);
 
   const handleSerialize = (config) => {
     console.log("serialize");
@@ -32,9 +36,15 @@ const App = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose = (shieldData) => {
     setOpen(false);
+    setShieldData(shieldData);
+    setResultOpen(true);
   };
+
+  const handleDataClose = () => {
+    setResultOpen(false);
+  }
 
   const handleRerollAll = () => {
     console.log("Rerolling all dice...");
@@ -68,12 +78,18 @@ const App = () => {
           </div>
         </div>
         {rollModal !== null && (
-          <DiceRollsPopup
-            open={open}
-            onClose={handleClose}
-            rollsModal={rollModal}
-            onRerollAll={handleRerollAll}
-          />
+          <>
+            <DiceRollsPopup
+              open={open}
+              onClose={handleClose}
+              rollsModal={rollModal}
+              onRerollAll={handleRerollAll}
+            />
+          </>
+        )}
+        {shieldData !== null && (
+          <ShieldModal open={resultOpen} close={handleDataClose} shield={shieldData} />
+
         )}
       </Router>
     </AuthProvider>
