@@ -89,7 +89,7 @@ def roll_gun(create_result: random_create_result, session: SessionDep) -> str:
     return "tis goed"
 
 
-@router.post("/guns_roll")
+@router.post("/generate")
 def roll_gun(create_result: random_create_result, session: SessionDep) -> Gun:
     print(create_result)
     pass

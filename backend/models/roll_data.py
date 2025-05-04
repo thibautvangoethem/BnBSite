@@ -36,19 +36,9 @@ class random_create_description(BaseModel):
 #### v roll execution
 
 
-class selection_mandatory(BaseModel):
+class selection_choice(BaseModel):
     label: str
-    options: Optional[list[str]]
-
-
-# class selection_optional(BaseModel):
-#     label: str
-#     options: Optional[list[str]]
-
-
-# class selection(BaseModel):
-#     mandatory: list[selection_mandatory]
-#     optional: list[selection_optional]
+    choices: Optional[list[str]]
 
 
 class roll_result(BaseModel):
@@ -60,7 +50,7 @@ class roll_result(BaseModel):
 ## main class that contains the full result of a roll (returned from frontend)
 class random_create_result(BaseModel):
     level: int
-    selections: list[selection_mandatory]
+    selections: list[selection_choice]
     rolls: list[roll_result]
 
 

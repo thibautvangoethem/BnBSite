@@ -44,12 +44,6 @@ def get_create_descritpion(session: SessionDep) -> random_create_description:
     return description
 
 
-class random_create_result(BaseModel):
-    level: int
-    selections: list[selection_mandatory]
-    rolls: list[roll_result]
-
-
 def combine_roles(results):
     result_str = ""
     for item in results:
