@@ -9,7 +9,7 @@ from sqlmodel import select
 from sqlalchemy.orm import selectinload
 from models.roll_data import *
 from uuid import uuid4
-from models.shield import Shield, ShieldRead
+from models.shield import Shield
 import json
 
 import uuid
@@ -65,7 +65,9 @@ def get_roll_for_label(rolls, label):
 
 
 @router.post("/generate")
-def create_shield(create_result: random_create_result):
+def create_shield(
+    create_result: random_create_result, session: SessionDep
+) -> roll_response:
     print(f"TESTING --- {create_result}")
     level = create_result.level
     recharge_delay = 1
@@ -161,6 +163,7 @@ def create_shield(create_result: random_create_result):
     # TODO red text
 
     shield = Shield(
+        id=str(uuid.uuid4()),
         rarity=rarity,
         manufacturer=manufacturer,
         capacity=int(capacity),
@@ -173,8 +176,22 @@ def create_shield(create_result: random_create_result):
 
     # TODO Nova damage
 
-    shield_read = ShieldRead.model_validate(shield)
+    session.add(shield)
+    session.commit()
+    session.refresh(shield)
 
     print(f"SHIELD : {shield}")
 
-    return shield_read
+    return roll_response(item_id=shield.id, item_type="shield")
+
+
+@router.get("/{shield_id}", response_model=Shield)
+def get_shield(shield_id: str, session: SessionDep) -> Shield:
+    statement = select(Shield).where(Shield.id == shield_id)
+
+    shield = session.exec(statement).first()
+
+    if shield is None:
+        raise HTTPException(status_code=404, detail="shield not found")
+
+    return shield

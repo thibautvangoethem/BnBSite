@@ -4,9 +4,11 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Box, Typogra
 import CloseIcon from '@mui/icons-material/Close';
 import DiceRolls from './DiceRolls';
 import MultiSelectComponent from './MultiSelectComponent';
+import { useNavigate } from "react-router";
 
 const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const navigate = useNavigate();
   const [level, setLevel] = useState(null);
   const [selections, setSelections] = useState([]);
   const [diceResults, setDiceResults] = useState([]);
@@ -55,6 +57,7 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
       if (response.ok) {
         const result = await response.json();
         console.log('Submit successful:', result);
+        navigate(`/viz/shield/${result.item_id}`);
         onClose(result);
 
 
@@ -63,7 +66,6 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
       }
     } catch (error) {
       console.error('Error during submit:', error);
-
     }
   };
   return (

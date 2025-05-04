@@ -8,7 +8,7 @@ from typing import Optional
 
 
 class Shield(SQLModel, table=True):
-    id: int = Field(primary_key=True)
+    id: str = Field(primary_key=True)
     name: Optional[str]
     description: Optional[str] = None
     rarity: str
@@ -24,18 +24,20 @@ class Shield(SQLModel, table=True):
 
     red_text: Optional[str]
 
-
-class ShieldRead(BaseModel):
-    name: Optional[str]
-    description: Optional[str]
-    rarity: str
-    manufacturer: str
-    capacity: int
-    recharge_rate: int
-    recharge_delay: int
-    manufacturer_effect: Optional[str]
-    capacitor_effect: Optional[str]
-    battery_effect: Optional[str]
-    red_text: Optional[str]
-
     model_config = {"from_attributes": True}
+
+
+# class ShieldRead(BaseModel):
+#     name: Optional[str]
+#     description: Optional[str]
+#     rarity: str
+#     manufacturer: str
+#     capacity: int
+#     recharge_rate: int
+#     recharge_delay: int
+#     manufacturer_effect: Optional[str]
+#     capacitor_effect: Optional[str]
+#     battery_effect: Optional[str]
+#     red_text: Optional[str]
+
+#     model_config = {"from_attributes": True}

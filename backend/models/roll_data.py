@@ -62,3 +62,8 @@ class random_create_result(BaseModel):
     level: int
     selections: list[selection_mandatory]
     rolls: list[roll_result]
+
+
+class roll_response(BaseModel):
+    item_id: str
+    item_type: str
