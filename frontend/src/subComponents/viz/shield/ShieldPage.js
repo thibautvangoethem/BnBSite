@@ -2,6 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { Box, Container, Typography, CircularProgress, Grid, Paper } from '@mui/material';
 
+
+
+const Identifiers = ({ id, name, description }) => (
+    <Paper style={{ padding: '16px', marginBottom: '16px' }}>
+        <Typography variant="h5" gutterBottom>
+            Identifiers
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+            <strong>name:</strong> {name || 'Mr no name'}
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+            <strong>Description:</strong> {description || 'None'}
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+            <strong>id:</strong> {id}
+        </Typography>
+    </Paper>
+);
 // Component for Shield Stats
 const ShieldStats = ({ capacity, rechargeRate, rechargeDelay }) => (
     <Paper style={{ padding: '16px', marginBottom: '16px' }}>
@@ -54,35 +72,10 @@ const ShieldDetails = ({ manufacturer, rarity, redText }) => (
     </Paper>
 );
 
-
-const identif = ({ description, manufacturerEffect, capacitorEffect, batteryEffect }) => (
+const Components = ({ manufacturerEffect, capacitorEffect, batteryEffect, redText }) => (
     <Paper style={{ padding: '16px', marginBottom: '16px' }}>
         <Typography variant="h5" gutterBottom>
-            Components Description
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>Description:</strong> {description || 'None'}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>Manufacturer Effect:</strong> {manufacturerEffect}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>Capacitor Effect:</strong> {capacitorEffect}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>Battery Effect:</strong> {batteryEffect}
-        </Typography>
-
-    </Paper>
-);
-
-const Components = ({ description, manufacturerEffect, capacitorEffect, batteryEffect, redText }) => (
-    <Paper style={{ padding: '16px', marginBottom: '16px' }}>
-        <Typography variant="h5" gutterBottom>
-            Components Description
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>Description:</strong> {description || 'None'}
+            Components
         </Typography>
         <Typography variant="body1" gutterBottom>
             <strong>Manufacturer Effect:</strong> {manufacturerEffect}
@@ -137,6 +130,11 @@ const ShieldPage = () => {
                 <Typography variant="h4" component="div" gutterBottom>
                     El Shieldo
                 </Typography>
+                <Identifiers
+                    id={id}
+                    name={shield?.name}
+                    description={shield?.description}
+                />
                 <ShieldDetails
                     manufacturer={shield?.manufacturer}
                     rarity={shield?.rarity}
