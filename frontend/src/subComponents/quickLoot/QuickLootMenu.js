@@ -9,10 +9,10 @@ const ClickableCardsPage = ({ onSerialize }) => {
     {
       id: 1, title: 'Gun', description: 'GUNS GUNS GUNS.', endpoint: '/guns/rolldescription', post: '/guns/tisnognieaf'
     },
-    { id: 2, title: 'Class Mod', description: 'Den Arne heeft er veel werk in gestoken.', endpoint: '/classmods/rolldescription', post: '/guns/tisnognieaf' },
-    { id: 3, title: 'Shield', description: 'Schild en knuffel.', endpoint: '/shields/rolldescription', post: '/guns/tisnognieaf' },
-    { id: 4, title: 'Grenade', description: 'Bruno Mars simulator', endpoint: '/grenades/rolldescription', post: '/guns/tisnognieaf' },
-    { id: 5, title: 'potion', description: '100 Push ups en 2 vuisten', endpoint: '/potions/rolldescription', post: '/guns/tisnognieaf' },
+    { id: 2, title: 'Class Mod', description: 'Den Arne heeft er veel werk in gestoken.', endpoint: '/classmods/rolldescription' },
+    { id: 3, title: 'Shield', description: 'Schild en knuffel.', endpoint: '/shields/rolldescription' },
+    { id: 4, title: 'Grenade', description: 'Bruno Mars simulator', endpoint: '/grenades/rolldescription' },
+    { id: 5, title: 'potion', description: '100 Push ups en 2 vuisten', endpoint: '/potions/rolldescription' },
   ];
 
   const MonsterData = [
