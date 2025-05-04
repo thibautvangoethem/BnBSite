@@ -31,7 +31,10 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
     const selectedLevel = level;
     // Assuming MultiSelectComponent and DiceRolls have methods to get their current state
     // const selections = /* Get selections from MultiSelectComponent */;
-    const diceRolls = diceResults;
+    const diceRolls = Object.entries(diceResults).map(([label, rolls]) => ({
+      label: label,
+      result: rolls
+    }));
 
     // Data to be sent in the POST request
     const submitData = {
