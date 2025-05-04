@@ -56,8 +56,7 @@ const DiceRolls = ({ rollsConfig, onRollResults }) => {
                 marginBottom: '8px', // Add some space between dice boxes
               }}
             >
-              <DiceRoller diceType={diceType} />
-            </Box>
+              <DiceRoller diceType={diceType} onRollResult={(result) => handleRollResult(entry.label, index, result)} />            </Box>
           ))}
         </Box>
       ))}
