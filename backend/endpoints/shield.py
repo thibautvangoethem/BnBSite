@@ -10,6 +10,7 @@ from sqlalchemy.orm import selectinload
 from models.roll_data import *
 from uuid import uuid4
 from models.shield import Shield
+import random
 import json
 
 import uuid
@@ -113,6 +114,31 @@ def create_shield(
                 if manufacturer_effect == []:
                     manufacturer_effect = None
 
+                if manufacturer_effect_data.get("scales_with_level"):
+                    if manifacturer_data.get("element_roll"):
+                        elemental_rolls = [
+                            "fire",
+                            "shock",
+                            "corrosive",
+                            "cryo",
+                            "radiation",
+                            "choose",
+                        ]
+                        nova_element = elemental_rolls[random.randint(0, 5)]
+
+                    with open(
+                        "./backend/models/data/shields/shield_manifacturer_effect.json",
+                        "r",
+                    ) as file2:
+                        nova_damage_data = json.load(file2)
+                        for value in nova_damage_data:
+                            if (
+                                value["Level"][0] <= level
+                                and level <= value["Level"][-1]
+                            ):
+                                nova_damage = value["damage"]
+                                break
+
     with open("./backend/models/data/shields/shield_battery.json", "r") as file:
         all_battery_data = json.load(file)
 
@@ -154,7 +180,25 @@ def create_shield(
         if capacitor_effect:
             capacitor_effect = capacitor_effect[0]
 
-    # TODO red text
+    red_text_name = None
+    red_text_description = None
+    if get_roll_for_label(create_result.rolls, "Rarity roll") >= 96:
+        with open("./backend/models/data/shields/shield_red_text.json", "r") as file:
+            all_red_text_data = json.load(file)
+
+            roll = get_roll_for_label(create_result.rolls, "Redtext")
+            red_text_data = all_red_text_data[roll - 1]
+            red_text_name = red_text_data["name"]
+            red_text_description = red_text_data["description"]
+
+            if cap_mod := red_text_data.get("capacity_modifier"):
+                capacity = capacity * (1 + (cap_mod / 100))
+
+            if rate_mod := red_text_data.get("recharge_rate_modifier"):
+                recharge_rate = recharge_rate * (1 + (rate_mod / 100))
+
+            if delay_mod := red_text_data.get("recharge_delay_modifier"):
+                recharge_rate = recharge_rate * (1 + (delay_mod / 100))
 
     shield = Shield(
         id=str(uuid.uuid4()),
@@ -166,9 +210,13 @@ def create_shield(
         manufacturer_effect=manufacturer_effect,
         battery_effect=battery_effect,
         capacitor_effect=capacitor_effect,
+        red_text_name=red_text_name,
+        red_text_description=red_text_description,
+        nova_damage=nova_damage,
+        nova_element=nova_element,
     )
 
-    # TODO Nova damage
+    print(f"SHIELD : {shield}")
 
     session.add(shield)
     session.commit()

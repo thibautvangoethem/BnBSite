@@ -22,7 +22,11 @@ class Shield(SQLModel, table=True):
     capacitor_effect: Optional[str]
     battery_effect: Optional[str]
 
-    red_text: Optional[str]
+    red_text_name: Optional[str]
+    red_text_description: Optional[str]
+
+    nova_damage: Optional[str]
+    nova_element: Optional[str]
 
     model_config = {"from_attributes": True}
 

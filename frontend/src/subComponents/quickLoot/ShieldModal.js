@@ -26,8 +26,19 @@ const ShieldModal = (({ open, close, shield }) => {
                     <p><strong>Manufacturer Effect:</strong> {shield.manufacturer_effect}</p>
                     <p><strong>Capacitor Effect:</strong> {shield.capacitor_effect}</p>
                     <p><strong>Battery Effect:</strong> {shield.battery_effect}</p>
-                    {shield.red_text && (
-                        <p className="text-red-600 italic">"{shield.red_text}"</p>
+                    {shield.red_text_name && (
+                        <>
+                            <p><strong>Red Text:</strong></p>
+                            <p className="text-red-600 italic">"{shield.red_text_name}"</p>
+                            <p className="text-red-600 italic">"{shield.red_text_description}"</p>
+                        </>
+                    )}
+                    {shield.nova_damage && (
+                        <>
+                            <p><strong>Nova:</strong></p>
+                            <p className="text-red-600 italic">"{shield.nova_damage}"</p>
+                            <p className="text-red-600 italic">"{shield.nova_element}"</p>
+                        </>
                     )}
                 </DialogContent>
                 <Button
