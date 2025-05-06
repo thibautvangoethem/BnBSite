@@ -158,6 +158,17 @@ def create_shield(create_result: random_create_result):
         if capacitor_effect:
             capacitor_effect = capacitor_effect[0]
 
+    red_text_name = None
+    red_text_description = None
+    if get_roll_for_label(create_result.rolls, "Rarity roll") >= 96:
+        with open("./backend/models/data/shields/shield_red_text.json", "r") as file:
+            all_red_text_data = json.load(file)
+
+            roll = get_roll_for_label(create_result.rolls, "Redtext")
+            red_text_data = all_red_text_data[roll - 1]
+            red_text_name = red_text_data["name"]
+            red_text_description = red_text_data["description"]
+
     # TODO red text
 
     shield = Shield(
@@ -169,6 +180,8 @@ def create_shield(create_result: random_create_result):
         manufacturer_effect=manufacturer_effect,
         battery_effect=battery_effect,
         capacitor_effect=capacitor_effect,
+        red_text_name=red_text_name,
+        red_text_description=red_text_description,
     )
 
     # TODO Nova damage

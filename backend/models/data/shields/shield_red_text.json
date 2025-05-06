@@ -1,78 +1,78 @@
 [
-    {
-      "effect": "The Floor is Lava",
-      "description": "While shields are full, movement speed doubles, but standing still causes 8*player level fire damage."
-    },
-    {
-      "effect": "I'm Rubber, You're Glue",
-      "description": "Bullets that hit your shield have a 10% chance to ricochet back at attackers."
-    },
-    {
-      "effect": "This is MY Boomstick!",
-      "description": "Shotguns always have full damage when this shield is equipped."
-    },
-    {
-      "effect": "Blink and You\u2019ll Miss It",
-      "description": "Briefly gain invisibility for 1 turn when shields start recharging. resets on full charged shields"
-    },
-    {
-      "effect": "Can\u2019t Touch This",
-      "description": "When you didn\u2019t take damage last round, fully regain shields."
-    },
-    {
-      "effect": "It's a Feature, Not a Bug",
-      "description": "Shields randomly overcharge while recharging, doubling capacity for 2 rounds but preventing recharge after."
-    },
-    {
-      "effect": "Static Cling",
-      "description": "Nearby enemies suffer 40*shield level Shock DoT while shields are full."
-    },
-    {
-      "effect": "Live to Regret It",
-      "description": "Enemies who break your shield take 50% increased damage from all sources."
-    },
-    {
-      "effect": "Gotta Go Fast",
-      "description": "Can sacrifice 50% of your max shield capacity to gain 2 extra movements this turn."
-    },
-    {
-      "effect": "Second Skin",
-      "description": "Your shield capacity is reduced by 50%, but once per combat it recharges instantly when fully depleted."
-    },
-    {
-      "effect": "Overkill Protocol",
-      "description": "Dealing a critical hit restores a small portion of shields equal to crit damage."
-    },
-    {
-      "effect": "Newton's Third Law",
-      "description": "Taking melee damage knocks both you and the attacker back 2 squares."
-    },
-    {
-      "effect": "Cooler Than You",
-      "description": "When shield breaks, Cryo nova is applied to nearby enemies at half damage but they get slowed."
-    },
-    {
-      "effect": "Leave Me Alone",
-      "description": "While shields are broken, enemies are more likely to attack other targets if in their attack range."
-    },
-    {
-      "effect": "Who Needs Backup?",
-      "description": "Shield only recharges when no allies are nearby, but capacity is increased by 50%."
-    },
-    {
-      "effect": "Bet You Weren\u2019t Expecting That",
-      "description": "Each time your shield is depleted, a random status effect resistance is gained for 2 rounds."
-    },
-    {
-      "effect": "Just a Flesh Wound",
-      "description": "Taking health damage instead of shield damage doubles your total shield recharge speed."
-    },
-    {
-      "effect": "Unstable Core",
-      "description": "Shield recharge rate is doubled, but it has a random chance while charging to discharge and reset to zero, dealing a shock nova damage around you in 3x3."
-    },
-    {
-      "effect": "I Can Do This All Day",
-      "description": "Blocking melee attacks reduces half the damage."
-    }
-  ]
+  {
+    "name": "The Floor is Lava",
+    "description": "While shields are full, movement speed doubles, but standing still causes 8*player level fire damage."
+  },
+  {
+    "name": "I'm Rubber, You're Glue",
+    "description": "Bullets that hit your shield have a 10% chance to ricochet back at attackers."
+  },
+  {
+    "name": "This is MY Boomstick!",
+    "description": "Shotguns always have full damage when this shield is equipped."
+  },
+  {
+    "name": "Blink and You\u2019ll Miss It",
+    "description": "Briefly gain invisibility for 1 turn when shields start recharging. resets on full charged shields"
+  },
+  {
+    "name": "Can\u2019t Touch This",
+    "description": "When you didn\u2019t take damage last round, fully regain shields."
+  },
+  {
+    "name": "It's a Feature, Not a Bug",
+    "description": "Shields randomly overcharge while recharging, doubling capacity for 2 rounds but preventing recharge after."
+  },
+  {
+    "name": "Static Cling",
+    "description": "Nearby enemies suffer 40*shield level Shock DoT while shields are full."
+  },
+  {
+    "name": "Live to Regret It",
+    "description": "Enemies who break your shield take 50% increased damage from all sources."
+  },
+  {
+    "name": "Gotta Go Fast",
+    "description": "Can sacrifice 50% of your max shield capacity to gain 2 extra movements this turn."
+  },
+  {
+    "name": "Second Skin",
+    "description": "Your shield capacity is reduced by 50%, but once per combat it recharges instantly when fully depleted."
+  },
+  {
+    "name": "Overkill Protocol",
+    "description": "Dealing a critical hit restores a small portion of shields equal to crit damage."
+  },
+  {
+    "name": "Newton's Third Law",
+    "description": "Taking melee damage knocks both you and the attacker back 2 squares."
+  },
+  {
+    "name": "Cooler Than You",
+    "description": "When shield breaks, Cryo nova is applied to nearby enemies at half damage but they get slowed."
+  },
+  {
+    "name": "Leave Me Alone",
+    "description": "While shields are broken, enemies are more likely to attack other targets if in their attack range."
+  },
+  {
+    "name": "Who Needs Backup?",
+    "description": "Shield only recharges when no allies are nearby, but capacity is increased by 50%."
+  },
+  {
+    "name": "Bet You Weren\u2019t Expecting That",
+    "description": "Each time your shield is depleted, a random status name resistance is gained for 2 rounds."
+  },
+  {
+    "name": "Just a Flesh Wound",
+    "description": "Taking health damage instead of shield damage doubles your total shield recharge speed."
+  },
+  {
+    "name": "Unstable Core",
+    "description": "Shield recharge rate is doubled, but it has a random chance while charging to discharge and reset to zero, dealing a shock nova damage around you in 3x3."
+  },
+  {
+    "name": "I Can Do This All Day",
+    "description": "Blocking melee attacks reduces half the damage."
+  }
+]

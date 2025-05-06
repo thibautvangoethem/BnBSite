@@ -87,6 +87,8 @@ const App = () => {
             />
           </>
         )}
+
+        {/* TODO needs to be abstracted towards just a regular modal that can handle data from all types  */}
         {shieldData !== null && (
           <ShieldModal open={resultOpen} close={handleDataClose} shield={shieldData} />
 

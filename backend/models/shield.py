@@ -22,7 +22,8 @@ class Shield(SQLModel, table=True):
     capacitor_effect: Optional[str]
     battery_effect: Optional[str]
 
-    red_text: Optional[str]
+    red_text_name: Optional[str]
+    red_text_description: Optional[str]
 
 
 class ShieldRead(BaseModel):
@@ -36,6 +37,8 @@ class ShieldRead(BaseModel):
     manufacturer_effect: Optional[str]
     capacitor_effect: Optional[str]
     battery_effect: Optional[str]
-    red_text: Optional[str]
+
+    red_text_name: Optional[str]
+    red_text_description: Optional[str]
 
     model_config = {"from_attributes": True}
