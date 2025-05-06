@@ -47,7 +47,7 @@ const ShieldStats = ({ capacity, rechargeRate, rechargeDelay }) => (
 );
 
 // Component for Shield Details
-const ShieldDetails = ({ manufacturer, rarity, redText }) => (
+const ShieldDetails = ({ manufacturer, rarity, redTextName }) => (
     <Paper style={{ padding: '16px', marginBottom: '16px' }}>
         <Typography variant="h5" gutterBottom>
             Shield Details
@@ -64,15 +64,15 @@ const ShieldDetails = ({ manufacturer, rarity, redText }) => (
                 </Typography>
             </Grid>
         </Grid>
-        {redText && (
+        {redTextName && (
             <Typography variant="body1" color="error" style={{ fontStyle: 'italic' }}>
-                "{redText}"
+                "{redTextName}"
             </Typography>
         )}
     </Paper>
 );
 
-const Components = ({ manufacturerEffect, capacitorEffect, batteryEffect, redText }) => (
+const Components = ({ manufacturerEffect, capacitorEffect, batteryEffect, redTextDescription, novaDamage, novaElement }) => (
     <Paper style={{ padding: '16px', marginBottom: '16px' }}>
         <Typography variant="h5" gutterBottom>
             Components
@@ -86,9 +86,21 @@ const Components = ({ manufacturerEffect, capacitorEffect, batteryEffect, redTex
         <Typography variant="body1" gutterBottom>
             <strong>Battery Effect:</strong> {batteryEffect}
         </Typography>
-        {redText && (
+        {novaDamage && (
+            <>
+                <Typography variant="body1" gutterBottom>
+                    <strong>Nova damage</strong>"{novaDamage}"
+                </Typography>
+                {novaElement && (
+                    <Typography variant="body1" gutterBottom>
+                        <strong>Nova element</strong>"{novaElement}"
+                    </Typography>
+                )}
+            </>
+        )}
+        {redTextDescription && (
             <Typography variant="body1" color="error" style={{ fontStyle: 'italic' }}>
-                "{redText}"
+                "{redTextDescription}"
             </Typography>
         )}
     </Paper>
@@ -138,7 +150,7 @@ const ShieldPage = () => {
                 <ShieldDetails
                     manufacturer={shield?.manufacturer}
                     rarity={shield?.rarity}
-                    redText={shield?.red_text}
+                    redTextName={shield?.red_text_name}
                 />
                 <ShieldStats
                     capacity={shield?.capacity}
@@ -150,6 +162,10 @@ const ShieldPage = () => {
                     manufacturerEffect={shield?.manufacturer_effect}
                     capacitorEffect={shield?.capacitor_effect}
                     batteryEffect={shield?.battery_effect}
+                    redTextDescription={shield?.red_text_description}
+                    novaDamage={shield?.nova_damage}
+                    novaElement={shield?.nove_element}
+
                 />
             </Box>
         </Container>

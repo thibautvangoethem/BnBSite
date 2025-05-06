@@ -87,6 +87,8 @@ def create_shield(
             if entry["range"][0] <= roll and roll <= entry["range"][1]:
                 rarity = entry["name"]
 
+    nova_damage = None
+    nova_element = None
     with open(
         "./backend/models/data/shields/shield_manifacturer_effect.json", "r"
     ) as file:
@@ -115,7 +117,7 @@ def create_shield(
                     manufacturer_effect = None
 
                 if manufacturer_effect_data.get("scales_with_level"):
-                    if manifacturer_data.get("element_roll"):
+                    if manufacturer_effect_data.get("element_roll"):
                         elemental_rolls = [
                             "fire",
                             "shock",
@@ -127,7 +129,7 @@ def create_shield(
                         nova_element = elemental_rolls[random.randint(0, 5)]
 
                     with open(
-                        "./backend/models/data/shields/shield_manifacturer_effect.json",
+                        "./backend/models/data/shields/shield_nova_dmg.json",
                         "r",
                     ) as file2:
                         nova_damage_data = json.load(file2)
