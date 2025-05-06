@@ -9,7 +9,8 @@ from sqlmodel import select
 from sqlalchemy.orm import selectinload
 from models.roll_data import *
 from uuid import uuid4
-from models.shield import Shield, ShieldRead
+from models.shield import Shield
+import random
 import json
 
 import uuid
@@ -44,12 +45,6 @@ def get_create_descritpion(session: SessionDep) -> random_create_description:
     return description
 
 
-class random_create_result(BaseModel):
-    level: int
-    selections: list[selection_mandatory]
-    rolls: list[roll_result]
-
-
 def combine_roles(results):
     result_str = ""
     for item in results:
@@ -65,7 +60,9 @@ def get_roll_for_label(rolls, label):
 
 
 @router.post("/generate")
-def create_shield(create_result: random_create_result):
+def create_shield(
+    create_result: random_create_result, session: SessionDep
+) -> roll_response:
     print(f"TESTING --- {create_result}")
     level = create_result.level
     recharge_delay = 1
@@ -116,6 +113,31 @@ def create_shield(create_result: random_create_result):
                     manufacturer_effect = manufacturer_effect[0]
                 if manufacturer_effect == []:
                     manufacturer_effect = None
+
+                if manufacturer_effect_data.get("scales_with_level"):
+                    if manifacturer_data.get("element_roll"):
+                        elemental_rolls = [
+                            "fire",
+                            "shock",
+                            "corrosive",
+                            "cryo",
+                            "radiation",
+                            "choose",
+                        ]
+                        nova_element = elemental_rolls[random.randint(0, 5)]
+
+                    with open(
+                        "./backend/models/data/shields/shield_manifacturer_effect.json",
+                        "r",
+                    ) as file2:
+                        nova_damage_data = json.load(file2)
+                        for value in nova_damage_data:
+                            if (
+                                value["Level"][0] <= level
+                                and level <= value["Level"][-1]
+                            ):
+                                nova_damage = value["damage"]
+                                break
 
     with open("./backend/models/data/shields/shield_battery.json", "r") as file:
         all_battery_data = json.load(file)
@@ -169,9 +191,17 @@ def create_shield(create_result: random_create_result):
             red_text_name = red_text_data["name"]
             red_text_description = red_text_data["description"]
 
-    # TODO red text
+            if cap_mod := red_text_data.get("capacity_modifier"):
+                capacity = capacity * (1 + (cap_mod / 100))
+
+            if rate_mod := red_text_data.get("recharge_rate_modifier"):
+                recharge_rate = recharge_rate * (1 + (rate_mod / 100))
+
+            if delay_mod := red_text_data.get("recharge_delay_modifier"):
+                recharge_rate = recharge_rate * (1 + (delay_mod / 100))
 
     shield = Shield(
+        id=str(uuid.uuid4()),
         rarity=rarity,
         manufacturer=manufacturer,
         capacity=int(capacity),
@@ -182,12 +212,28 @@ def create_shield(create_result: random_create_result):
         capacitor_effect=capacitor_effect,
         red_text_name=red_text_name,
         red_text_description=red_text_description,
+        nova_damage=nova_damage,
+        nova_element=nova_element,
     )
-
-    # TODO Nova damage
-
-    shield_read = ShieldRead.model_validate(shield)
 
     print(f"SHIELD : {shield}")
 
-    return shield_read
+    session.add(shield)
+    session.commit()
+    session.refresh(shield)
+
+    print(f"SHIELD : {shield}")
+
+    return roll_response(item_id=shield.id, item_type="shield")
+
+
+@router.get("/{shield_id}", response_model=Shield)
+def get_shield(shield_id: str, session: SessionDep) -> Shield:
+    statement = select(Shield).where(Shield.id == shield_id)
+
+    shield = session.exec(statement).first()
+
+    if shield is None:
+        raise HTTPException(status_code=404, detail="shield not found")
+
+    return shield

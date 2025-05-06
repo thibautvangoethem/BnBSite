@@ -33,6 +33,13 @@ const ShieldModal = (({ open, close, shield }) => {
                             <p className="text-red-600 italic">"{shield.red_text_description}"</p>
                         </>
                     )}
+                    {shield.nova_damage && (
+                        <>
+                            <p><strong>Nova:</strong></p>
+                            <p className="text-red-600 italic">"{shield.nova_damage}"</p>
+                            <p className="text-red-600 italic">"{shield.nova_element}"</p>
+                        </>
+                    )}
                 </DialogContent>
                 <Button
                     onClick={close}

@@ -9,11 +9,12 @@ import FaceUnlockOutlinedIcon from '@mui/icons-material/FaceUnlockOutlined';
 import CustomRollingInputs from './subComponents/customRolling/CustomRollingInputs'; //dat geeft nen error hier op dat iets in folder "CustomRolling"  (grote C) all included is, maar dat bestaat niet??
 import QuickLootMenu from './subComponents/quickLoot/QuickLootMenu';
 import GunRoll from './subComponents/quickLoot/gun/GunRoll';
+import ShieldPage from './subComponents/viz/shield/ShieldPage';
 import HomePage from './subComponents/homePage/HomePage';
 import CottageIcon from '@mui/icons-material/Cottage';
 import AutoModeIcon from '@mui/icons-material/AutoMode';
 import DiceRollsPopup from './rolling/DiceRollsPopup';
-import ShieldModal from './subComponents/quickLoot/ShieldModal';
+// import ShieldModal from './subComponents/quickLoot/ShieldModal';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -36,10 +37,10 @@ const App = () => {
     setOpen(true);
   };
 
-  const handleClose = (shieldData) => {
+  const handleClose = () => {
     setOpen(false);
-    setShieldData(shieldData);
-    setResultOpen(true);
+    // setShieldData(shieldData);
+    // setResultOpen(true);
   };
 
   const handleDataClose = () => {
@@ -69,11 +70,12 @@ const App = () => {
                 element={<CustomRollingInputs onSerialize={handleSerialize} />}
               />
               <Route path="/quickloot" element={<QuickLootMenu onSerialize={handleSerialize} />} />
-              <Route path="/quickloot/gun" element={<GunRoll />} />
+              {/* <Route path="/quickloot/gun" element={<GunRoll />} /> */}
               {/* <Route path="/quickloot/shield" element={<CardPage2 />} />
               <Route path="/quickloot/classmod" element={<CardPage3 />} />
               <Route path="/quickloot/grenade" element={<CardPage3 />} />
               <Route path="/quickloot/potion" element={<CardPage3 />} />  */}
+              <Route path="/viz/shield/:id" element={<ShieldPage />} />
             </Routes>
           </div>
         </div>
@@ -87,12 +89,10 @@ const App = () => {
             />
           </>
         )}
-
-        {/* TODO needs to be abstracted towards just a regular modal that can handle data from all types  */}
-        {shieldData !== null && (
+        {/* {shieldData !== null && (
           <ShieldModal open={resultOpen} close={handleDataClose} shield={shieldData} />
 
-        )}
+        )} */}
       </Router>
     </AuthProvider>
   );

@@ -37,7 +37,8 @@
   },
   {
     "name": "Second Skin",
-    "description": "Your shield capacity is reduced by 50%, but once per combat it recharges instantly when fully depleted."
+    "capacity_modifier": -50,
+    "description": "Once per combat it recharges instantly when fully depleted."
   },
   {
     "name": "Overkill Protocol",
@@ -57,7 +58,8 @@
   },
   {
     "name": "Who Needs Backup?",
-    "description": "Shield only recharges when no allies are nearby, but capacity is increased by 50%."
+    "capacity_modifier": 50,
+    "description": "Shield only recharges when no allies are nearby"
   },
   {
     "name": "Bet You Weren\u2019t Expecting That",
@@ -69,10 +71,18 @@
   },
   {
     "name": "Unstable Core",
+    "recharge_rate_modifier": 100,
     "description": "Shield recharge rate is doubled, but it has a random chance while charging to discharge and reset to zero, dealing a shock nova damage around you in 3x3."
   },
   {
     "name": "I Can Do This All Day",
     "description": "Blocking melee attacks reduces half the damage."
+  },
+  {
+    "name": "I could beat off 100 men",
+    "capacity_modifier": -50,
+    "recharge_delay_modifier": -100,
+    "recharge_rate_modifier": 300,
+    "description": "Each time your shield is depleted you get +1 melee attack per turn, this effect can stack"
   }
 ]

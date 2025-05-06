@@ -4,11 +4,13 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Box, Typogra
 import CloseIcon from '@mui/icons-material/Close';
 import DiceRolls from './DiceRolls';
 import MultiSelectComponent from './MultiSelectComponent';
+import { useNavigate } from "react-router";
 
 const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const navigate = useNavigate();
   const [level, setLevel] = useState(null);
-  const [selections, setSelections] = useState([]);
+  const [selectionsResults, setSelectionsResults] = useState([]);
   const [diceResults, setDiceResults] = useState([]);
 
   const handleRollResult = (label, index, rollResult) => {
@@ -30,7 +32,12 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
     // Gather all necessary data
     const selectedLevel = level;
     // Assuming MultiSelectComponent and DiceRolls have methods to get their current state
-    // const selections = /* Get selections from MultiSelectComponent */;
+    // const selections = Object.entries(selectionsResults).map(([label, choices]) =>
+    // ({
+    //   label: label,
+    //   choices: choices
+    // })
+    // )
     const diceRolls = Object.entries(diceResults).map(([label, rolls]) => ({
       label: label,
       result: rolls
@@ -39,7 +46,7 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
     // Data to be sent in the POST request
     const submitData = {
       level: selectedLevel,
-      selections: selections,
+      selections: selectionsResults,
       rolls: diceRolls,
     };
     console.log('asfgfdasg');
@@ -55,6 +62,11 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
       if (response.ok) {
         const result = await response.json();
         console.log('Submit successful:', result);
+        if (result.item_type === 'shield') {
+          navigate(`/viz/shield/${result.item_id}`);
+        } else {
+          console.warn(`unknown viz type ${result.item_type}`)
+        }
         onClose(result);
 
 
@@ -63,7 +75,6 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
       }
     } catch (error) {
       console.error('Error during submit:', error);
-
     }
   };
   return (
@@ -128,7 +139,7 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
                 </Typography>
               </DialogTitle>
               <DialogContent style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <MultiSelectComponent selectionData={rollsModal.selections.mandatory} onSelectionChange={setSelections} />
+                <MultiSelectComponent selectionData={rollsModal.selections.mandatory} onSelectionChange={setSelectionsResults} />
               </DialogContent>
             </>
           }
