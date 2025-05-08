@@ -14,21 +14,21 @@ class GunType(str, Enum):
 
 class GunPrefixLink(SQLModel, table=True):
     gun_id: Optional[str] = Field(default=None, foreign_key="gun.id", primary_key=True)
-    prefix_id: Optional[str] = Field(
+    prefix_id: Optional[int] = Field(
         default=None, foreign_key="prefix.id", primary_key=True
     )
 
 
 class GunPostfixLink(SQLModel, table=True):
     gun_id: Optional[str] = Field(default=None, foreign_key="gun.id", primary_key=True)
-    postfix_id: Optional[str] = Field(
+    postfix_id: Optional[int] = Field(
         default=None, foreign_key="postfix.id", primary_key=True
     )
 
 
 class GunRedTextLink(SQLModel, table=True):
     gun_id: Optional[str] = Field(default=None, foreign_key="gun.id", primary_key=True)
-    redtext_id: Optional[str] = Field(
+    redtext_id: Optional[int] = Field(
         default=None, foreign_key="redtext.id", primary_key=True
     )
 
@@ -65,7 +65,7 @@ class Gun(SQLModel, table=True):
 
 
 class Prefix(SQLModel, table=True):
-    id: str = Field(primary_key=True)
+    id: int = Field(primary_key=True)
     name: str
     effect: str
 
@@ -74,7 +74,7 @@ class Prefix(SQLModel, table=True):
 
 
 class Postfix(SQLModel, table=True):
-    id: str = Field(primary_key=True)
+    id: int = Field(primary_key=True)
     name: str
     effect: str
 
@@ -85,7 +85,7 @@ class Postfix(SQLModel, table=True):
 
 
 class RedText(SQLModel, table=True):
-    id: str = Field(primary_key=True)
+    id: int = Field(primary_key=True)
     name: str
     effect: str
 
