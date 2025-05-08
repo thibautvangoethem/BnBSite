@@ -1,15 +1,7 @@
 from enum import Enum
-from models.common import Element, Manufacturer, Rarity
+from models.common import *
 from typing import List, Optional
 from sqlmodel import Field, Relationship, SQLModel
-
-
-class GunType(str, Enum):
-    RIFLE = "Combat Rifle"
-    SUBMACHINE = "Submachine gun"
-    PISTOl = "Pistol"
-    SHOTGUN = "Shotgun"
-    SNIPER = "Sniper Rifle"
 
 
 class GunPrefixLink(SQLModel, table=True):
@@ -41,13 +33,14 @@ class Gun(SQLModel, table=True):
     rarity: Rarity
     manufacturer: Manufacturer
     manufacturer_effect: Optional[str] = None
-    element: Optional[str] = None
+    element: Optional[Element] = None
+    elementstr: Optional[str] = None
 
     range: int
     lowNormal: int
     lowCrit: int
     mediumNormal: int
-    mediumCrit2: int
+    mediumCrit: int
     highNormal: int
     highCrit: int
 

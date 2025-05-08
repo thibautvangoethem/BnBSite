@@ -53,6 +53,36 @@ class random_create_result(BaseModel):
     selections: list[selection_choice]
     rolls: list[roll_result]
 
+    def get_roll_for_label(self, label: str):
+        for roll in self.rolls:
+            if roll.label == label:
+                return roll.result
+
+    def get_selection_for_label(self, label: str):
+        for sel in self.selections:
+            if sel.label == label:
+                return sel.choices
+
+
+# def combine_roles(results: list[int]) -> list[int]:
+# result_str = []
+# for item in results:
+#     result_str.append (str(item)
+
+# return int(result_str)
+
+
+def get_roll_for_label(rolls: list[roll_result], label: str):
+    for roll in rolls:
+        if roll.label == label:
+            return roll.result
+
+
+def get_selection_for_label(selections: list[roll_result], label: str):
+    for roll in rolls:
+        if roll.label == label:
+            return roll.result
+
 
 class roll_response(BaseModel):
     item_id: str

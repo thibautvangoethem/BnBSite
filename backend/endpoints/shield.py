@@ -45,20 +45,6 @@ def get_create_descritpion(session: SessionDep) -> random_create_description:
     return description
 
 
-def combine_roles(results):
-    result_str = ""
-    for item in results:
-        result_str += str(item)
-
-    return int(result_str)
-
-
-def get_roll_for_label(rolls, label):
-    for roll in rolls:
-        if roll.label == label:
-            return combine_roles(roll.result)
-
-
 @router.post("/generate")
 def create_shield(
     create_result: random_create_result, session: SessionDep
@@ -83,7 +69,7 @@ def create_shield(
     with open("./backend/models/data/shields/shield_rarities.json", "r") as file:
         shield_rarities_data = json.load(file)
         for entry in shield_rarities_data:
-            roll = get_roll_for_label(create_result.rolls, "Rarity roll")
+            roll = create_result.get_roll_for_label("Rarity roll")[0]
             if entry["range"][0] <= roll and roll <= entry["range"][1]:
                 rarity = entry["name"]
 
@@ -144,7 +130,7 @@ def create_shield(
     with open("./backend/models/data/shields/shield_battery.json", "r") as file:
         all_battery_data = json.load(file)
 
-        roll = get_roll_for_label(create_result.rolls, "Baterry")
+        roll = create_result.get_roll_for_label("Baterry")[0]
         battery = all_battery_data[roll - 1]
         battery_rarity_data = battery["effects"][rarity]
 
@@ -165,7 +151,7 @@ def create_shield(
     with open("./backend/models/data/shields/shield_capacitor.json", "r") as file:
         all_capacitor_data = json.load(file)
 
-        roll = get_roll_for_label(create_result.rolls, "Capacitor")
+        roll = create_result.get_roll_for_label("Capacitor")[0]
         capacitor = all_capacitor_data[roll - 1]
         capacitor_rarity_data = capacitor["effects"][rarity]
 
@@ -184,11 +170,11 @@ def create_shield(
 
     red_text_name = None
     red_text_description = None
-    if get_roll_for_label(create_result.rolls, "Rarity roll") >= 96:
+    if create_result.get_roll_for_label("Rarity roll")[0] >= 96:
         with open("./backend/models/data/shields/shield_red_text.json", "r") as file:
             all_red_text_data = json.load(file)
 
-            roll = get_roll_for_label(create_result.rolls, "Redtext")
+            roll = create_result.get_roll_for_label("Redtext")[0]
             red_text_data = all_red_text_data[roll - 1]
             red_text_name = red_text_data["name"]
             red_text_description = red_text_data["description"]
