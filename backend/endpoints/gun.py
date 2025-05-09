@@ -23,7 +23,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 # custom creation of gun
-class GunCreate(SQLModel):
+class GunCreate(BaseModel):
     name: str
     description: Optional[str] = None
     guntype: GunType
@@ -37,12 +37,41 @@ class GunCreate(SQLModel):
     redtext_ids: List[int] = []
 
     range: int
+    dmgroll: str
     lowNormal: int
     lowCrit: int
     mediumNormal: int
     mediumCrit: int
     highNormal: int
     highCrit: int
+
+
+# sad sqlmodel werkt niet deftig met foreign keys
+class GunResponse(BaseModel):
+    id: str = Field(primary_key=True)
+    name: str
+    description: Optional[str] = None
+    type: GunType
+    rarity: Rarity
+    manufacturer: Manufacturer
+    manufacturer_effect: Optional[str] = None
+    element: Optional[Element] = None
+    elementstr: Optional[str] = None
+
+    range: int
+    dmgroll: str
+    lowNormal: int
+    lowCrit: int
+    mediumNormal: int
+    mediumCrit: int
+    highNormal: int
+    highCrit: int
+
+    prefixes: List[Prefix]
+
+    postfixes: List[Postfix]
+
+    redtexts: List[RedText]
 
 
 @router.get("/")
@@ -543,6 +572,61 @@ elementalRarityRolArray = [
     ],
 ]
 
+gunRangeMap = {
+    GunType.RIFLE: 6,
+    GunType.PISTOL: 5,
+    GunType.SUBMACHINE: 5,
+    GunType.SHOTGUN: 4,
+    GunType.SNIPER: 8,
+    GunType.ROCKET: 4,
+}
+
+# tis map: guns => [levels ,[[hits],damage die]]
+damageMap = {
+    GunType.RIFLE: [
+        [[1, 6], [[1, 0, 3, 0, 3, 1], "1d6"]],
+        [[7, 12], [[2, 0, 3, 0, 2, 1], "1d8"]],
+        [[13, 18], [[1, 1, 2, 1, 2, 2], "1d8"]],
+        [[19, 24], [[1, 0, 2, 1, 3, 1], "2d6"]],
+        [[25, 30], [[1, 1, 2, 1, 2, 3], "1d10"]],
+    ],
+    GunType.PISTOL: [
+        [[1, 6], [[1, 0, 2, 0, 3, 0], "2d4"]],
+        [[7, 12], [[1, 0, 1, 1, 3, 1], "1d6"]],
+        [[13, 18], [[1, 0, 2, 0, 2, 1], "2d6"]],
+        [[19, 24], [[1, 0, 1, 1, 1, 2], "2d8"]],
+        [[25, 30], [[2, 0, 2, 1, 2, 2], "2d8"]],
+    ],
+    GunType.SUBMACHINE: [
+        [[1, 6], [[2, 0, 3, 0, 5, 0], "1d4"]],
+        [[7, 12], [[2, 0, 4, 0, 5, 1], "2d4"]],
+        [[13, 18], [[2, 0, 3, 1, 5, 1], "1d6"]],
+        [[19, 24], [[2, 0, 2, 1, 4, 1], "2d6"]],
+        [[25, 30], [[2, 2, 3, 2, 5, 2], "1d10"]],
+    ],
+    GunType.SHOTGUN: [
+        [[1, 6], [[1, 0, 2, 0, 1, 1], "1d8"]],
+        [[7, 12], [[1, 0, 2, 0, 2, 1], "2d8"]],
+        [[13, 18], [[1, 1, 2, 1, 2, 2], "2d8"]],
+        [[19, 24], [[1, 0, 1, 1, 2, 1], "2d10"]],
+        [[25, 30], [[1, 1, 2, 1, 2, 2], "1d12"]],
+    ],
+    GunType.SNIPER: [
+        [[1, 6], [[0, 0, 1, 0, 1, 1], "1d10"]],
+        [[7, 12], [[0, 0, 1, 0, 1, 1], "1d12"]],
+        [[13, 18], [[1, 0, 1, 1, 1, 2], "1d10"]],
+        [[19, 24], [[1, 0, 1, 1, 1, 2], "2d10"]],
+        [[25, 30], [[1, 0, 1, 1, 2, 2], "1d12"]],
+    ],
+    GunType.ROCKET: [
+        [[1, 6], [[1, 0, 1, 0, 1, 1], "1d12"]],
+        [[7, 12], [[1, 0, 1, 0, 1, 1], "2d10"]],
+        [[13, 18], [[1, 0, 1, 0, 1, 2], "1d12"]],
+        [[19, 24], [[1, 0, 1, 0, 2, 1], "2d12"]],
+        [[25, 30], [[1, 1, 1, 1, 2, 1], "1d20"]],
+    ],
+}
+
 
 @router.post("/generate")
 def roll_gun(create_result: random_create_result, session: SessionDep) -> roll_response:
@@ -620,6 +704,13 @@ def roll_gun(create_result: random_create_result, session: SessionDep) -> roll_r
     else:
         redtext = []
 
+    # PART6 damage numbers
+    damagerow = None
+    for row in damageMap[guntype]:
+        if row[0][0] <= create_result.level and row[0][1] >= create_result.level:
+            damagerow = row[1]
+            break
+
     legun = GunCreate(
         name="nog niets",
         description="ook nog niets",
@@ -632,20 +723,21 @@ def roll_gun(create_result: random_create_result, session: SessionDep) -> roll_r
         prefix_ids=prefix,
         postfix_ids=[],
         redtext_ids=redtext,
-        range=-100,
-        lowNormal=-100,
-        lowCrit=-100,
-        mediumNormal=-100,
-        mediumCrit=-100,
-        highNormal=-100,
-        highCrit=-100,
+        range=gunRangeMap[guntype],
+        dmgroll=damagerow[1],
+        lowNormal=damagerow[0][0],
+        lowCrit=damagerow[0][1],
+        mediumNormal=damagerow[0][2],
+        mediumCrit=damagerow[0][3],
+        highNormal=damagerow[0][4],
+        highCrit=damagerow[0][5],
     )
     gotten_gun = create_gun(gun_data=legun, session=session)
     return roll_response(item_id=gotten_gun.id, item_type="gun")
 
 
-@router.get("/{gun_id}", response_model=Gun)
-def get_gun(gun_id: str, session: SessionDep) -> Prefix:
+@router.get("/{gun_id}", response_model=GunResponse)
+def get_gun(gun_id: str, session: SessionDep) -> GunResponse:
     statement = (
         select(Gun)
         .options(selectinload(Gun.prefixes), selectinload(Gun.postfixes))
@@ -656,8 +748,13 @@ def get_gun(gun_id: str, session: SessionDep) -> Prefix:
 
     if gun is None:
         raise HTTPException(status_code=404, detail="Gun not found")
+    # Yup de sqlmodel naar pydantic werkt niet met foreig n eky object expansio
+    temp = Gun.model_dump(gun)
+    temp["prefixes"] = gun.prefixes
+    temp["postfixes"] = gun.postfixes
+    temp["redtexts"] = gun.redtexts
 
-    return gun
+    return GunResponse.model_validate(temp)
 
 
 @router.post("/")
@@ -674,6 +771,7 @@ def create_gun(gun_data: GunCreate, session: SessionDep) -> Gun:
         element=gun_data.element,
         elementstr=gun_data.elementstr,
         range=gun_data.range,
+        dmgroll=gun_data.dmgroll,
         lowNormal=gun_data.lowNormal,
         lowCrit=gun_data.lowCrit,
         mediumNormal=gun_data.mediumNormal,

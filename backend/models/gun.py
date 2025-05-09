@@ -25,6 +25,39 @@ class GunRedTextLink(SQLModel, table=True):
     )
 
 
+class Prefix(SQLModel, table=True):
+    id: int = Field(primary_key=True)
+    name: str
+    effect: str
+
+    # Relationship to Gun through the association table
+    guns: List["Gun"] = Relationship(
+        back_populates="prefixes", link_model=GunPrefixLink
+    )
+
+
+class Postfix(SQLModel, table=True):
+    id: int = Field(primary_key=True)
+    name: str
+    effect: str
+
+    # Relationship to Gun through the association table
+    guns: List["Gun"] = Relationship(
+        back_populates="postfixes", link_model=GunPostfixLink
+    )
+
+
+class RedText(SQLModel, table=True):
+    id: int = Field(primary_key=True)
+    name: str
+    effect: str
+
+    # Relationship to Gun through the association table
+    guns: List["Gun"] = Relationship(
+        back_populates="redtexts", link_model=GunRedTextLink
+    )
+
+
 class Gun(SQLModel, table=True):
     id: str = Field(primary_key=True)
     name: str
@@ -37,6 +70,7 @@ class Gun(SQLModel, table=True):
     elementstr: Optional[str] = None
 
     range: int
+    dmgroll: str
     lowNormal: int
     lowCrit: int
     mediumNormal: int
@@ -44,48 +78,19 @@ class Gun(SQLModel, table=True):
     highNormal: int
     highCrit: int
 
-    prefixes: List["Prefix"] = Relationship(
+    prefixes: List[Prefix] = Relationship(
         back_populates="guns", link_model=GunPrefixLink
     )
 
-    postfixes: List["Postfix"] = Relationship(
+    postfixes: List[Postfix] = Relationship(
         back_populates="guns", link_model=GunPostfixLink
     )
 
-    redtexts: List["RedText"] = Relationship(
+    redtexts: List[RedText] = Relationship(
         back_populates="guns", link_model=GunRedTextLink
     )
 
 
-class Prefix(SQLModel, table=True):
-    id: int = Field(primary_key=True)
-    name: str
-    effect: str
-
-    # Relationship to Gun through the association table
-    guns: List[Gun] = Relationship(back_populates="prefixes", link_model=GunPrefixLink)
-
-
-class Postfix(SQLModel, table=True):
-    id: int = Field(primary_key=True)
-    name: str
-    effect: str
-
-    # Relationship to Gun through the association table
-    guns: List[Gun] = Relationship(
-        back_populates="postfixes", link_model=GunPostfixLink
-    )
-
-
-class RedText(SQLModel, table=True):
-    id: int = Field(primary_key=True)
-    name: str
-    effect: str
-
-    # Relationship to Gun through the association table
-    guns: List[Gun] = Relationship(back_populates="redtexts", link_model=GunRedTextLink)
-
-
-Gun.model_rebuild()
 Prefix.model_rebuild()
 Postfix.model_rebuild()
+Gun.model_rebuild()
