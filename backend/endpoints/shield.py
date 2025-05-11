@@ -82,10 +82,10 @@ def create_shield(
 
         for roll in create_result.rolls:
             if roll.label == "Manufacturer":
-                manufacturer = manifacturer_data[combine_roles(roll.result) - 1]["name"]
-                manufacturer_effect_data = manifacturer_data[
-                    combine_roles(roll.result) - 1
-                ]["effects"][rarity]
+                manufacturer = manifacturer_data[roll.result[0] - 1]["name"]
+                manufacturer_effect_data = manifacturer_data[roll.result[0] - 1][
+                    "effects"
+                ][rarity]
 
                 if cap_mod := manufacturer_effect_data.get("capacity_modifier"):
                     capacity = capacity * (1 + (cap_mod / 100))

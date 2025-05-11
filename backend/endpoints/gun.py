@@ -233,11 +233,11 @@ elementalRarityRolArray = [
     [
         [1, 10],
         [
-            [Element.NIETS, "Klaag bij Thibaut, dit kunde nie eens rollen"],
-            [Element.NIETS, "Klaag bij Thibaut, dit kunde nie eens rollen"],
-            [Element.NIETS, "Klaag bij Thibaut, dit kunde nie eens rollen"],
-            [Element.NIETS, "Klaag bij Thibaut, dit kunde nie eens rollen"],
-            [Element.NIETS, "Klaag bij Thibaut, dit kunde nie eens rollen"],
+            [Element.NIETS, "N/A"],
+            [Element.NIETS, "N/A"],
+            [Element.NIETS, "N/A"],
+            [Element.NIETS, "N/A"],
+            [Element.NIETS, "N/A"],
         ],
     ],
     [

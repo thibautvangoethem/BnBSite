@@ -9,8 +9,8 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     && python3 -m pip install -r requirements.txt --no-cache-dir
 
-COPY . .
+COPY . ./backend
 
 EXPOSE 8000
 
-CMD ["python", "main_docker.py"]
+CMD ["python", "./backend/main_docker.py"]
