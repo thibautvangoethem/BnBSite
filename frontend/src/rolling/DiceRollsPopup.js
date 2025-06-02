@@ -64,6 +64,8 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
         console.log('Submit successful:', result);
         if (result.item_type === 'shield') {
           navigate(`/viz/shield/${result.item_id}`);
+        } else if (result.item_type === 'gun') {
+          navigate(`/viz/gun/${result.item_id}`);
         } else {
           console.warn(`unknown viz type ${result.item_type}`)
         }

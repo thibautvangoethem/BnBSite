@@ -10,6 +10,7 @@ import CustomRollingInputs from './subComponents/customRolling/CustomRollingInpu
 import QuickLootMenu from './subComponents/quickLoot/QuickLootMenu';
 import GunRoll from './subComponents/quickLoot/gun/GunRoll';
 import ShieldPage from './subComponents/viz/shield/ShieldPage';
+import GunPage from './subComponents/viz/gun/GunPage';
 import HomePage from './subComponents/homePage/HomePage';
 import CottageIcon from '@mui/icons-material/Cottage';
 import AutoModeIcon from '@mui/icons-material/AutoMode';
@@ -76,6 +77,7 @@ const App = () => {
               <Route path="/quickloot/grenade" element={<CardPage3 />} />
               <Route path="/quickloot/potion" element={<CardPage3 />} />  */}
               <Route path="/viz/shield/:id" element={<ShieldPage />} />
+              <Route path="/viz/gun/:id" element={<GunPage />} />
             </Routes>
           </div>
         </div>
