@@ -15,6 +15,7 @@ import HomePage from './subComponents/homePage/HomePage';
 import CottageIcon from '@mui/icons-material/Cottage';
 import AutoModeIcon from '@mui/icons-material/AutoMode';
 import DiceRollsPopup from './rolling/DiceRollsPopup';
+import PotionPage from './subComponents/viz/potion/PotionPage';
 // import ShieldModal from './subComponents/quickLoot/ShieldModal';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -78,6 +79,7 @@ const App = () => {
               <Route path="/quickloot/potion" element={<CardPage3 />} />  */}
               <Route path="/viz/shield/:id" element={<ShieldPage />} />
               <Route path="/viz/gun/:id" element={<GunPage />} />
+              <Route path="/viz/potion/:id" element={<PotionPage />} />
             </Routes>
           </div>
         </div>

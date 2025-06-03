@@ -43,12 +43,12 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
       result: rolls
     }));
 
-    // Data to be sent in the POST request
     const submitData = {
-      level: selectedLevel,
+      level: !rollsModal.level ? 0 : selectedLevel,
       selections: selectionsResults,
       rolls: diceRolls,
     };
+
     console.log('asfgfdasg');
     try {
       const response = await fetch(backendUrl + rollsModal.post, {
@@ -66,6 +66,8 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
           navigate(`/viz/shield/${result.item_id}`);
         } else if (result.item_type === 'gun') {
           navigate(`/viz/gun/${result.item_id}`);
+        } else if (result.item_type === 'potion') {
+          navigate(`/viz/potion/${result.item_id}`);
         } else {
           console.warn(`unknown viz type ${result.item_type}`)
         }
