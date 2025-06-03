@@ -72,18 +72,6 @@ class random_create_result(BaseModel):
 # return int(result_str)
 
 
-def get_roll_for_label(rolls: list[roll_result], label: str):
-    for roll in rolls:
-        if roll.label == label:
-            return roll.result
-
-
-def get_selection_for_label(selections: list[roll_result], label: str):
-    for roll in rolls:
-        if roll.label == label:
-            return roll.result
-
-
 class roll_response(BaseModel):
     item_id: str
     item_type: str
