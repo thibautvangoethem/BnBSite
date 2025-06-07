@@ -192,7 +192,7 @@ tina_potions = [
 
 
 @router.post("/generate")
-def create_potion(
+def generate_potion(
     create_result: random_create_result, session: SessionDep
 ) -> roll_response:
     base_roll = create_result.get_roll_for_label("Base roll")[0]
