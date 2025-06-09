@@ -9,14 +9,14 @@ from sqlmodel import select
 from sqlalchemy.orm import selectinload
 from models.roll_data import *
 from uuid import uuid4
-from models.common import *
+from models.grenade import Grenade
 
 
 import uuid
 
 router = APIRouter(
     prefix="/grenades",
-    tags=["shield"],
+    tags=["grenade"],
     responses={404: {"description": "Not found"}},
 )
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -42,6 +42,18 @@ def get_create_descritpion(session: SessionDep) -> random_create_description:
         ),
     )
     return description
+
+
+@router.get("/{grenade_id}", response_model=Grenade)
+def get_grenade(grenade_id: str, session: SessionDep) -> Grenade:
+    statement = select(Grenade).where(Grenade.id == grenade_id)
+
+    grenade = session.exec(statement).first()
+
+    if grenade is None:
+        raise HTTPException(status_code=404, detail="grenade not found")
+
+    return grenade
 
 
 roll_rarity = [
@@ -111,39 +123,29 @@ manufacturer_data = {
     },
 }
 
-primer_data = [
-    {Manufacturer.TORGUE: "+1x1 radius, -1 tile throw range"},
-    {Manufacturer.MALEFACTOR: "grenades explode 1 turn later, +20% damage"},
-    {Manufacturer.DAHLIA: "-10% damage, +1 range"},
-    {Manufacturer.STOKER: "+1 square range"},
-    {
-        Manufacturer.BLACKPOWDER: "grenades can CRIT, (if one of the damage die thrown is max damage) dealing +50% extra total damage, -1x1 radius",
-    },
-    {
-        Manufacturer.ALAS: "50% chance to spawn a second grenade on detonation, -10% base damage",
-    },
-    {
-        Manufacturer.HYPERIUS: "grenades detonates twice, second explosion does 25% off the first effect",
-    },
-    {Manufacturer.FERIORE: "-25% less damage, but heals allies in the radius"},
-    {Manufacturer.SKULLDUGGER: "oeps niets"},
-]
+primer_data = {
+    Manufacturer.TORGUE: "+1x1 radius, -1 tile throw range",
+    Manufacturer.MALEFACTOR: "grenades explode 1 turn later, +20% damage",
+    Manufacturer.DAHLIA: "-10% damage, +1 range",
+    Manufacturer.STOKER: "+1 square range",
+    Manufacturer.BLACKPOWDER: "grenades can CRIT, (if one of the damage die thrown is max damage) dealing +50% extra total damage, -1x1 radius",
+    Manufacturer.ALAS: "50% chance to spawn a second grenade on detonation, -10% base damage",
+    Manufacturer.HYPERIUS: "grenades detonates twice, second explosion does 25% off the first effect",
+    Manufacturer.FERIORE: "-25% less damage, but heals allies in the radius",
+    Manufacturer.SKULLDUGGER: "oeps niets",
+}
 
-detonator_data = [
-    {Manufacturer.TORGUE: "+10% damage, -1 throw range"},
-    {Manufacturer.MALEFACTOR: "+15% elemental damage, -10% base damage"},
-    {Manufacturer.DAHLIA: "+2 tile throw range, -5% base damage"},
-    {
-        Manufacturer.STOKER: "grenade splits in two, dealing half the effect on two targets",
-    },
-    {Manufacturer.BLACKPOWDER: "+15% base damage, -1 grenade capacity"},
-    {Manufacturer.ALAS: "adds one damage die from the grenade to your melee damage"},
-    {
-        Manufacturer.HYPERIUS: "+1 tile throw range, if applicable, grenades stick to enemies",
-    },
-    {Manufacturer.FERIORE: "heals for 20% of damage dealt, -10% base damage"},
-    {Manufacturer.SKULLDUGGER: "oeps niets"},
-]
+detonator_data = {
+    Manufacturer.TORGUE: "+10% damage, -1 throw range",
+    Manufacturer.MALEFACTOR: "+15% elemental damage, -10% base damage",
+    Manufacturer.DAHLIA: "+2 tile throw range, -5% base damage",
+    Manufacturer.STOKER: "grenade splits in two, dealing half the effect on two targets",
+    Manufacturer.BLACKPOWDER: "+15% base damage, -1 grenade capacity",
+    Manufacturer.ALAS: "adds one damage die from the grenade to your melee damage",
+    Manufacturer.HYPERIUS: "+1 tile throw range, if applicable, grenades stick to enemies",
+    Manufacturer.FERIORE: "heals for 20% of damage dealt, -10% base damage",
+    Manufacturer.SKULLDUGGER: "oeps niets",
+}
 
 redtext = [
     (
@@ -189,25 +191,112 @@ redtext = [
 ]
 
 level_data = [
-    {"LEVEL": 1, "DAMAGE": "1d8", "RADIUS": "3x3"},
-    {"LEVEL": 7, "DAMAGE": "2d10", "RADIUS": "3x3"},
-    {"LEVEL": 13, "DAMAGE": "3d12", "RADIUS": "3x3"},
-    {"LEVEL": 19, "DAMAGE": "4d12", "RADIUS": "3x3"},
-    {"LEVEL": 25, "DAMAGE": "6d12", "RADIUS": "3x3"},
-    {"LEVEL": 31, "DAMAGE": "8d12", "RADIUS": "3x3"},
-    {"LEVEL": 37, "DAMAGE": "6d20", "RADIUS": "3x3"},
-    {"LEVEL": 43, "DAMAGE": "8d20", "RADIUS": "3x3"},
-    {"LEVEL": 49, "DAMAGE": "10d20", "RADIUS": "3x3"},
-    {"LEVEL": 50, "DAMAGE": "12d20", "RADIUS": "3x3"},
+    (1, ("1d8", "3x3")),
+    (7, ("2d10", "3x3")),
+    (13, ("3d12", "3x3")),
+    (19, ("4d12", "3x3")),
+    (25, ("6d12", "3x3")),
+    (31, ("8d12", "3x3")),
+    (37, ("6d20", "3x3")),
+    (43, ("8d20", "3x3")),
+    (49, ("10d20", "3x3")),
+    (50, ("12d20", "3x3")),
 ]
+
+
+def get_level_data(level):
+    if level >= 50:
+        return level_data[-1]
+    index = (level - 1) // 6
+    index = min(index, len(level_data) - 1)
+    return level_data[index]
+
+
+def get_rarity(roll: int) -> Rarity:
+    for (range_start, range_end), rarity in roll_rarity:
+        if range_start <= roll <= range_end:
+            return rarity
+    raise ValueError("Roll value must be between 1 and 100")
+
+
+class GrenadeCreate(BaseModel):
+    rarity: Rarity
+    manufacturer: Manufacturer
+
+    manufacturer_effect: str
+    primer_effect: str
+    detonater_effect: str
+
+    red_text_name: Optional[str]
+    red_text_description: Optional[str]
+
+    damage: str
+    radius: str
 
 
 @router.post("/generate")
 def generate_grenade(
     create_result: random_create_result, session: SessionDep
 ) -> roll_response:
-    pass
+
+    rarity_roll = create_result.get_roll_for_label("Rarity roll")[0]
+    rarity = get_rarity(rarity_roll)
+
+    # skullduger grenades bestaan niet, dus skip index 0 (roll is van 1-8 zonder 0)
+    manufacturer_roll = create_result.get_roll_for_label("Manufacturer")[0]
+    manufacturer = ManufacturerIndexed[manufacturer_roll]
+
+    manufacturer_text = manufacturer_data[manufacturer][rarity]
+
+    # skullduger grenades bestaan niet, dus skip index 0
+    grenade_primer_roll = create_result.get_roll_for_label("Grenade primer")[0]
+    primer = primer_data[ManufacturerIndexed[grenade_primer_roll]]
+
+    # skullduger grenades bestaan niet, dus skip index 0
+    detonator_roll = create_result.get_roll_for_label("detonator")[0]
+    detonator = detonator_data[ManufacturerIndexed[detonator_roll]]
+
+    redtext_roll = create_result.get_roll_for_label("Redtext")[0]
+    redtext_name = None
+    redtext_text = None
+    if rarity == Rarity.LEGENDARY:
+        redtext_name = redtext[redtext_roll][0]
+        redtext_text = redtext[redtext_roll][1]
+
+    data = get_level_data(create_result.level)
+
+    newgrande = GrenadeCreate(
+        rarity=rarity,
+        manufacturer=manufacturer,
+        manufacturer_effect=manufacturer_text,
+        primer_effect=primer,
+        detonater_effect=detonator,
+        red_text_name=redtext_name,
+        red_text_description=redtext_text,
+        damage=data[1][0],
+        radius=data[1][1],
+    )
+    gren = create_grenade(grenade_data=newgrande, session=session)
+    return roll_response(item_id=gren.id, item_type="grenade")
 
 
-# @router.post("/")
-# def create_grenade(potion_data: GrenadeCreate, session: SessionDep) -> Grenade:
+@router.post("/")
+def create_grenade(grenade_data: GrenadeCreate, session: SessionDep) -> Grenade:
+    gren = Grenade(
+        id=str(uuid.uuid4()),
+        name="",
+        description="",
+        rarity=grenade_data.rarity,
+        manufacturer=grenade_data.manufacturer,
+        manufacturer_effect=grenade_data.manufacturer_effect,
+        primer_effect=grenade_data.primer_effect,
+        detonater_effect=grenade_data.detonater_effect,
+        red_text_name=grenade_data.red_text_name,
+        red_text_description=grenade_data.red_text_description,
+        damage=grenade_data.damage,
+        radius=grenade_data.radius,
+    )
+    session.add(gren)
+    session.commit()
+    session.refresh(gren)
+    return gren

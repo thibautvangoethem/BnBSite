@@ -68,6 +68,8 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
           navigate(`/viz/gun/${result.item_id}`);
         } else if (result.item_type === 'potion') {
           navigate(`/viz/potion/${result.item_id}`);
+        } else if (result.item_type === 'grenade') {
+          navigate(`/viz/grenade/${result.item_id}`);
         } else {
           console.warn(`unknown viz type ${result.item_type}`)
         }
