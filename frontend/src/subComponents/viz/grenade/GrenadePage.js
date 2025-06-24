@@ -33,13 +33,13 @@ const GrenadeDetails = ({ grenade }) => (
             <strong>Manufacturer:</strong> {grenade.manufacturer}
         </Typography>
         <Typography variant="body1" gutterBottom>
+            <strong>Manufacturer Effect:</strong> {grenade.manufacturer_effect}
+        </Typography>
+        <Typography variant="body1" gutterBottom>
             <strong>Damage:</strong> {grenade.damage}
         </Typography>
         <Typography variant="body1" gutterBottom>
             <strong>Radius:</strong> {grenade.radius}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>Manufacturer Effect:</strong> {grenade.manufacturer_effect}
         </Typography>
         <Typography variant="body1" gutterBottom>
             <strong>Primer Effect:</strong> {grenade.primer_effect}

@@ -225,3 +225,23 @@ def create_potion(potion_data: PotionCreate, session: SessionDep) -> Potion:
     session.commit()
     session.refresh(pot)
     return pot
+
+
+class Potionupdate(BaseModel):
+    name: str
+    text: str
+    id: str
+
+
+@router.put("/{potion_id}", response_model=Potion)
+def update_potion(potion_id: str, potion: Potionupdate, session: SessionDep) -> Potion:
+    statement = select(Potion).where(Potion.id == potion_id)
+    results = session.exec(statement)
+    pot = results.one()
+    pot.id = potion.id
+    pot.name = potion.name
+    pot.text = potion.text
+    session.add(pot)
+    session.commit()
+    session.refresh(pot)
+    return pot
