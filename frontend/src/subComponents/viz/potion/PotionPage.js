@@ -23,11 +23,12 @@ const Identifiers = ({ id, name, text, isEditing, handleChange }) => (
         </Typography>
         <Typography variant="body1" gutterBottom>
             <strong>text:</strong> {isEditing ? (
-                <input
-                    type="text"
+                <textarea
                     name="text"
                     value={text || ''}
                     onChange={handleChange}
+                    rows="4"
+                    style={{ width: '100%' }}
                 />
             ) : (
                 text || 'None'
@@ -46,7 +47,7 @@ const PotionPage = () => {
     const backendUrl = process.env.REACT_APP_BACKEND_URL;
     const [potion, setPotion] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [isEditing, setIsEditing] = useState(false); // New state for editing mode
+    const [isEditing, setIsEditing] = useState(false);
     const handleEditClick = () => {
         setIsEditing(true);
     };

@@ -225,3 +225,30 @@ def get_shield(shield_id: str, session: SessionDep) -> Shield:
         raise HTTPException(status_code=404, detail="shield not found")
 
     return shield
+
+
+@router.put("/{shield_id}", response_model=Shield)
+def update_shield(shield_id: str, shield: Shield, session: SessionDep) -> Shield:
+    statement = select(Shield).where(Shield.id == shield_id)
+    results = session.exec(statement)
+    shield_db = results.one()
+    shield_db.id = shield.id
+    shield_db.name = shield.name
+    shield_db.description = shield.description
+    shield_db.rarity = shield.rarity
+    shield_db.manufacturer = shield.manufacturer
+    shield_db.capacity = shield.capacity
+    shield_db.recharge_rate = shield.recharge_rate
+    shield_db.recharge_delay = shield.recharge_delay
+    shield_db.manufacturer_effect = shield.manufacturer_effect
+    shield_db.capacitor_effect = shield.capacitor_effect
+    shield_db.battery_effect = shield.battery_effect
+    shield_db.red_text_name = shield.red_text_name
+    shield_db.red_text_description = shield.red_text_description
+    shield_db.nova_damage = shield.nova_damage
+    shield_db.nova_element = shield.nova_element
+
+    session.add(shield_db)
+    session.commit()
+    session.refresh(shield_db)
+    return shield_db

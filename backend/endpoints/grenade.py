@@ -256,7 +256,7 @@ def generate_grenade(
     detonator_roll = create_result.get_roll_for_label("detonator")[0]
     detonator = detonator_data[ManufacturerIndexed[detonator_roll]]
 
-    redtext_roll = create_result.get_roll_for_label("Redtext")[0]
+    redtext_roll = create_result.get_roll_for_label("Redtext")[0] - 1
     redtext_name = None
     redtext_text = None
     if rarity == Rarity.LEGENDARY:
@@ -300,3 +300,27 @@ def create_grenade(grenade_data: GrenadeCreate, session: SessionDep) -> Grenade:
     session.commit()
     session.refresh(gren)
     return gren
+
+
+@router.put("/{grenade_id}", response_model=Grenade)
+def update_grenade(grenade_id: str, grenade: Grenade, session: SessionDep) -> Grenade:
+    statement = select(Grenade).where(Grenade.id == grenade_id)
+    results = session.exec(statement)
+    grenade_db = results.one()
+    grenade_db.id = grenade.id
+    grenade_db.name = grenade.name
+    grenade_db.description = grenade.description
+    grenade_db.rarity = grenade.rarity
+    grenade_db.manufacturer = grenade.manufacturer
+    grenade_db.manufacturer_effect = grenade.manufacturer_effect
+    grenade_db.primer_effect = grenade.primer_effect
+    grenade_db.detonater_effect = grenade.detonater_effect
+    grenade_db.red_text_name = grenade.red_text_name
+    grenade_db.red_text_description = grenade.red_text_description
+    grenade_db.damage = grenade.damage
+    grenade_db.radius = grenade.radius
+
+    session.add(grenade_db)
+    session.commit()
+    session.refresh(grenade_db)
+    return grenade_db
