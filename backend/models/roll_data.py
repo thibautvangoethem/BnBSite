@@ -51,6 +51,7 @@ class roll_result(BaseModel):
 class random_create_result(BaseModel):
     level: int
     selections: list[selection_choice]
+    options: Optional[list[selection_choice]]
     rolls: list[roll_result]
 
     def get_roll_for_label(self, label: str):
@@ -62,6 +63,15 @@ class random_create_result(BaseModel):
         for sel in self.selections:
             if sel.label == label:
                 return sel.choices
+        print("dommerd")
+        return []
+
+    ## none if not in there
+    def get_option_for_label(self, label: str):
+        for sel in self.options:
+            if sel.label == label:
+                return sel.choices
+        return None
 
 
 # def combine_roles(results: list[int]) -> list[int]:

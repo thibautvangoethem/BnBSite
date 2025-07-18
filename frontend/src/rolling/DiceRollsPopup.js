@@ -11,11 +11,12 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
   const navigate = useNavigate();
   const [level, setLevel] = useState(null);
   const [selectionsResults, setSelectionsResults] = useState([]);
+  const [optionResults, setoptionResults] = useState([]);
   const [diceResults, setDiceResults] = useState([]);
 
   const handleRollResult = (label, index, rollResult) => {
     setDiceResults((prevResults) => {
-      console.log("teaf");
+
       const newResults = { ...prevResults };
       if (!newResults[label]) {
         newResults[label] = [];
@@ -46,6 +47,7 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
     const submitData = {
       level: !rollsModal.level ? 0 : selectedLevel,
       selections: selectionsResults,
+      options: optionResults,
       rolls: diceRolls,
     };
 
@@ -74,8 +76,6 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
           console.warn(`unknown viz type ${result.item_type}`)
         }
         onClose(result);
-
-
       } else {
         console.error('Submit failed:', response.statusText);
       }
@@ -113,11 +113,6 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
           </IconButton>
           {rollsModal.level &&
             <>
-              <DialogTitle style={{ textAlign: 'center', position: 'relative' }}>
-                <Typography variant="h4" component="div" style={{ fontWeight: 'bold' }}>
-                  Level choice
-                </Typography>
-              </DialogTitle>
               <Grid container style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Grid item>
                   <Typography variant="body1">Level:</Typography>
@@ -140,7 +135,7 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
           {rollsModal.selections !== null && rollsModal.selections.mandatory !== null && rollsModal.selections.mandatory.length > 0 &&
             <>
               <DialogTitle style={{ textAlign: 'center', position: 'relative' }}>
-                <Typography variant="h4" component="div" style={{ fontWeight: 'bold' }}>
+                <Typography variant="H1" component="div" style={{ fontWeight: 'bold' }}>
                   Selections
                 </Typography>
               </DialogTitle>
@@ -149,11 +144,18 @@ const DiceRollsPopup = ({ open, onClose, rollsModal, onRerollAll }) => {
               </DialogContent>
             </>
           }
-          <DialogTitle style={{ textAlign: 'center', position: 'relative' }}>
-            <Typography variant="h4" component="div" style={{ fontWeight: 'bold' }}>
-              Dice Rolls
-            </Typography>
-          </DialogTitle>
+          {rollsModal.selections !== null && rollsModal.selections.optional !== null && rollsModal.selections.optional.length > 0 &&
+            <>
+              <DialogTitle style={{ textAlign: 'center', position: 'relative' }}>
+                <Typography variant="H1" component="div" style={{ fontWeight: 'bold' }}>
+                  Options
+                </Typography>
+              </DialogTitle>
+              <DialogContent style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <MultiSelectComponent selectionData={rollsModal.selections.optional} onSelectionChange={setoptionResults} />
+              </DialogContent>
+            </>
+          }
           <DialogContent style={{ justifyContent: 'center', alignItems: 'center' }}>
             <DiceRolls rollsConfig={rollsModal.rolls} onRollResults={handleRollResult} />
           </DialogContent>

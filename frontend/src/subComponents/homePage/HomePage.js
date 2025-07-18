@@ -8,7 +8,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import Mail from '@mui/icons-material/Mail';
-import foto from '../../assets/images/borderlandsfinito.jpg';
+import foto from '../../assets/images/borderlands-joren-geezer.png';
 
 const useStyles = makeStyles((theme) => ({
     footer: {
@@ -39,7 +39,7 @@ const Homepage = () => {
                                 Gegroet tot de Bnb website
                             </Typography>
                             <Typography variant="h5">
-                                Eindelijk kunnen we dat spel wat sneller doen gaan
+                                Waar is Ruben
                             </Typography>
                             <img
                                 src={foto}

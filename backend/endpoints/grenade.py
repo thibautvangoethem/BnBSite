@@ -10,6 +10,8 @@ from sqlalchemy.orm import selectinload
 from models.roll_data import *
 from uuid import uuid4
 from models.grenade import Grenade
+from models.rollhistory import RollHistory
+from datetime import datetime
 
 
 import uuid
@@ -28,7 +30,20 @@ def get_create_descritpion(session: SessionDep) -> random_create_description:
         level=True,
         selections=selection_descriptions(
             mandatory=[],
-            optional=[],  # todo optional choice later
+            optional=[
+                selection_description(
+                    label="rarity",
+                    options=[member.value for member in Rarity],
+                ),
+                selection_description(
+                    label="enforce_manufacturer",
+                    options=[
+                        member.value
+                        for member in Manufacturer
+                        if member != Manufacturer.SKULLDUGGER
+                    ],
+                ),
+            ],
         ),
         rolls=rollswrapper(
             entries=[
@@ -241,10 +256,16 @@ def generate_grenade(
 
     rarity_roll = create_result.get_roll_for_label("Rarity roll")[0]
     rarity = get_rarity(rarity_roll)
+    rarity_choice = create_result.get_option_for_label("rarity")
+    if not (rarity_choice == None or len(rarity_choice) == 0):
+        rarity = Rarity(rarity_choice[0])
 
     # skullduger grenades bestaan niet, dus skip index 0 (roll is van 1-8 zonder 0)
     manufacturer_roll = create_result.get_roll_for_label("Manufacturer")[0]
     manufacturer = ManufacturerIndexed[manufacturer_roll]
+    manufacturer_choice = create_result.get_option_for_label("enforce_manufacturer")
+    if not (manufacturer_choice == None or len(manufacturer_choice) == 0):
+        manufacturer = Manufacturer(manufacturer_choice[0])
 
     manufacturer_text = manufacturer_data[manufacturer][rarity]
 
@@ -299,6 +320,7 @@ def create_grenade(grenade_data: GrenadeCreate, session: SessionDep) -> Grenade:
     session.add(gren)
     session.commit()
     session.refresh(gren)
+
     return gren
 
 

@@ -85,7 +85,7 @@ def read_guns(
 
 
 @router.get("/rolldescription", response_model=random_create_description)
-def get_create_descritpion(session: SessionDep) -> random_create_description:
+def get_create_descritpion_test(session: SessionDep) -> random_create_description:
     description = random_create_description(
         level=True,
         selections=selection_descriptions(
@@ -99,7 +99,20 @@ def get_create_descritpion(session: SessionDep) -> random_create_description:
                     options=[member.value for member in GunType],
                 ),
             ],
-            optional=[],  # todo optional choice later
+            optional=[
+                selection_description(
+                    label="rarity",
+                    options=[member.value for member in Rarity],
+                ),
+                selection_description(
+                    label="enforce_manufacturer",
+                    options=[member.value for member in Manufacturer],
+                ),
+                selection_description(
+                    label="enforce_guntype",
+                    options=[member.value for member in GunType],
+                ),
+            ],
         ),
         rolls=rollswrapper(
             entries=[
@@ -230,346 +243,226 @@ guildRarityBonusMap = {
 
 # en God weende op de 8ste dag
 elementalRarityRolArray = [
-    [
-        [1, 10],
-        [
-            [Element.NIETS, "N/A"],
-            [Element.NIETS, "N/A"],
-            [Element.NIETS, "N/A"],
-            [Element.NIETS, "N/A"],
-            [Element.NIETS, "N/A"],
-        ],
-    ],
-    [
-        [11, 15],
-        [
-            [Element.NIETS, "N/A"],
-            [Element.NIETS, "N/A"],
-            [Element.NIETS, "N/A"],
-            [Element.RADIATION, "Radiation"],
-            [Element.RADIATION, "Radiation"],
-        ],
-    ],
-    [
-        [16, 20],
-        [
-            [Element.NIETS, "N/A"],
-            [Element.NIETS, "N/A"],
-            [Element.NIETS, "N/A"],
-            [Element.CORROSIVE, "Corrosive"],
-            [Element.CORROSIVE, "Corrosive"],
-        ],
-    ],
-    [
-        [21, 25],
-        [
-            [Element.NIETS, "N/A"],
-            [Element.NIETS, "N/A"],
-            [Element.NIETS, "N/A"],
-            [Element.SHOCK, "Shock"],
-            [Element.SHOCK, "Shock"],
-        ],
-    ],
-    [
-        [26, 30],
-        [
-            [Element.NIETS, "N/A"],
-            [Element.NIETS, "N/A"],
-            [Element.RADIATION, "Radiation"],
-            [Element.EXPLOSIVE, "Explosive"],
-            [Element.EXPLOSIVE, "Explosive"],
-        ],
-    ],
-    [
-        [31, 35],
-        [
-            [Element.NIETS, "N/A"],
-            [Element.NIETS, "N/A"],
-            [Element.CORROSIVE, "Corrosive"],
-            [Element.INCENDIARY, "Incendiary"],
-            [Element.INCENDIARY, "Incendiary"],
-        ],
-    ],
-    [
-        [36, 40],
-        [
-            [Element.NIETS, "N/A"],
-            [Element.NIETS, "N/A"],
-            [Element.SHOCK, "Shock"],
-            [Element.CRYO, "Cryo"],
-            [Element.CRYO, "Cryo"],
-        ],
-    ],
-    [
-        [41, 45],
-        [
-            [Element.NIETS, "N/A"],
-            [Element.NIETS, "N/A"],
-            [Element.EXPLOSIVE, "Explosive"],
-            [Element.RADIATION, "Radiation (+1d6)"],
-            [Element.RADIATION, "Radiation (+1d6)"],
-        ],
-    ],
-    [
-        [46, 50],
-        [
-            [Element.NIETS, "N/A"],
-            [Element.NIETS, "N/A"],
-            [Element.INCENDIARY, "Incendiary"],
-            [Element.CORROSIVE, "Corrosive (+1d6)"],
-            [Element.CORROSIVE, "Corrosive (+1d6)"],
-        ],
-    ],
-    [
-        [51, 55],
-        [
-            [Element.NIETS, "N/A"],
-            [Element.NIETS, "N/A"],
-            [Element.CRYO, "Cryo"],
-            [Element.SHOCK, "Shock (+1d6)"],
-            [Element.SHOCK, "Shock (+1d6)"],
-        ],
-    ],
-    [
-        [56, 60],
-        [
-            [
-                Element.NIETS,
-                "N/A",
-            ],
-            [
-                Element.RADIATION,
-                "Radiation",
-            ],
-            [
-                Element.RADIATION,
-                "Radiation (+1d6)",
-            ],
-            [
-                Element.EXPLOSIVE,
-                "Explosive (+1d6)",
-            ],
-            [
-                Element.EXPLOSIVE,
-                "Explosive (+1d6)",
-            ],
-        ],
-    ],
-    [
-        [61, 65],
-        [
-            [
-                Element.NIETS,
-                "N/A",
-            ],
-            [
-                Element.CORROSIVE,
-                "Corrosive",
-            ],
-            [
-                Element.CORROSIVE,
-                "Corrosive (+1d6)",
-            ],
-            [
-                Element.INCENDIARY,
-                "Incendiary (+1d6)",
-            ],
-            [
-                Element.INCENDIARY,
-                "Incendiary (+1d6)",
-            ],
-        ],
-    ],
-    [
-        [66, 70],
-        [
-            [Element.NIETS, "N/A"],
-            [Element.SHOCK, "Shock"],
-            [Element.SHOCK, "Shock (+1d6)"],
-            [Element.CRYO, "Cryo (+1d6)"],
-            [Element.CRYO, "Cryo (+1d6)"],
-        ],
-    ],
-    [
-        [71, 75],
-        [
-            [
-                Element.NIETS,
-                "N/A",
-            ],
-            [
-                Element.EXPLOSIVE,
-                "Explosive",
-            ],
-            [
-                Element.EXPLOSIVE,
-                "Explosive (+1d6)",
-            ],
-            [
-                Element.RADIATION,
-                "Radiation (+2d6)",
-            ],
-            [
-                Element.RADIATION,
-                "Radiation (+2d6)",
-            ],
-        ],
-    ],
-    [
-        [76, 80],
-        [
-            [
-                Element.NIETS,
-                "N/A",
-            ],
-            [
-                Element.INCENDIARY,
-                "Incendiary",
-            ],
-            [
-                Element.INCENDIARY,
-                "Incendiary (+1d6)",
-            ],
-            [
-                Element.CORROSIVE,
-                "Corrosive (+2d6)",
-            ],
-            [
-                Element.CORROSIVE,
-                "Corrosive (+2d6)",
-            ],
-        ],
-    ],
-    [
-        [81, 85],
-        [
-            [Element.NIETS, "N/A"],
-            [Element.CRYO, "Cryo"],
-            [Element.CRYO, "Cryo (+1d6)"],
-            [Element.SHOCK, "Shock (+2d6)"],
-            [Element.SHOCK, "Shock (+2d6)"],
-        ],
-    ],
-    [
-        [86, 90],
-        [
-            [
-                Element.RADIATION,
-                "Radiation",
-            ],
-            [
-                Element.RADIATION,
-                "Radiation (+1d6)",
-            ],
-            [
-                Element.RADIATION,
-                "Radiation (+2d6)",
-            ],
-            [
-                Element.EXPLOSIVE,
-                "Explosive (+2d6)",
-            ],
-            [
-                Element.EXPLOSIVE,
-                "Explosive (+2d6)",
-            ],
-        ],
-    ],
-    [
-        [91, 92],
-        [
-            [
-                Element.CORROSIVE,
-                "Corrosive",
-            ],
-            [
-                Element.CORROSIVE,
-                "Corrosive (+1d6)",
-            ],
-            [
-                Element.CORROSIVE,
-                "Corrosive (+2d6)",
-            ],
-            [
-                Element.INCENDIARY,
-                "Incendiary (+2d6)",
-            ],
-            [
-                Element.INCENDIARY,
-                "Incendiary (+2d6)",
-            ],
-        ],
-    ],
-    [
-        [93, 94],
-        [
-            [Element.SHOCK, "Shock"],
-            [Element.SHOCK, "Shock (+1d6)"],
-            [Element.SHOCK, "Shock (+2d6)"],
-            [Element.CRYO, "Cryo (+2d6)"],
-            [Element.CRYO, "Cryo (+2d6)"],
-        ],
-    ],
-    [
-        [95, 96],
-        [
-            [
-                Element.EXPLOSIVE,
-                "Explosive",
-            ],
-            [
-                Element.EXPLOSIVE,
-                "Explosive (+1d6)",
-            ],
-            [
-                Element.EXPLOSIVE,
-                "Explosive (+2d6)",
-            ],
-            [
-                Element.OEPS,
-                "Radiation + Incendiary",
-            ],
-            [
-                Element.OEPS,
-                "Radiation + Incendiary",
-            ],
-        ],
-    ],
-    [
-        [97, 98],
-        [
-            [
-                Element.INCENDIARY,
-                "Incendiary",
-            ],
-            [
-                Element.INCENDIARY,
-                "Incendiary (+1d6)",
-            ],
-            [
-                Element.INCENDIARY,
-                "Incendiary (+2d6)",
-            ],
-            [
-                Element.OEPS,
-                "Shock + Corrosive",
-            ],
-            [
-                Element.OEPS,
-                "Shock + Corrosive",
-            ],
-        ],
-    ],
-    [
-        [99, 100],
-        [
-            [Element.CRYO, "Cryo"],
-            [Element.CRYO, "Cryo (+1d6)"],
-            [Element.CRYO, "Cryo (+2d6)"],
-            [Element.OEPS, "Explosive + Cryo"],
-            [Element.OEPS, "Explosive + Cryo"],
-        ],
-    ],
+    {
+        "range": [1, 10],
+        "rarity": {
+            Rarity.COMMON: [Element.NIETS, "N/A"],
+            Rarity.UNCOMMON: [Element.NIETS, "N/A"],
+            Rarity.RARE: [Element.NIETS, "N/A"],
+            Rarity.EPIC: [Element.NIETS, "N/A"],
+            Rarity.LEGENDARY: [Element.NIETS, "N/A"],
+        },
+    },
+    {
+        "range": [11, 15],
+        "rarity": {
+            Rarity.COMMON: [Element.NIETS, "N/A"],
+            Rarity.UNCOMMON: [Element.NIETS, "N/A"],
+            Rarity.RARE: [Element.NIETS, "N/A"],
+            Rarity.EPIC: [Element.RADIATION, "Radiation"],
+            Rarity.LEGENDARY: [Element.RADIATION, "Radiation"],
+        },
+    },
+    {
+        "range": [16, 20],
+        "rarity": {
+            Rarity.COMMON: [Element.NIETS, "N/A"],
+            Rarity.UNCOMMON: [Element.NIETS, "N/A"],
+            Rarity.RARE: [Element.NIETS, "N/A"],
+            Rarity.EPIC: [Element.CORROSIVE, "Corrosive"],
+            Rarity.LEGENDARY: [Element.CORROSIVE, "Corrosive"],
+        },
+    },
+    {
+        "range": [21, 25],
+        "rarity": {
+            Rarity.COMMON: [Element.NIETS, "N/A"],
+            Rarity.UNCOMMON: [Element.NIETS, "N/A"],
+            Rarity.RARE: [Element.NIETS, "N/A"],
+            Rarity.EPIC: [Element.SHOCK, "Shock"],
+            Rarity.LEGENDARY: [Element.SHOCK, "Shock"],
+        },
+    },
+    {
+        "range": [26, 30],
+        "rarity": {
+            Rarity.COMMON: [Element.NIETS, "N/A"],
+            Rarity.UNCOMMON: [Element.NIETS, "N/A"],
+            Rarity.RARE: [Element.RADIATION, "Radiation"],
+            Rarity.EPIC: [Element.EXPLOSIVE, "Explosive"],
+            Rarity.LEGENDARY: [Element.EXPLOSIVE, "Explosive"],
+        },
+    },
+    {
+        "range": [31, 35],
+        "rarity": {
+            Rarity.COMMON: [Element.NIETS, "N/A"],
+            Rarity.UNCOMMON: [Element.NIETS, "N/A"],
+            Rarity.RARE: [Element.CORROSIVE, "Corrosive"],
+            Rarity.EPIC: [Element.INCENDIARY, "Incendiary"],
+            Rarity.LEGENDARY: [Element.INCENDIARY, "Incendiary"],
+        },
+    },
+    {
+        "range": [36, 40],
+        "rarity": {
+            Rarity.COMMON: [Element.NIETS, "N/A"],
+            Rarity.UNCOMMON: [Element.NIETS, "N/A"],
+            Rarity.RARE: [Element.SHOCK, "Shock"],
+            Rarity.EPIC: [Element.CRYO, "Cryo"],
+            Rarity.LEGENDARY: [Element.CRYO, "Cryo"],
+        },
+    },
+    {
+        "range": [41, 45],
+        "rarity": {
+            Rarity.COMMON: [Element.NIETS, "N/A"],
+            Rarity.UNCOMMON: [Element.NIETS, "N/A"],
+            Rarity.RARE: [Element.EXPLOSIVE, "Explosive"],
+            Rarity.EPIC: [Element.RADIATION, "Radiation (+1d6)"],
+            Rarity.LEGENDARY: [Element.RADIATION, "Radiation (+1d6)"],
+        },
+    },
+    {
+        "range": [46, 50],
+        "rarity": {
+            Rarity.COMMON: [Element.NIETS, "N/A"],
+            Rarity.UNCOMMON: [Element.NIETS, "N/A"],
+            Rarity.RARE: [Element.INCENDIARY, "Incendiary"],
+            Rarity.EPIC: [Element.CORROSIVE, "Corrosive (+1d6)"],
+            Rarity.LEGENDARY: [Element.CORROSIVE, "Corrosive (+1d6)"],
+        },
+    },
+    {
+        "range": [51, 55],
+        "rarity": {
+            Rarity.COMMON: [Element.NIETS, "N/A"],
+            Rarity.UNCOMMON: [Element.NIETS, "N/A"],
+            Rarity.RARE: [Element.CRYO, "Cryo"],
+            Rarity.EPIC: [Element.SHOCK, "Shock (+1d6)"],
+            Rarity.LEGENDARY: [Element.SHOCK, "Shock (+1d6)"],
+        },
+    },
+    {
+        "range": [56, 60],
+        "rarity": {
+            Rarity.COMMON: [Element.NIETS, "N/A"],
+            Rarity.UNCOMMON: [Element.RADIATION, "Radiation"],
+            Rarity.RARE: [Element.RADIATION, "Radiation (+1d6)"],
+            Rarity.EPIC: [Element.EXPLOSIVE, "Explosive (+1d6)"],
+            Rarity.LEGENDARY: [Element.EXPLOSIVE, "Explosive (+1d6)"],
+        },
+    },
+    {
+        "range": [61, 65],
+        "rarity": {
+            Rarity.COMMON: [Element.NIETS, "N/A"],
+            Rarity.UNCOMMON: [Element.CORROSIVE, "Corrosive"],
+            Rarity.RARE: [Element.CORROSIVE, "Corrosive (+1d6)"],
+            Rarity.EPIC: [Element.INCENDIARY, "Incendiary (+1d6)"],
+            Rarity.LEGENDARY: [Element.INCENDIARY, "Incendiary (+1d6)"],
+        },
+    },
+    {
+        "range": [66, 70],
+        "rarity": {
+            Rarity.COMMON: [Element.NIETS, "N/A"],
+            Rarity.UNCOMMON: [Element.SHOCK, "Shock"],
+            Rarity.RARE: [Element.SHOCK, "Shock (+1d6)"],
+            Rarity.EPIC: [Element.CRYO, "Cryo (+1d6)"],
+            Rarity.LEGENDARY: [Element.CRYO, "Cryo (+1d6)"],
+        },
+    },
+    {
+        "range": [71, 75],
+        "rarity": {
+            Rarity.COMMON: [Element.NIETS, "N/A"],
+            Rarity.UNCOMMON: [Element.EXPLOSIVE, "Explosive"],
+            Rarity.RARE: [Element.EXPLOSIVE, "Explosive (+1d6)"],
+            Rarity.EPIC: [Element.RADIATION, "Radiation (+2d6)"],
+            Rarity.LEGENDARY: [Element.RADIATION, "Radiation (+2d6)"],
+        },
+    },
+    {
+        "range": [76, 80],
+        "rarity": {
+            Rarity.COMMON: [Element.NIETS, "N/A"],
+            Rarity.UNCOMMON: [Element.INCENDIARY, "Incendiary"],
+            Rarity.RARE: [Element.INCENDIARY, "Incendiary (+1d6)"],
+            Rarity.EPIC: [Element.CORROSIVE, "Corrosive (+2d6)"],
+            Rarity.LEGENDARY: [Element.CORROSIVE, "Corrosive (+2d6)"],
+        },
+    },
+    {
+        "range": [81, 85],
+        "rarity": {
+            Rarity.COMMON: [Element.NIETS, "N/A"],
+            Rarity.UNCOMMON: [Element.CRYO, "Cryo"],
+            Rarity.RARE: [Element.CRYO, "Cryo (+1d6)"],
+            Rarity.EPIC: [Element.SHOCK, "Shock (+2d6)"],
+            Rarity.LEGENDARY: [Element.SHOCK, "Shock (+2d6)"],
+        },
+    },
+    {
+        "range": [86, 90],
+        "rarity": {
+            Rarity.COMMON: [Element.RADIATION, "Radiation"],
+            Rarity.UNCOMMON: [Element.RADIATION, "Radiation (+1d6)"],
+            Rarity.RARE: [Element.RADIATION, "Radiation (+2d6)"],
+            Rarity.EPIC: [Element.EXPLOSIVE, "Explosive (+2d6)"],
+            Rarity.LEGENDARY: [Element.EXPLOSIVE, "Explosive (+2d6)"],
+        },
+    },
+    {
+        "range": [91, 92],
+        "rarity": {
+            Rarity.COMMON: [Element.CORROSIVE, "Corrosive"],
+            Rarity.UNCOMMON: [Element.CORROSIVE, "Corrosive (+1d6)"],
+            Rarity.RARE: [Element.CORROSIVE, "Corrosive (+2d6)"],
+            Rarity.EPIC: [Element.INCENDIARY, "Incendiary (+2d6)"],
+            Rarity.LEGENDARY: [Element.INCENDIARY, "Incendiary (+2d6)"],
+        },
+    },
+    {
+        "range": [93, 94],
+        "rarity": {
+            Rarity.COMMON: [Element.SHOCK, "Shock"],
+            Rarity.UNCOMMON: [Element.SHOCK, "Shock (+1d6)"],
+            Rarity.RARE: [Element.SHOCK, "Shock (+2d6)"],
+            Rarity.EPIC: [Element.CRYO, "Cryo (+2d6)"],
+            Rarity.LEGENDARY: [Element.CRYO, "Cryo (+2d6)"],
+        },
+    },
+    {
+        "range": [95, 96],
+        "rarity": {
+            Rarity.COMMON: [Element.EXPLOSIVE, "Explosive"],
+            Rarity.UNCOMMON: [Element.EXPLOSIVE, "Explosive (+1d6)"],
+            Rarity.RARE: [Element.EXPLOSIVE, "Explosive (+2d6)"],
+            Rarity.EPIC: [Element.OEPS, "Radiation + Incendiary"],
+            Rarity.LEGENDARY: [Element.OEPS, "Radiation + Incendiary"],
+        },
+    },
+    {
+        "range": [97, 98],
+        "rarity": {
+            Rarity.COMMON: [Element.INCENDIARY, "Incendiary"],
+            Rarity.UNCOMMON: [Element.INCENDIARY, "Incendiary (+1d6)"],
+            Rarity.RARE: [Element.INCENDIARY, "Incendiary (+2d6)"],
+            Rarity.EPIC: [Element.OEPS, "Shock + Corrosive"],
+            Rarity.LEGENDARY: [Element.OEPS, "Shock + Corrosive"],
+        },
+    },
+    {
+        "range": [99, 100],
+        "rarity": {
+            Rarity.COMMON: [Element.CRYO, "Cryo"],
+            Rarity.UNCOMMON: [Element.CRYO, "Cryo (+1d6)"],
+            Rarity.RARE: [Element.CRYO, "Cryo (+2d6)"],
+            Rarity.EPIC: [Element.OEPS, "Explosive + Cryo"],
+            Rarity.LEGENDARY: [Element.OEPS, "Explosive + Cryo"],
+        },
+    },
 ]
 
 gunRangeMap = {
@@ -637,28 +530,38 @@ def roll_gun(create_result: random_create_result, session: SessionDep) -> roll_r
     # get guntype
     guntypeint = gunmask[gunroll[0] - 1][gunroll[0] - 1]
     if guntypeint == -1:
-        guntype = GunType(
-            random.choice(create_result.get_selection_for_label("favoured_guns"))
-        )
+        temp = create_result.get_selection_for_label("favoured_guns")
+        if len(temp) == 0:
+            temp = [member.value for member in GunType]
+        guntype = GunType(random.choice(temp))
     else:
         guntype = GunTypeIndexed[guntypeint]
+
+    guntype_choice = create_result.get_option_for_label("enforce_guntype")
+    if not (guntype_choice == None or len(guntype_choice) == 0):
+        guntype = GunType(guntype_choice[0])
 
     # get manufacturer
     manufacturerint = manufacturerMask[gunroll[0] - 1][gunroll[0] - 1]
     if manufacturerint == -1:
-        manufacturer = Manufacturer(
-            random.choice(
-                create_result.get_selection_for_label("favoured_manufacturer")
-            )
-        )
+        temp = create_result.get_selection_for_label("favoured_manufacturer")
+        if len(temp) == 0:
+            temp = [member.value for member in Manufacturer]
+        manufacturer = Manufacturer(random.choice(temp))
     else:
         manufacturer = ManufacturerIndexed[manufacturerint]
 
+    manufacturer_choice = create_result.get_option_for_label("enforce_manufacturer")
+    if not (manufacturer_choice == None or len(manufacturer_choice) == 0):
+        manufacturer = Manufacturer(manufacturer_choice[0])
+
     # PART 2 rarity (hmm dat was makkelijk)
     rarityRoll = create_result.get_roll_for_label("Rarity roll")
-    # TODO get rid of rarint, sitll used for big element map
-    rarint = rarityMask[rarityRoll[0] - 1][rarityRoll[1] - 1]
     rarity = RarityIndexed[rarityMask[rarityRoll[0] - 1][rarityRoll[1] - 1]]
+
+    rarity_choice = create_result.get_option_for_label("rarity")
+    if not (rarity_choice == None or len(rarity_choice) == 0):
+        rarity = Rarity(rarity_choice[0])
 
     # PART 3 element
     hasElement = elementalRolMask[rarityRoll[0] - 1][rarityRoll[1] - 1]
@@ -685,9 +588,9 @@ def roll_gun(create_result: random_create_result, session: SessionDep) -> roll_r
     element = None
     elementstr = ""
     for row in elementalRarityRolArray:
-        if row[0][0] <= elyroll and row[0][1] >= elyroll:
-            element = row[1][rarint][0]
-            elementstr = row[1][rarint][1]
+        if row["range"][0] <= elyroll and row["range"][1] >= elyroll:
+            element = row["rarity"][rarity][0]
+            elementstr = row["rarity"][rarity][1]
             break
 
     # PART4 prefix
@@ -815,3 +718,32 @@ def create_gun(gun_data: GunCreate, session: SessionDep) -> Gun:
     session.refresh(gun)
 
     return gun
+
+
+@router.put("/{gun_id}", response_model=GunResponse)
+def update_gun(gun_id: str, gun: GunResponse, session: SessionDep) -> GunResponse:
+    statement = select(Gun).where(Gun.id == gun_id)
+    results = session.exec(statement)
+    gun_db = results.one()
+    gun_db.id = gun.id
+    gun_db.name = gun.name
+    gun_db.description = gun.description
+    gun_db.type = gun.type
+    gun_db.rarity = gun.rarity
+    gun_db.manufacturer = gun.manufacturer
+    gun_db.manufacturer_effect = gun.manufacturer_effect
+    gun_db.element = gun.element
+    gun_db.elementstr = gun.elementstr
+    gun_db.range = gun.range
+    gun_db.dmgroll = gun.dmgroll
+    gun_db.lowNormal = gun.lowNormal
+    gun_db.lowCrit = gun.lowCrit
+    gun_db.mediumNormal = gun.mediumNormal
+    gun_db.mediumCrit = gun.mediumCrit
+    gun_db.highNormal = gun.highNormal
+    gun_db.highCrit = gun.highCrit
+
+    session.add(gun_db)
+    session.commit()
+    session.refresh(gun_db)
+    return gun_db

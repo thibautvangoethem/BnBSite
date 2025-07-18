@@ -7,7 +7,16 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 import json
 
-from endpoints import authentication, hero, gun, meta, shield, grenade, potion, mobs
+from endpoints import (
+    authentication,
+    hero,
+    gun,
+    meta,
+    shield,
+    grenade,
+    potion,
+    mobs,
+)
 from appglobals import engine
 from database_utils.create_tables import load_prefab_data
 
@@ -47,6 +56,7 @@ app.include_router(meta.router)
 app.include_router(grenade.router)
 app.include_router(potion.router)
 app.include_router(mobs.router)
+# app.include_router(rollhistory.router)
 
 
 app = CORSMiddleware(
