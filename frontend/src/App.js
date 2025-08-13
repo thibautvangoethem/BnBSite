@@ -14,9 +14,11 @@ import GunPage from './subComponents/viz/gun/GunPage';
 import HomePage from './subComponents/homePage/HomePage';
 import CottageIcon from '@mui/icons-material/Cottage';
 import AutoModeIcon from '@mui/icons-material/AutoMode';
+import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import DiceRollsPopup from './rolling/DiceRollsPopup';
 import PotionPage from './subComponents/viz/potion/PotionPage';
 import GrenadePage from './subComponents/viz/grenade/GrenadePage';
+import HistoryGrid from './subComponents/historyGrid/historyGrid';
 // import ShieldModal from './subComponents/quickLoot/ShieldModal';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -26,6 +28,7 @@ const menuItems = [
   { text: 'Login', route: '/login', icon: <FaceUnlockOutlinedIcon /> },
   { text: 'Free Rolling', route: '/rolling', icon: <CasinoOutlinedIcon /> },
   { text: 'Quick Loot', route: '/quickloot', icon: <AutoModeIcon /> },
+  { text: 'Roll History', route: '/histoir', icon: <LocalLibraryIcon /> },
 ];
 
 const App = () => {
@@ -73,6 +76,7 @@ const App = () => {
                 element={<CustomRollingInputs onSerialize={handleSerialize} />}
               />
               <Route path="/quickloot" element={<QuickLootMenu onSerialize={handleSerialize} />} />
+              <Route path="/histoir" element={<HistoryGrid />} />
               {/* <Route path="/quickloot/gun" element={<GunRoll />} /> */}
               {/* <Route path="/quickloot/shield" element={<CardPage2 />} />
               <Route path="/quickloot/classmod" element={<CardPage3 />} />
@@ -82,6 +86,7 @@ const App = () => {
               <Route path="/viz/gun/:id" element={<GunPage />} />
               <Route path="/viz/potion/:id" element={<PotionPage />} />
               <Route path="/viz/grenade/:id" element={<GrenadePage />} />
+
             </Routes>
           </div>
         </div>
