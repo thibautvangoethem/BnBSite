@@ -6,15 +6,17 @@ self explanatory
 - [x] shield
 - [x] potion
 - [x] grenade
-- [x] mob loot
+- [x] mob loot 
+- [] class mods
 
 ## editing items
 self explanatory
-- [] guns
-- [] shield
-- [] potion
-- [] grenade
-- [] mob loot
+- [x] Guns -> enkel nog redtext
+- [x] shield
+- [x] potion
+- [x] grenade
+- [x] mob loot
+- [] class mods
 
 ## Loot list
 A list of all loot rolled, and a way to click on them and view them
