@@ -26,6 +26,36 @@ class Grenade(SQLModel, table=True):
 
     model_config = {"from_attributes": True}
 
+    def __str__(self):
+        fields = [
+            f"id={self.id}",
+            f"name={self.name}" if self.name else None,
+            f"description={self.description}" if self.description else None,
+            f"rarity={self.rarity}",
+            f"manufacturer={self.manufacturer}",
+            (
+                f"manufacturer_effect={self.manufacturer_effect}"
+                if self.manufacturer_effect
+                else None
+            ),
+            f"primer_effect={self.primer_effect}" if self.primer_effect else None,
+            (
+                f"detonater_effect={self.detonater_effect}"
+                if self.detonater_effect
+                else None
+            ),
+            f"red_text_name={self.red_text_name}" if self.red_text_name else None,
+            (
+                f"red_text_description={self.red_text_description}"
+                if self.red_text_description
+                else None
+            ),
+            f"damage={self.damage}" if self.damage else None,
+            f"radius={self.radius}",
+        ]
+        # Filter out None values and join the fields
+        return f"Grenade({', '.join(filter(None, fields))})"
+
 
 # class ShieldRead(BaseModel):
 #     name: Optional[str]

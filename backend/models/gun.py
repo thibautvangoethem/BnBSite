@@ -78,6 +78,28 @@ class Gun(SQLModel, table=True):
     highNormal: int
     highCrit: int
 
+    def __str__(self):
+        fields = [
+            f"id= {self.id}",
+            f"name= {self.name}",
+            f"description= {self.description}",
+            f"type= {self.type}",
+            f"rarity= {self.rarity}",
+            f"manufacturer= {self.manufacturer}",
+            f"manufacturer_effect= {self.manufacturer_effect}",
+            f"element= {self.element}",
+            f"elementstr= {self.elementstr}",
+            f"range= {self.range}",
+            f"dmgroll= {self.dmgroll}",
+            f"lowNormal= {self.lowNormal}",
+            f"lowCrit= {self.lowCrit}",
+            f"mediumNormal= {self.mediumNormal}",
+            f"mediumCrit= {self.mediumCrit}",
+            f"highNormal= {self.highNormal}",
+            f"highCrit= {self.highCrit}",
+        ]
+        return f"gun({', '.join(filter(None, fields))})"
+
     prefixes: List[Prefix] = Relationship(
         back_populates="guns", link_model=GunPrefixLink
     )

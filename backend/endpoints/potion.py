@@ -1,8 +1,10 @@
+from datetime import datetime
 import math
 from fastapi import APIRouter
 from fastapi import Depends, HTTPException, status, Query
 from fastapi.security import OAuth2PasswordBearer
 from typing import Annotated
+from models.rollhistory import RollHistory
 from models.gun import *
 from models.common import *
 from appglobals import SessionDep, oauth2_scheme
@@ -222,6 +224,10 @@ def generate_potion(
 def create_potion(potion_data: PotionCreate, session: SessionDep) -> Potion:
     pot = Potion(id=str(uuid.uuid4()), name=potion_data.name, text=potion_data.text)
     session.add(pot)
+    histoir = RollHistory(
+        id=pot.id, date=datetime.now(), description=str(pot), type="Potion"
+    )
+    session.add(histoir)
     session.commit()
     session.refresh(pot)
     return pot

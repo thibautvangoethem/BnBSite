@@ -1,7 +1,9 @@
+from datetime import datetime
 from fastapi import APIRouter
 from fastapi import Depends, HTTPException, status, Query
 from fastapi.security import OAuth2PasswordBearer
 from typing import Annotated
+from models.rollhistory import RollHistory
 from models.gun import *
 from models.common import *
 from appglobals import SessionDep, oauth2_scheme
@@ -241,6 +243,10 @@ def create_shield(
     print(f"SHIELD : {shield}")
 
     session.add(shield)
+    histoir = RollHistory(
+        id=shield.id, date=datetime.now(), description=str(shield), type="Shield"
+    )
+    session.add(histoir)
     session.commit()
     session.refresh(shield)
 

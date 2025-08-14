@@ -318,6 +318,10 @@ def create_grenade(grenade_data: GrenadeCreate, session: SessionDep) -> Grenade:
         radius=grenade_data.radius,
     )
     session.add(gren)
+    histoir = RollHistory(
+        id=gren.id, date=datetime.now(), description=str(gren), type="Grenade"
+    )
+    session.add(histoir)
     session.commit()
     session.refresh(gren)
 
