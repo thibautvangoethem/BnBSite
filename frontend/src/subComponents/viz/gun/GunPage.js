@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { Box, Container, Typography, CircularProgress, Grid, Paper, Button } from '@mui/material';
+import EditableField from '../Editablefield';
 
 // Component for Identifiers
 const Identifiers = ({ id, name, description, isEditing, handleChange }) => (
@@ -8,31 +9,20 @@ const Identifiers = ({ id, name, description, isEditing, handleChange }) => (
         <Typography variant="h5" gutterBottom>
             Identifiers
         </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>Name:</strong> {isEditing ? (
-                <input
-                    type="text"
-                    name="name"
-                    value={name || ''}
-                    onChange={handleChange}
-                />
-            ) : (
-                name || 'Mr no name'
-            )}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>Description:</strong> {isEditing ? (
-                <textarea
-                    name="description"
-                    value={description || ''}
-                    onChange={handleChange}
-                    rows="4"
-                    style={{ width: '100%' }}
-                />
-            ) : (
-                description || 'None'
-            )}
-        </Typography>
+        <EditableField
+            label="Name"
+            value={name}
+            isEditing={isEditing}
+            onChange={handleChange}
+            type="text"
+        />
+        <EditableField
+            label="Description"
+            value={description}
+            isEditing={isEditing}
+            onChange={handleChange}
+            multiline={true}
+        />
         <Typography variant="body1" gutterBottom>
             <strong>ID:</strong> {id}
         </Typography>
@@ -47,151 +37,83 @@ const GunStats = ({ range, dmgroll, lowNormal, lowCrit, mediumNormal, mediumCrit
         </Typography>
         <Grid container spacing={2}>
             <Grid item xs={12} sm={4}>
-                <Typography variant="body1">
-                    <strong>Range:</strong> {isEditing ? (
-                        <input
-                            type="number"
-                            name="range"
-                            value={range || ''}
-                            onChange={handleChange}
-                            onKeyDown={(e) => {
-                                if (!/[0-9]/.test(e.key)) {
-                                    e.preventDefault();
-                                }
-                            }}
-                        />
-                    ) : (
-                        range
-                    )}
-                </Typography>
+                <EditableField
+                    label="Range"
+                    value={range}
+                    isEditing={isEditing}
+                    onChange={handleChange}
+                    type="number"
+                />
             </Grid>
             <Grid item xs={12} sm={4}>
-                <Typography variant="body1">
-                    <strong>Damage Roll:</strong> {isEditing ? (
-                        <input
-                            type="text"
-                            name="dmgroll"
-                            value={dmgroll || ''}
-                            onChange={handleChange}
-                        />
-                    ) : (
-                        dmgroll
-                    )}
-                </Typography>
+                <EditableField
+                    label="Damage Roll"
+                    value={dmgroll}
+                    isEditing={isEditing}
+                    onChange={handleChange}
+                    type="text"
+                    name="dmgroll"
+                />
             </Grid>
             <Grid item xs={12} sm={4}>
-                <Typography variant="body1">
-                    <strong>Low Normal:</strong> {isEditing ? (
-                        <input
-                            type="number"
-                            name="lowNormal"
-                            value={lowNormal || ''}
-                            onChange={handleChange}
-                            onKeyDown={(e) => {
-                                if (!/[0-9]/.test(e.key)) {
-                                    e.preventDefault();
-                                }
-                            }}
-                        />
-                    ) : (
-                        lowNormal
-                    )}
-                </Typography>
+                <EditableField
+                    label="Low Normal"
+                    value={lowNormal}
+                    isEditing={isEditing}
+                    onChange={handleChange}
+                    type="number"
+                    name="lowNormal"
+                />
             </Grid>
             <Grid item xs={12} sm={4}>
-                <Typography variant="body1">
-                    <strong>Low Crit:</strong> {isEditing ? (
-                        <input
-                            type="number"
-                            name="lowCrit"
-                            value={lowCrit || ''}
-                            onChange={handleChange}
-                            onKeyDown={(e) => {
-                                if (!/[0-9]/.test(e.key)) {
-                                    e.preventDefault();
-                                }
-                            }}
-                        />
-                    ) : (
-                        lowCrit
-                    )}
-                </Typography>
+                <EditableField
+                    label="Low Crit"
+                    value={lowCrit}
+                    isEditing={isEditing}
+                    onChange={handleChange}
+                    type="number"
+                    name="lowCrit"
+                />
             </Grid>
             <Grid item xs={12} sm={4}>
-                <Typography variant="body1">
-                    <strong>Medium Normal:</strong> {isEditing ? (
-                        <input
-                            type="number"
-                            name="mediumNormal"
-                            value={mediumNormal || ''}
-                            onChange={handleChange}
-                            onKeyDown={(e) => {
-                                if (!/[0-9]/.test(e.key)) {
-                                    e.preventDefault();
-                                }
-                            }}
-                        />
-                    ) : (
-                        mediumNormal
-                    )}
-                </Typography>
+                <EditableField
+                    label="Medium Normal"
+                    value={mediumNormal}
+                    isEditing={isEditing}
+                    onChange={handleChange}
+                    type="number"
+                    name="mediumNormal"
+                />
             </Grid>
             <Grid item xs={12} sm={4}>
-                <Typography variant="body1">
-                    <strong>Medium Crit:</strong> {isEditing ? (
-                        <input
-                            type="number"
-                            name="mediumCrit"
-                            value={mediumCrit || ''}
-                            onChange={handleChange}
-                            onKeyDown={(e) => {
-                                if (!/[0-9]/.test(e.key)) {
-                                    e.preventDefault();
-                                }
-                            }}
-                        />
-                    ) : (
-                        mediumCrit
-                    )}
-                </Typography>
+                <EditableField
+                    label="Medium Crit"
+                    value={mediumCrit}
+                    isEditing={isEditing}
+                    onChange={handleChange}
+                    type="number"
+                    name="mediumCrit"
+                />
             </Grid>
             <Grid item xs={12} sm={4}>
-                <Typography variant="body1">
-                    <strong>High Normal:</strong> {isEditing ? (
-                        <input
-                            type="number"
-                            name="highNormal"
-                            value={highNormal || ''}
-                            onChange={handleChange}
-                            onKeyDown={(e) => {
-                                if (!/[0-9]/.test(e.key)) {
-                                    e.preventDefault();
-                                }
-                            }}
-                        />
-                    ) : (
-                        highNormal
-                    )}
-                </Typography>
+                <EditableField
+                    label="High Normal"
+                    value={highNormal}
+                    isEditing={isEditing}
+                    onChange={handleChange}
+                    type="number"
+                    name="highNormal"
+                />
             </Grid>
             <Grid item xs={12} sm={4}>
-                <Typography variant="body1">
-                    <strong>High Crit:</strong> {isEditing ? (
-                        <input
-                            type="number"
-                            name="highCrit"
-                            value={highCrit || ''}
-                            onChange={handleChange}
-                            onKeyDown={(e) => {
-                                if (!/[0-9]/.test(e.key)) {
-                                    e.preventDefault();
-                                }
-                            }}
-                        />
-                    ) : (
-                        highCrit
-                    )}
-                </Typography>
+                <EditableField
+                    label="High Crit"
+                    value={highCrit}
+                    isEditing={isEditing}
+                    onChange={handleChange}
+                    type="number"
+                    name="highCrit"
+                />
             </Grid>
         </Grid>
     </Paper>
@@ -220,18 +142,14 @@ const GunDetails = ({ type, manufacturer, manufacturerEffect, rarity, element, e
                     ) : (type)}
                 </Typography>
             </Grid>
-            <Typography variant="body1" gutterBottom>
-                <strong>Manufacturer Effect:</strong> {isEditing ? (
-                    <input
-                        type="text"
-                        name="manufacturer_effect"
-                        value={manufacturerEffect || ''}
-                        onChange={handleChange}
-                    />
-                ) : (
-                    manufacturerEffect || 'None'
-                )}
-            </Typography>
+            <EditableField
+                label="Manufacturer Effect"
+                value={manufacturerEffect}
+                isEditing={isEditing}
+                onChange={handleChange}
+                type="text"
+                name="manufacturer_effect"
+            />
             <Grid item xs={12} sm={6}>
                 <Typography variant="body1">
                     <strong>Manufacturer:</strong> {isEditing ? (
@@ -292,16 +210,14 @@ const GunDetails = ({ type, manufacturer, manufacturerEffect, rarity, element, e
                 </Typography>
             </Grid>
             <Grid item xs={12} sm={6}>
-                <Typography variant="body1">
-                    <strong>Element String:</strong> {isEditing ? (
-                        <input
-                            type="text"
-                            name="elementstr"
-                            value={elementstr || ''}
-                            onChange={handleChange}
-                        />
-                    ) : (elementstr || 'None')}
-                </Typography>
+                <EditableField
+                    label="Element String"
+                    value={elementstr}
+                    isEditing={isEditing}
+                    onChange={handleChange}
+                    type="text"
+                    name="elementstr"
+                />
             </Grid>
         </Grid>
     </Paper>
@@ -355,6 +271,7 @@ const GunPage = () => {
     const [gun, setGun] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
+
     const handleEditClick = () => {
         setIsEditing(true);
     };
@@ -390,7 +307,6 @@ const GunPage = () => {
                 setLoading(false);
             }
         };
-
         fetchData();
     }, [id, backendUrl]);
 
@@ -460,7 +376,7 @@ const GunPage = () => {
                 {gun?.postfixes?.length > 0 && <Postfixes postfixes={gun.postfixes} />}
                 {gun?.redtexts?.length > 0 && <RedTexts redtexts={gun.redtexts} />}
             </Box>
-        </Container >
+        </Container>
     );
 };
 

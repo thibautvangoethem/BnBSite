@@ -1,39 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { Box, Container, Typography, CircularProgress, Grid, Paper, Button } from '@mui/material';
-
-
+import EditableField from '../Editablefield';
 
 const Identifiers = ({ id, name, text, isEditing, handleChange }) => (
     <Paper style={{ padding: '16px', marginBottom: '16px' }}>
         <Typography variant="h5" gutterBottom>
             Identifiers
         </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>name:</strong> {isEditing ? (
-                <input
-                    type="text"
-                    name="name"
-                    value={name || ''}
-                    onChange={handleChange}
-                />
-            ) : (
-                name || 'Mr no name'
-            )}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>Description:</strong> {isEditing ? (
-                <textarea
-                    name="description"
-                    value={text || ''}
-                    onChange={handleChange}
-                    rows="4"
-                    style={{ width: '100%' }}
-                />
-            ) : (
-                text || 'None'
-            )}
-        </Typography>
+        <EditableField
+            label="Name"
+            value={name}
+            isEditing={isEditing}
+            onChange={handleChange}
+            name="name"
+        />
+        <EditableField
+            label="Description"
+            value={text}
+            isEditing={isEditing}
+            onChange={handleChange}
+            multiline
+            name="description"
+        />
         <Typography variant="body1" gutterBottom>
             <strong>id:</strong> {id}
         </Typography>
@@ -80,71 +69,44 @@ const GrenadeDetails = ({ grenade, isEditing, handleChange }) => (
                 </select >
             ) : (grenade.manufacturer)}
         </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>Manufacturer Effect:</strong> {isEditing ? (
-                <textarea
-                    name="description"
-                    value={grenade.manufacturer_effect || ''}
-                    onChange={handleChange}
-                    rows="4"
-                    style={{ width: '100%' }}
-                />
-            ) : (
-                grenade.manufacturer_effect || 'None'
-            )}
-        </Typography>
-
-        <Typography variant="body1" gutterBottom>
-            <strong>Damage:</strong> {isEditing ? (
-                <input
-                    type="text"
-                    name="damage"
-                    value={grenade.damage || ''}
-                    onChange={handleChange}
-                />
-            ) : (
-                grenade.damage
-            )}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>Radius:</strong> {isEditing ? (
-                <input
-                    type="text"
-                    name="radius"
-                    value={grenade.radius || ''}
-                    onChange={handleChange}
-                />
-            ) : (
-                grenade.radius
-            )}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>Primer Effect:</strong> {isEditing ? (
-                <textarea
-                    name="primer_effect"
-                    value={grenade.primer_effect || ''}
-                    onChange={handleChange}
-                    rows="4"
-                    style={{ width: '100%' }}
-                />
-            ) : (
-                grenade.primer_effect
-            )}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>Detonater Effect:</strong> {isEditing ? (
-                <textarea
-                    name="detonater_effect"
-                    value={grenade.detonater_effect || ''}
-                    onChange={handleChange}
-                    rows="4"
-                    style={{ width: '100%' }}
-                />
-            ) : (
-                grenade.detonater_effect
-            )}
-        </Typography>
-
+        <EditableField
+            label="Manufacturer Effect"
+            value={grenade.manufacturer_effect}
+            isEditing={isEditing}
+            onChange={handleChange}
+            multiline
+            name="manufacturer_effect"
+        />
+        <EditableField
+            label="Damage"
+            value={grenade.damage}
+            isEditing={isEditing}
+            onChange={handleChange}
+            name="damage"
+        />
+        <EditableField
+            label="Radius"
+            value={grenade.radius}
+            isEditing={isEditing}
+            onChange={handleChange}
+            name="radius"
+        />
+        <EditableField
+            label="Primer Effect"
+            value={grenade.primer_effect}
+            isEditing={isEditing}
+            onChange={handleChange}
+            multiline
+            name="primer_effect"
+        />
+        <EditableField
+            label="Detonater Effect"
+            value={grenade.detonater_effect}
+            isEditing={isEditing}
+            onChange={handleChange}
+            multiline
+            name="detonater_effect"
+        />
     </Paper>
 );
 
@@ -153,32 +115,21 @@ const RedTextDetails = ({ grenade, isEditing, handleChange }) => (
         <Typography variant="h5" gutterBottom>
             Red Text Details
         </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>Red Text Name:</strong> {isEditing ? (
-                <input
-                    type="text"
-                    name="red_text_name"
-                    value={grenade.red_text_name || ''}
-                    onChange={handleChange}
-                />
-            ) : (
-                grenade.red_text_name || 'None'
-            )}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>Red Text Description:</strong> {isEditing ? (
-                <textarea
-
-                    name="red_text_description"
-                    value={grenade.red_text_description || ''}
-                    onChange={handleChange}
-                    rows="4"
-                    style={{ width: '100%' }}
-                />
-            ) : (
-                grenade.red_text_description || 'None'
-            )}
-        </Typography>
+        <EditableField
+            label="Red Text Name"
+            value={grenade.red_text_name}
+            isEditing={isEditing}
+            onChange={handleChange}
+            name="red_text_name"
+        />
+        <EditableField
+            label="Red Text Description"
+            value={grenade.red_text_description}
+            isEditing={isEditing}
+            onChange={handleChange}
+            multiline
+            name="red_text_description"
+        />
     </Paper>
 );
 
@@ -188,6 +139,7 @@ const GrenadePage = () => {
     const [grenade, setGrenade] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
+
     const handleEditClick = () => {
         setIsEditing(true);
     };

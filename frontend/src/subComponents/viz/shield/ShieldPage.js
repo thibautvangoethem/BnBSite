@@ -1,44 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { Box, Container, Typography, CircularProgress, Grid, Paper, Button } from '@mui/material';
-
-
+import EditableField from '../Editablefield';
 
 const Identifiers = ({ id, name, description, isEditing, handleChange }) => (
     <Paper style={{ padding: '16px', marginBottom: '16px' }}>
         <Typography variant="h5" gutterBottom>
             Identifiers
         </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>name:</strong> {isEditing ? (
-                <input
-                    type="text"
-                    name="name"
-                    value={name || ''}
-                    onChange={handleChange}
-                />
-            ) : (
-                name || 'Mr no name'
-            )}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>Description:</strong> {isEditing ? (
-                <textarea
-                    name="description"
-                    value={description || ''}
-                    onChange={handleChange}
-                    rows="4"
-                    style={{ width: '100%' }}
-                />
-            ) : (
-                description || 'None'
-            )}
-        </Typography>
+        <EditableField
+            label="Name"
+            value={name}
+            isEditing={isEditing}
+            onChange={handleChange}
+            type="text"
+        />
+        <EditableField
+            label="Description"
+            value={description}
+            isEditing={isEditing}
+            onChange={handleChange}
+            multiline={true}
+        />
         <Typography variant="body1" gutterBottom>
             <strong>id:</strong> {id}
         </Typography>
     </Paper>
 );
+
 // Component for Shield Stats
 const ShieldStats = ({ capacity, rechargeRate, rechargeDelay, isEditing, handleChange }) => (
     <Paper style={{ padding: '16px', marginBottom: '16px' }}>
@@ -47,64 +36,31 @@ const ShieldStats = ({ capacity, rechargeRate, rechargeDelay, isEditing, handleC
         </Typography>
         <Grid container spacing={2}>
             <Grid item xs={12} sm={4}>
-                <Typography variant="body1">
-                    <strong>Capacity:</strong> {isEditing ? (
-                        <input
-                            type="number"
-                            name="capacity"
-                            value={capacity || ''}
-                            onChange={handleChange}
-                            //hack to enforce no non numerics here
-                            onKeyDown={(e) => {
-                                if (!/[0-9]/.test(e.key)) {
-                                    e.preventDefault();
-                                }
-                            }}
-                        />
-                    ) : (
-                        capacity
-                    )}
-                </Typography>
+                <EditableField
+                    label="Capacity"
+                    value={capacity}
+                    isEditing={isEditing}
+                    onChange={handleChange}
+                    type="number"
+                />
             </Grid>
             <Grid item xs={12} sm={4}>
-                <Typography variant="body1">
-                    <strong>Recharge Rate:</strong> {isEditing ? (
-                        <input
-                            type="number"
-                            name="recharge_rate"
-                            value={rechargeRate || ''}
-                            onChange={handleChange}
-                            //hack to enforce no non numerics here
-                            onKeyDown={(e) => {
-                                if (!/[0-9]/.test(e.key)) {
-                                    e.preventDefault();
-                                }
-                            }}
-                        />
-                    ) : (
-                        rechargeRate
-                    )}
-                </Typography>
+                <EditableField
+                    label="Recharge Rate"
+                    value={rechargeRate}
+                    isEditing={isEditing}
+                    onChange={handleChange}
+                    type="number"
+                />
             </Grid>
             <Grid item xs={12} sm={4}>
-                <Typography variant="body1">
-                    <strong>Recharge Delay:</strong> {isEditing ? (
-                        <input
-                            type="number"
-                            name="recharge_delay"
-                            value={rechargeDelay || ''}
-                            onChange={handleChange}
-                            //hack to enforce no non numerics here
-                            onKeyDown={(e) => {
-                                if (!/[0-9]/.test(e.key)) {
-                                    e.preventDefault();
-                                }
-                            }}
-                        />
-                    ) : (
-                        rechargeDelay
-                    )}
-                </Typography>
+                <EditableField
+                    label="Recharge Delay"
+                    value={rechargeDelay}
+                    isEditing={isEditing}
+                    onChange={handleChange}
+                    type="number"
+                />
             </Grid>
         </Grid>
     </Paper>
@@ -134,7 +90,7 @@ const ShieldDetails = ({ manufacturer, rarity, redTextName, isEditing, handleCha
                             <option value="Feriore">Feriore</option>
                             <option value="Torgue">Torgue</option>
                             <option value="Stoker">Stoker</option>
-                        </select >
+                        </select>
                     ) : (manufacturer)}
                 </Typography>
             </Grid>
@@ -152,7 +108,7 @@ const ShieldDetails = ({ manufacturer, rarity, redTextName, isEditing, handleCha
                             <option value="Epic">Epic</option>
                             <option value="Legendary">Legendary</option>
                             <option value="Unique">Unique</option>
-                        </select >
+                        </select>
                     ) : (rarity)}
                 </Typography>
             </Grid>
@@ -170,72 +126,44 @@ const Components = ({ manufacturerEffect, capacitorEffect, batteryEffect, redTex
         <Typography variant="h5" gutterBottom>
             Components
         </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>Manufacturer Effect:</strong> {isEditing ? (
-                <textarea
-                    name="manufacturer_effect"
-                    value={manufacturerEffect || ''}
-                    onChange={handleChange}
-                    rows="4"
-                    style={{ width: '100%' }}
-                />
-            ) : (
-                manufacturerEffect
-            )}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>Capacitor Effect:</strong> {isEditing ? (
-                <textarea
-                    name="capacitor_effect"
-                    value={capacitorEffect || ''}
-                    onChange={handleChange}
-                    rows="4"
-                    style={{ width: '100%' }}
-                />
-            ) : (
-                capacitorEffect
-            )}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>Battery Effect:</strong> {isEditing ? (
-                <textarea
-                    name="battery_effect"
-                    value={batteryEffect || ''}
-                    onChange={handleChange}
-                    rows="4"
-                    style={{ width: '100%' }}
-                />
-            ) : (
-                batteryEffect
-            )}
-        </Typography>
+        <EditableField
+            label="Manufacturer Effect"
+            value={manufacturerEffect}
+            isEditing={isEditing}
+            onChange={handleChange}
+            multiline={true}
+        />
+        <EditableField
+            label="Capacitor Effect"
+            value={capacitorEffect}
+            isEditing={isEditing}
+            onChange={handleChange}
+            multiline={true}
+        />
+        <EditableField
+            label="Battery Effect"
+            value={batteryEffect}
+            isEditing={isEditing}
+            onChange={handleChange}
+            multiline={true}
+        />
         {novaDamage && (
             <>
-                <Typography variant="body1" gutterBottom>
-                    <strong>Nova damage</strong> {isEditing ? (
-                        <input
-                            type="text"
-                            name="nova_damage"
-                            value={novaDamage || ''}
-                            onChange={handleChange}
-                        />
-                    ) : (
-                        novaDamage
-                    )}
-                </Typography>
+                <EditableField
+                    label="Nova damage"
+                    value={novaDamage}
+                    isEditing={isEditing}
+                    onChange={handleChange}
+                    type="text"
+                />
                 {novaElement && (
-                    <Typography variant="body1" gutterBottom>
-                        <strong>Nova element</strong> {isEditing ? (
-                            <input
-                                type="text"
-                                name="nova_element"
-                                value={novaElement || ''}
-                                onChange={handleChange}
-                            />
-                        ) : (
-                            novaElement
-                        )}
-                    </Typography>
+                    <EditableField
+                        label="Nova element"
+                        value={novaElement}
+                        isEditing={isEditing}
+                        onChange={handleChange}
+                        type="text"
+                    />
                 )}
             </>
         )}
@@ -263,6 +191,7 @@ const ShieldPage = () => {
     const [shield, setShield] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
+
     const handleEditClick = () => {
         setIsEditing(true);
     };
@@ -298,7 +227,6 @@ const ShieldPage = () => {
                 setLoading(false);
             }
         };
-
         fetchData();
     }, [id, backendUrl]);
 
@@ -312,12 +240,11 @@ const ShieldPage = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setShield((prevShiel) => ({
-            ...prevShiel,
+        setShield((prevShield) => ({
+            ...prevShield,
             [name]: value,
         }));
     };
-
 
     return (
         <Container maxWidth="lg">
@@ -342,7 +269,6 @@ const ShieldPage = () => {
                     description={shield?.description}
                     isEditing={isEditing}
                     handleChange={handleChange}
-
                 />
                 <ShieldDetails
                     manufacturer={shield?.manufacturer}
@@ -365,13 +291,12 @@ const ShieldPage = () => {
                     batteryEffect={shield?.battery_effect}
                     redTextDescription={shield?.red_text_description}
                     novaDamage={shield?.nova_damage}
-                    novaElement={shield?.nove_element}
+                    novaElement={shield?.nova_element}
                     isEditing={isEditing}
                     handleChange={handleChange}
-
                 />
             </Box>
-        </Container >
+        </Container>
     );
 };
 

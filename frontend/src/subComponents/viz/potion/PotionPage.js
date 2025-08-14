@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { Box, Container, Typography, CircularProgress, Grid, Paper, Button } from '@mui/material';
-
-
-
+import EditableField from '../Editablefield';
 
 const Identifiers = ({ id, name, text, isEditing, handleChange }) => {
     const [showText, setShowText] = useState(false);
@@ -17,18 +15,13 @@ const Identifiers = ({ id, name, text, isEditing, handleChange }) => {
             <Typography variant="h5" gutterBottom>
                 Identifiers
             </Typography>
-            <Typography variant="body1" gutterBottom>
-                <strong>name:</strong> {isEditing ? (
-                    <input
-                        type="text"
-                        name="name"
-                        value={name || ''}
-                        onChange={handleChange}
-                    />
-                ) : (
-                    name || 'Mr no name'
-                )}
-            </Typography>
+            <EditableField
+                label="Name"
+                value={name}
+                isEditing={isEditing}
+                onChange={handleChange}
+                type="text"
+            />
             <Typography variant="body1" gutterBottom>
                 <strong>text:</strong> {isEditing ? (
                     <textarea
@@ -58,14 +51,13 @@ const Identifiers = ({ id, name, text, isEditing, handleChange }) => {
     );
 };
 
-
-
 const PotionPage = () => {
     const { id } = useParams();
     const backendUrl = process.env.REACT_APP_BACKEND_URL;
     const [potion, setPotion] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
+
     const handleEditClick = () => {
         setIsEditing(true);
     };
@@ -101,7 +93,6 @@ const PotionPage = () => {
                 setLoading(false);
             }
         };
-
         fetchData();
     }, [id, backendUrl]);
 
