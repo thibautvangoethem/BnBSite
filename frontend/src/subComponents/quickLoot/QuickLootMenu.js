@@ -6,9 +6,7 @@ const ClickableCardsPage = ({ onSerialize }) => {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   const itemData = [
-    {
-      id: 1, title: 'Gun', description: 'GUNS GUNS GUNS.', endpoint: '/guns/rolldescription', post: '/guns/generate'
-    },
+    { id: 1, title: 'Gun', description: 'GUNS GUNS GUNS.', endpoint: '/guns/rolldescription', post: '/guns/generate' },
     { id: 2, title: 'Class Mod', description: 'Den Arne heeft er veel werk in gestoken.', endpoint: '/classmods/rolldescription', post: '/guns/tisnognieaf' },
     { id: 3, title: 'Shield', description: 'Schild en knuffel.', endpoint: '/shields/rolldescription', post: '/shields/generate' },
     { id: 4, title: 'Grenade', description: 'Bruno Mars simulator', endpoint: '/grenades/rolldescription', post: '/grenades/generate' },
@@ -16,9 +14,7 @@ const ClickableCardsPage = ({ onSerialize }) => {
   ];
 
   const MonsterData = [
-    {
-      id: 1, title: 'Common', description: '1 chiller.', endpoint: '/mobs/common/rolldescription', post: '/guns/tisnognieaf'
-    },
+    { id: 1, title: 'Common', description: '1 chiller.', endpoint: '/mobs/common/rolldescription', post: '/guns/tisnognieaf' },
     { id: 2, title: 'Elite', description: '1 geezer', endpoint: '/mobs/elite/rolldescription', post: '/guns/tisnognieaf' },
     { id: 3, title: 'miniBoss', description: '1 bijna teamwipe', endpoint: '/mobs/mboss/rolldescription', post: '/guns/tisnognieaf' },
   ];

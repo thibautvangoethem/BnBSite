@@ -16,6 +16,7 @@ from endpoints import (
     grenade,
     potion,
     mobs,
+    rollhistory,
 )
 from appglobals import engine
 from database_utils.create_tables import load_prefab_data
@@ -56,7 +57,7 @@ app.include_router(meta.router)
 app.include_router(grenade.router)
 app.include_router(potion.router)
 app.include_router(mobs.router)
-# app.include_router(rollhistory.router)
+app.include_router(rollhistory.router)
 
 
 app = CORSMiddleware(

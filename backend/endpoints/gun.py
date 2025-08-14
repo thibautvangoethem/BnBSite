@@ -1,7 +1,9 @@
+from datetime import datetime
 from fastapi import APIRouter
 from fastapi import Depends, HTTPException, status, Query
 from fastapi.security import OAuth2PasswordBearer
 from typing import Annotated
+from models.rollhistory import RollHistory
 from models.gun import *
 from models.common import *
 from appglobals import SessionDep, oauth2_scheme
@@ -684,6 +686,10 @@ def create_gun(gun_data: GunCreate, session: SessionDep) -> Gun:
     )
 
     session.add(gun)
+    histoir = RollHistory(
+        id=gun.id, date=datetime.now(), description=str(gun), type="Gun"
+    )
+    session.add(histoir)
     session.commit()
     session.refresh(gun)
 
