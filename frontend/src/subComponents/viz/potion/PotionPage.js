@@ -4,41 +4,59 @@ import { Box, Container, Typography, CircularProgress, Grid, Paper, Button } fro
 
 
 
-const Identifiers = ({ id, name, text, isEditing, handleChange }) => (
-    <Paper style={{ padding: '16px', marginBottom: '16px' }}>
-        <Typography variant="h5" gutterBottom>
-            Identifiers
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>name:</strong> {isEditing ? (
-                <input
-                    type="text"
-                    name="name"
-                    value={name || ''}
-                    onChange={handleChange}
-                />
-            ) : (
-                name || 'Mr no name'
-            )}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>text:</strong> {isEditing ? (
-                <textarea
-                    name="text"
-                    value={text || ''}
-                    onChange={handleChange}
-                    rows="4"
-                    style={{ width: '100%' }}
-                />
-            ) : (
-                text || 'None'
-            )}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-            <strong>id:</strong> {id}
-        </Typography>
-    </Paper>
-);
+
+const Identifiers = ({ id, name, text, isEditing, handleChange }) => {
+    const [showText, setShowText] = useState(false);
+
+    const toggleTextVisibility = () => {
+        setShowText(!showText);
+    };
+
+    return (
+        <Paper style={{ padding: '16px', marginBottom: '16px' }}>
+            <Typography variant="h5" gutterBottom>
+                Identifiers
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+                <strong>name:</strong> {isEditing ? (
+                    <input
+                        type="text"
+                        name="name"
+                        value={name || ''}
+                        onChange={handleChange}
+                    />
+                ) : (
+                    name || 'Mr no name'
+                )}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+                <strong>text:</strong> {isEditing ? (
+                    <textarea
+                        name="text"
+                        value={text || ''}
+                        onChange={handleChange}
+                        rows="4"
+                        style={{ width: '100%' }}
+                    />
+                ) : (
+                    name?.includes('Tina potion') ? (
+                        <>
+                            <Button variant="text" onClick={toggleTextVisibility}>
+                                {showText ? 'Hide' : 'Show'}
+                            </Button>
+                            {showText && (text || 'None')}
+                        </>
+                    ) : (
+                        text || 'None'
+                    )
+                )}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+                <strong>id:</strong> {id}
+            </Typography>
+        </Paper>
+    );
+};
 
 
 
