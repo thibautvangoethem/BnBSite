@@ -53,6 +53,25 @@ class Dice(str, Enum):
     D100 = "D100"
 
 
+class Classes(str, Enum):
+    # Nick
+    COMMANDO = "Commando"
+    # jim
+    HUNTER = "Hunter"
+    # Thibaut
+    GUNZERKER = "Gunzerker"
+    # Owen
+    BERSERKER = "Berseker"
+    # Ruben
+    PSYCHO = "Psycho"
+    # Joren
+    ASSASSIN = "Assassin"
+    # Senne
+    SIREN = "Siren"
+    # Nog eens Nick, allez eigenlijk hebben we deze niet, maar past bij Nick
+    MECHROMANCER = "Mechromancer"
+
+
 ElementIndexed = {
     0: Element.RADIATION,
     1: Element.CORROSIVE,
