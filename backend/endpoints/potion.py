@@ -201,6 +201,7 @@ def generate_potion(
     index = math.floor((base_roll - 1) / 5)
 
     result = potionMap[index]
+    pot: PotionCreate = PotionCreate(name=result[0], text=result[1])
     if index in [0, 5, 10, 15]:
         tina_roll = create_result.get_roll_for_label("Tina roll")[0]
         match index:
@@ -215,7 +216,9 @@ def generate_potion(
             case _:
                 print("thibaut heeft weer liggen koken met de code")
         result = tina_potions[min(tina_roll, len(tina_potions) - 1)]
-    pot: PotionCreate = PotionCreate(name=result[0], text=result[1])
+        pot: PotionCreate = PotionCreate(
+            name=f"Tina potion numero {tina_roll}", text=result[0] + ": " + result[1]
+        )
     pot: Potion = create_potion(pot, session=session)
     return roll_response(item_id=pot.id, item_type="potion")
 
