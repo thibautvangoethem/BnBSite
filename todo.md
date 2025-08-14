@@ -20,9 +20,9 @@ self explanatory
 
 ## Loot list
 A list of all loot rolled, and a way to click on them and view them
-- [] make the list
-- [] make the list clickable
-- [] make the list batched  
+- [x] make the list
+- [x] make the list clickable
+- [] make the list batched  -> deferred for now
 
 ## the hero page
 - [] login/choose as hero (maybe lets just make it a selection, no need for authentication flow)
