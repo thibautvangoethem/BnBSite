@@ -1,9 +1,5 @@
-from enum import Enum
-from models.common import Rarity, Manufacturerm, Classes
-from typing import List, Optional
-from sqlmodel import Field, Relationship, SQLModel
-from pydantic import BaseModel
-from typing import Optional
+from models.common import Rarity, Classes
+from sqlmodel import Field, SQLModel
 
 
 class ClassMod(SQLModel, table=True):
