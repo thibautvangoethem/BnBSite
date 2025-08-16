@@ -24,7 +24,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const menuItems = [
   { text: 'Home', route: '/', icon: <CottageIcon /> },
-  { text: 'Login', route: '/login', icon: <FaceUnlockOutlinedIcon /> },
+  // { text: 'Login', route: '/login', icon: <FaceUnlockOutlinedIcon /> },
   { text: 'Free Rolling', route: '/rolling', icon: <CasinoOutlinedIcon /> },
   { text: 'Quick Loot', route: '/quickloot', icon: <AutoModeIcon /> },
   { text: 'Roll History', route: '/histoir', icon: <LocalLibraryIcon /> },
@@ -61,7 +61,7 @@ const App = () => {
           <div style={{ padding: '20px', width: '100%' }}>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/login" element={<Login />} />
+              {/* <Route path="/login" element={<Login />} /> */}
               <Route
                 path="/rolling"
                 element={<CustomRollingInputs onSerialize={handleSerialize} />}
