@@ -31,8 +31,8 @@ class Grenade(SQLModel, table=True):
             f"id={self.id}",
             f"name={self.name}" if self.name else None,
             f"description={self.description}" if self.description else None,
-            f"rarity={self.rarity}",
-            f"manufacturer={self.manufacturer}",
+            f"rarity={self.rarity.value}",
+            f"manufacturer={self.manufacturer.value}",
             (
                 f"manufacturer_effect={self.manufacturer_effect}"
                 if self.manufacturer_effect

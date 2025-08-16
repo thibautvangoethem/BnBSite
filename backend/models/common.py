@@ -80,6 +80,7 @@ ElementIndexed = {
     4: Element.INCENDIARY,
     5: Element.CRYO,
 }
+
 ManufacturerIndexed = {
     0: Manufacturer.SKULLDUGGER,
     1: Manufacturer.FERIORE,
@@ -107,4 +108,15 @@ RarityIndexed = {
     2: Rarity.RARE,
     3: Rarity.EPIC,
     4: Rarity.LEGENDARY,
+}
+
+ClassIndexed = {
+    0: Classes.COMMANDO,
+    1: Classes.HUNTER,
+    2: Classes.GUNZERKER,
+    3: Classes.BERSERKER,
+    4: Classes.PSYCHO,
+    5: Classes.ASSASSIN,
+    6: Classes.SIREN,
+    7: Classes.MECHROMANCER,
 }

@@ -8,7 +8,8 @@ const HistoryGrid = () => {
         "Gun": "gun",
         "Potion": "potion",
         "Shield": "shield",
-        "Grenade": "grenade"
+        "Grenade": "grenade",
+        "Classmod": "classmod"
     }
     const [rows, setRows] = useState();
     const navigate = useNavigate();
