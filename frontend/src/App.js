@@ -16,6 +16,7 @@ import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import DiceRollsPopup from './rolling/DiceRollsPopup';
 import PotionPage from './subComponents/viz/potion/PotionPage';
 import GrenadePage from './subComponents/viz/grenade/GrenadePage';
+import ClassModPage from './subComponents/viz/classmod/ClassModPage';
 import HistoryGrid from './subComponents/historyGrid/historyGrid';
 // import ShieldModal from './subComponents/quickLoot/ShieldModal';
 
@@ -71,6 +72,7 @@ const App = () => {
               <Route path="/viz/gun/:id" element={<GunPage />} />
               <Route path="/viz/potion/:id" element={<PotionPage />} />
               <Route path="/viz/grenade/:id" element={<GrenadePage />} />
+              <Route path="/viz/classmod/:id" element={<ClassModPage />} />
 
             </Routes>
           </div>

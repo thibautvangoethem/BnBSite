@@ -1,5 +1,6 @@
 # de lijst van dingen die nog in de website moeten
 Als ge ideen hebt, zet ze dan hier in. als ge aan iets start, dan kunde dat ook hier in zetten
+
 ## rolling +saving + showing items 
 self explanatory
 - [x] guns
@@ -7,7 +8,7 @@ self explanatory
 - [x] potion
 - [x] grenade
 - [x] mob loot 
-- [] class mods
+- [x] class mods
 
 ## editing items
 self explanatory
@@ -16,13 +17,16 @@ self explanatory
 - [x] potion
 - [x] grenade
 - [x] mob loot
-- [] class mods
+- [x] class mods
 
 ## Loot list
 A list of all loot rolled, and a way to click on them and view them
 - [x] make the list
 - [x] make the list clickable
 - [] make the list batched  -> deferred for now
+
+## shops
+- [] add shops (well first figure out what Arne wants extavlty)
 
 ## the hero page
 - [] login/choose as hero (maybe lets just make it a selection, no need for authentication flow)

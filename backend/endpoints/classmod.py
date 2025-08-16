@@ -13,8 +13,6 @@ from models.grenade import Grenade
 from models.rollhistory import RollHistory
 from datetime import datetime
 
-R
-
 import uuid
 
 router = APIRouter(
@@ -23,41 +21,6 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
-@router.get("/rolldescription", response_model=random_create_description)
-def get_create_descritpion(session: SessionDep) -> random_create_description:
-    description = random_create_description(
-        level=True,
-        selections=selection_descriptions(
-            mandatory=[],
-            optional=[
-                selection_description(
-                    label="rarity",
-                    options=[member.value for member in Rarity],
-                ),
-                selection_description(
-                    label="enforce_class",
-                    options=[
-                        member.value
-                        for member in Classes
-                        if member != Classes.MECHROMANCER
-                    ],
-                ),
-            ],
-        ),
-        rolls=rollswrapper(
-            entries=[
-                roll_description(label="Rarity roll", diceList=[Dice.D100]),
-                roll_description(label="class", diceList=[Dice.D8]),
-                roll_description(label="prefix", diceList=[Dice.D10]),
-                roll_description(label="suffix", diceList=[Dice.D12]),
-            ],
-            uuid=str(uuid4()),
-        ),
-    )
-    return description
-
 
 prefix_data = {
     0: [
@@ -194,8 +157,8 @@ suffix_data = {
             Rarity.LEGENDARY: "Gain 3 extra elemental die of your choice when dealing damage (biggest possible die) & Action skill elemental damage is doubled, whenever you use your action skill, apply the element damage on all enemies on the battlefield",
         },
     },
-    "Commando": {
-        "description": "Commando",
+    "Engineer": {
+        "description": "Engineer",
         "effects": {
             Rarity.COMMON: "+1 Mastery, +1 hits by action skill",
             Rarity.UNCOMMON: "+2 Mastery, +1 hits by action skill",
@@ -254,8 +217,8 @@ suffix_data = {
             Rarity.LEGENDARY: "+5 DMG, +25% hp & if the enemy you last attacked, attacks someone else then you, you can activate (capstone gunslinger tree) for free on that enemy",
         },
     },
-    "Gunzerker": {
-        "description": "Gunzerker",
+    "Raider": {
+        "description": "Raider",
         "effects": {
             Rarity.COMMON: "+3 Accuracy with assault rifles and shotguns",
             Rarity.UNCOMMON: "+5 Accuracy with assault rifles and shotguns",
@@ -314,8 +277,8 @@ suffix_data = {
             Rarity.LEGENDARY: "+5 Damage and 5 ACC with launchers & Kills with launchers cause an aftershock, dealing the damage again in a 3x3 radius",
         },
     },
-    "Psycho": {
-        "description": "Psycho",
+    "Reaper": {
+        "description": "Reaper",
         "effects": {
             Rarity.COMMON: "+2 to all stats while a kill skill is active",
             Rarity.UNCOMMON: "+4 to all stats while a kill skill is active",
@@ -376,6 +339,22 @@ suffix_data = {
     },
 }
 
+roll_rarity = [
+    ((1, 40), Rarity.COMMON),
+    ((41, 70), Rarity.UNCOMMON),
+    ((71, 85), Rarity.RARE),
+    ((86, 95), Rarity.EPIC),
+    ((96, 100), Rarity.LEGENDARY),
+]
+
+
+def get_rarity(roll: int) -> Rarity:
+    for (range_start, range_end), rarity in roll_rarity:
+        if range_start <= roll <= range_end:
+            return rarity
+    raise ValueError("Roll value must be between 1 and 100")
+
+
 class_suffix_mapping = {
     Classes.SIREN: ["Warden", "Nurse", "Sorcerer"],
     Classes.COMMANDO: ["Engineer", "Ranger", "Sentinel"],
@@ -385,3 +364,166 @@ class_suffix_mapping = {
     Classes.PSYCHO: ["Reaper", "Sickle", "Torch"],
     Classes.ASSASSIN: ["Sniper", "Rogue", "Ninja"],
 }
+
+
+@router.get("/rolldescription", response_model=random_create_description)
+def get_create_descritpion(session: SessionDep) -> random_create_description:
+    description = random_create_description(
+        level=False,
+        selections=selection_descriptions(
+            mandatory=[],
+            optional=[
+                selection_description(
+                    label="Rarity",
+                    options=[
+                        member.value for member in Rarity if member != Rarity.UNIQUE
+                    ],
+                ),
+                selection_description(
+                    label="Enforce Class",
+                    options=[
+                        member.value
+                        for member in Classes
+                        if member != Classes.MECHROMANCER
+                    ],
+                ),
+            ],
+        ),
+        rolls=rollswrapper(
+            entries=[
+                roll_description(label="Rarity roll", diceList=[Dice.D100]),
+                roll_description(label="class", diceList=[Dice.D6, Dice.D10]),
+                roll_description(label="prefix", diceList=[Dice.D10]),
+                roll_description(label="suffix", diceList=[Dice.D12]),
+            ],
+            uuid=str(uuid4()),
+        ),
+    )
+    return description
+
+
+class ClassModCreate(BaseModel):
+    rarity: Rarity
+    class_type: Classes
+    prefix: str
+    prefix_effect: str
+    suffix: str
+    suffix_effect: str
+
+
+def map_classrol_to_class(rollnumber: int) -> Classes:
+    # slighlty below 7 so 60 doesnt match to index 7
+    divider = 60.0 / 6.99999
+    # mappings:
+    # 0 -> [1-8] 8
+    # 1 -> [9-17] 9
+    # 2 -> [18-25] 8
+    # 3 -> [26-34] 9
+    # 4 -> [35-42] 8
+    # 5 -> [43-51] 9
+    # 56 -> [52-60] 9
+    index = float(rollnumber) / divider
+    index = int(index)
+    return ClassIndexed[index]
+
+
+@router.post("/generate")
+def generate_classmod(
+    create_result: random_create_result, session: SessionDep
+) -> roll_response:
+
+    # rarity
+    rarity_roll = create_result.get_roll_for_label("Rarity roll")[0]
+    rarity = get_rarity(rarity_roll)
+    rarity_choice = create_result.get_option_for_label("Rarity")
+    if not (rarity_choice == None or len(rarity_choice) == 0):
+        rarity = Rarity(rarity_choice[0])
+
+    # class roll
+    class_rolls = create_result.get_roll_for_label("class")
+    clazz = map_classrol_to_class(class_rolls[0] * class_rolls[1])
+    class_choice = create_result.get_option_for_label("Enforce Class")
+    if not (class_choice == None or len(class_choice) == 0):
+        clazz = Classes(class_choice[0])
+
+    # prefix
+    prefix_roll = create_result.get_roll_for_label("prefix")[0]
+    prefix_entry = prefix_data[prefix_roll - 1]
+    prefix_name = prefix_entry[0]
+    prefix_effect = prefix_entry[1][rarity]
+
+    # suffix
+    suffix_roll = create_result.get_roll_for_label("suffix")[0]
+    suffix_index = int((suffix_roll - 1) / 4)
+    suffix_name = class_suffix_mapping[clazz][suffix_index]
+    suffix_effect = suffix_data[suffix_name]["effects"][rarity]
+
+    newClassMod = ClassModCreate(
+        rarity=rarity,
+        class_type=clazz,
+        prefix=prefix_name,
+        prefix_effect=prefix_effect,
+        suffix=suffix_name,
+        suffix_effect=suffix_effect,
+    )
+    clm = create_classmod(classmod_data=newClassMod, session=session)
+    return roll_response(item_id=clm.id, item_type="classmod")
+
+
+@router.post("/")
+def create_classmod(classmod_data: ClassModCreate, session: SessionDep) -> ClassMod:
+    cl = ClassMod(
+        id=str(uuid.uuid4()),
+        name=f"{classmod_data.rarity.value} {classmod_data.prefix} {classmod_data.suffix}",
+        description="",
+        rarity=classmod_data.rarity,
+        class_type=classmod_data.class_type,
+        prefix=classmod_data.prefix,
+        prefix_effect=classmod_data.prefix_effect,
+        suffix=classmod_data.suffix,
+        suffix_effect=classmod_data.suffix_effect,
+    )
+    session.add(cl)
+    histoir = RollHistory(
+        id=cl.id, date=datetime.now(), description=str(cl), type="Classmod"
+    )
+    session.add(histoir)
+    session.commit()
+    session.refresh(cl)
+
+    return cl
+
+
+@router.put("/{classmod_id}", response_model=ClassMod)
+def update_classmod(
+    classmod_id: str, classmod: ClassMod, session: SessionDep
+) -> ClassMod:
+    statement = select(ClassMod).where(ClassMod.id == classmod_id)
+    results = session.exec(statement)
+    cl_db = results.one()
+    cl_db.id = classmod.id
+    cl_db.name = classmod.name
+    cl_db.description = classmod.description
+    cl_db.rarity = classmod.rarity
+    cl_db.class_type = classmod.class_type
+    cl_db.prefix = classmod.prefix
+    cl_db.prefix_effect = classmod.prefix_effect
+    cl_db.suffix = classmod.suffix
+    cl_db.suffix_effect = classmod.suffix_effect
+
+    session.add(cl_db)
+    session.commit()
+    session.refresh(cl_db)
+    return cl_db
+
+
+@router.get("/{classmod_id}", response_model=ClassMod)
+def get_classmod(classmod_id: str, session: SessionDep) -> ClassMod:
+    statement = select(ClassMod).where(ClassMod.id == classmod_id)
+
+    classmod = session.exec(statement).first()
+
+    if classmod is None:
+        raise HTTPException(status_code=404, detail="classmod not found")
+
+    return classmod
