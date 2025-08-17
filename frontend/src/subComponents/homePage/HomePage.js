@@ -8,7 +8,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import Mail from '@mui/icons-material/Mail';
-import foto from '../../assets/images/borderlands-joren-geezer.png';
+import foto from '../../assets/images/borderland-joren-soda.png';
 
 const useStyles = makeStyles((theme) => ({
     footer: {
