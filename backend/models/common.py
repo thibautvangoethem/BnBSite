@@ -33,6 +33,18 @@ class Manufacturer(str, Enum):
     STOKER = "Stoker"
 
 
+class ManufacturerNormal(str, Enum):
+    ATLAS = "Atlas"
+    COV = "COV"
+    DAHL = "Dahl"
+    HYPERION = "Hyperion"
+    JAKOBS = "Jakobs"
+    MALIWAN = "Maliwan"
+    TEDIORE = "Tediore"
+    TORGUE = "Torgue"
+    VLADOF = "Vladof"
+
+
 class Rarity(str, Enum):
     COMMON = "Common"
     UNCOMMON = "Uncommon"
@@ -119,4 +131,28 @@ ClassIndexed = {
     5: Classes.ASSASSIN,
     6: Classes.SIREN,
     7: Classes.MECHROMANCER,
+}
+
+ManufacturerMappedToNormal = {
+    Manufacturer.ALAS: ManufacturerNormal.ATLAS,
+    Manufacturer.SKULLDUGGER: ManufacturerNormal.COV,
+    Manufacturer.DAHLIA: ManufacturerNormal.DAHL,
+    Manufacturer.BLACKPOWDER: ManufacturerNormal.JAKOBS,
+    Manufacturer.MALEFACTOR: ManufacturerNormal.MALIWAN,
+    Manufacturer.HYPERIUS: ManufacturerNormal.HYPERION,
+    Manufacturer.FERIORE: ManufacturerNormal.TEDIORE,
+    Manufacturer.TORGUE: ManufacturerNormal.TORGUE,
+    Manufacturer.STOKER: ManufacturerNormal.VLADOF,
+}
+
+NormalMappedToManufacturer = {
+    ManufacturerNormal.ATLAS: Manufacturer.ALAS,
+    ManufacturerNormal.COV: Manufacturer.SKULLDUGGER,
+    ManufacturerNormal.DAHL: Manufacturer.DAHLIA,
+    ManufacturerNormal.JAKOBS: Manufacturer.BLACKPOWDER,
+    ManufacturerNormal.MALIWAN: Manufacturer.MALEFACTOR,
+    ManufacturerNormal.HYPERION: Manufacturer.HYPERIUS,
+    ManufacturerNormal.TEDIORE: Manufacturer.FERIORE,
+    ManufacturerNormal.TORGUE: Manufacturer.TORGUE,
+    ManufacturerNormal.VLADOF: Manufacturer.STOKER,
 }

@@ -121,8 +121,11 @@ def get_create_descritpion_test(session: SessionDep) -> random_create_descriptio
                 roll_description(label="Gun roll", diceList=[Dice.D8, Dice.D8]),
                 roll_description(label="Rarity roll", diceList=[Dice.D4, Dice.D6]),
                 roll_description(label="Element roll", diceList=[Dice.D100]),
-                roll_description(label="Prefix", diceList=[Dice.D100]),
+                roll_description(label="Prefix", diceList=[Dice.D20]),
                 roll_description(label="Redtext", diceList=[Dice.D100]),
+                roll_description(
+                    label="Parts", diceList=[Dice.D100, Dice.D20, Dice.D100]
+                ),
             ],
             uuid=str(uuid4()),
         ),
@@ -522,6 +525,515 @@ damageMap = {
     ],
 }
 
+grip_data = {
+    ManufacturerNormal.ATLAS: {
+        GunType.RIFLE: "1 RANGE",
+        GunType.SUBMACHINE: "1 RANGE",
+        GunType.PISTOL: "-1 recoil",
+        GunType.SHOTGUN: "1 SPD, 1 MST",
+        GunType.SNIPER: "2 RANGE, 3 RECOIL",
+        GunType.ROCKET: "2 RANGE, -1 SPD",
+    },
+    ManufacturerNormal.COV: {
+        GunType.RIFLE: "-1 ACC, 1 DMG",
+        GunType.SUBMACHINE: "1 HIT, -2 ACC, RELOAD ON 3 OR LESS",
+        GunType.PISTOL: "+1 Damage, +1 recoil",
+        GunType.SHOTGUN: "2 DMG, 2 RECOIL",
+        GunType.SNIPER: "2 RECOIL, 1 SPD",
+        GunType.ROCKET: "-2 ACC, +1 MELEE DAMAGE DIE",
+    },
+    ManufacturerNormal.DAHL: {
+        GunType.RIFLE: "-1 DMG, -1 RECOIL",
+        GunType.SUBMACHINE: "1 ACC, -1 DMG",
+        GunType.PISTOL: "+1 ACC",
+        GunType.SHOTGUN: "1 ACC, -1 DMG",
+        GunType.SNIPER: "-2 DMG, -2 RECOIL",
+        GunType.ROCKET: "1 ACC, -1 DMG",
+    },
+    ManufacturerNormal.HYPERION: {
+        GunType.RIFLE: "2 ACC, -2 DMG",
+        GunType.SUBMACHINE: "-2 DAMAGE, +2 ACC",
+        GunType.PISTOL: "+2 ACC first attack per turn",
+        GunType.SHOTGUN: "-1 DMG, 1 ACC",
+        GunType.SNIPER: "2 ACC, -2 DMG",
+        GunType.ROCKET: "2 ACC, -2 DMG",
+    },
+    ManufacturerNormal.JAKOBS: {
+        GunType.RIFLE: "2 DMG, 2 RECOIL, 2 CRIT DAMAGE",
+        GunType.SUBMACHINE: "-4 ACC, 2 CRIT DMG",
+        GunType.PISTOL: "+2 Crit damage, +3 recoil",
+        GunType.SHOTGUN: "2 DMG, 2 RECOIL",
+        GunType.SNIPER: "4 DMG, 4 RECOIL, -4 ACC",
+        GunType.ROCKET: "2 DMG, 2 CRIT DAMAGE, 5 RECOIL",
+    },
+    ManufacturerNormal.MALIWAN: {
+        GunType.RIFLE: "1 ELEMENTEL DAMAGE DIE",
+        GunType.SUBMACHINE: "1 ELEMENTAL DAMAGE DIE",
+        GunType.PISTOL: "+1 ACC on elemental guns",
+        GunType.SHOTGUN: "1 MST, +1 ELEMENTAL DAMAGE DIE",
+        GunType.SNIPER: "2 MST, 2 RECOIL",
+        GunType.ROCKET: "1 ELEMENTAL DAMAGE DIE",
+    },
+    ManufacturerNormal.TEDIORE: {
+        GunType.RIFLE: "-1 ACC, -1 RECOIL",
+        GunType.SUBMACHINE: "-1 DMG",
+        GunType.PISTOL: "on reload, +2 ACC next attack, +1 recoil",
+        GunType.SHOTGUN: "-1 DMG",
+        GunType.SNIPER: "2 ACC, -4 DMG",
+        GunType.ROCKET: "-2 DMG, -1 ACC, +2 MST",
+    },
+    ManufacturerNormal.TORGUE: {
+        GunType.RIFLE: "2 DAMAGE, -1 ACCURACY, 2 RECOIL",
+        GunType.SUBMACHINE: "1 DMG",
+        GunType.PISTOL: "+2 Damage, +2 recoil",
+        GunType.SHOTGUN: "2 DMG, 4 RECOIL",
+        GunType.SNIPER: "2 DMG, -2 RECOIL",
+        GunType.ROCKET: "4 DAMAGE, -3 ACC, 2 RECOIL",
+    },
+    ManufacturerNormal.VLADOF: {
+        GunType.RIFLE: "1 HITS, -2 DMG",
+        GunType.SUBMACHINE: "2 SPD",
+        GunType.PISTOL: "+1 ACC, +1 Recoil",
+        GunType.SHOTGUN: "-5 ACC, +1 HIT",
+        GunType.SNIPER: "1 SPD, -1 ACC",
+        GunType.ROCKET: "1 HITS, 1 SPD, 2 RECOIL",
+    },
+}
+
+barrel_data = {
+    ManufacturerNormal.ATLAS: {
+        GunType.RIFLE: "+2 Range, +1 ACC",
+        GunType.SUBMACHINE: "+2 Range, -1 DMG",
+        GunType.PISTOL: "+1 Range",
+        GunType.SHOTGUN: "Always Full Damage",
+        GunType.SNIPER: "+2 Range, +2 Recoil",
+        GunType.ROCKET: "+1 Range, +1 ACC",
+    },
+    ManufacturerNormal.COV: {
+        GunType.RIFLE: "+1 DMG, -1 ACC",
+        GunType.SUBMACHINE: "+1 DMG, -1 ACC",
+        GunType.PISTOL: "+1 DMG, +1 Recoil",
+        GunType.SHOTGUN: "+1 DMG, -1 ACC, +1 Recoil",
+        GunType.SNIPER: "-2 ACC, +2 Damage",
+        GunType.ROCKET: "+2 DMG, -2 ACC",
+    },
+    ManufacturerNormal.DAHL: {
+        GunType.RIFLE: "+1 ACC, -1 Recoil, -1 DMG",
+        GunType.SUBMACHINE: "-1 Recoil",
+        GunType.PISTOL: "+1 Range, +1 Recoil",
+        GunType.SHOTGUN: "+1 ACC",
+        GunType.SNIPER: "-2 Recoil",
+        GunType.ROCKET: "+1 ACC, -1 DMG",
+    },
+    ManufacturerNormal.HYPERION: {
+        GunType.RIFLE: "+2 ACC, -2 DMG",
+        GunType.SUBMACHINE: "+2 ACC, -1 DMG",
+        GunType.PISTOL: "+1 ACC, discard recoil on crit (roll of 20)",
+        GunType.SHOTGUN: "+1 ACC, -1 DMG, -1 Recoil",
+        GunType.SNIPER: "+1 ACC, -1 Recoil",
+        GunType.ROCKET: "+2 ACC, -3 DMG",
+    },
+    ManufacturerNormal.JAKOBS: {
+        GunType.RIFLE: "+2 DMG, +3 Recoil",
+        GunType.SUBMACHINE: "+2 DMG, +2 Recoil",
+        GunType.PISTOL: "+2 Crit damage, +3 recoil",
+        GunType.SHOTGUN: "-1 ACC, +3 Recoil, +3 DMG",
+        GunType.SNIPER: "+2 DMG, +4 Recoil",
+        GunType.ROCKET: "+1 Crit Die, +2 Recoil",
+    },
+    ManufacturerNormal.MALIWAN: {
+        GunType.RIFLE: "+1 Hit with Elemental Weapons",
+        GunType.SUBMACHINE: "+1 ACC, +1 Elemental Damage Die",
+        GunType.PISTOL: "+1 Crit damage on elemental attacks",
+        GunType.SHOTGUN: "+1 ACC, +1 MST",
+        GunType.SNIPER: "+1 ACC, +1 Elemental Damage Die added on crits",
+        GunType.ROCKET: "+2 Accuracy, +1 SPD, -2 DMG",
+    },
+    ManufacturerNormal.TEDIORE: {
+        GunType.RIFLE: "-2 DMG, +1 ACC",
+        GunType.SUBMACHINE: "Reload on a 2 or less, +2 Accuracy, -1 DMG",
+        GunType.PISTOL: "+1 Recoil",
+        GunType.SHOTGUN: "Does Nothing",
+        GunType.SNIPER: "+1 ACC, +3 Recoil",
+        GunType.ROCKET: "Does Nothing",
+    },
+    ManufacturerNormal.TORGUE: {
+        GunType.RIFLE: "+3 DMG, +2 Recoil, -2 ACC",
+        GunType.SUBMACHINE: "-2 ACC, +2 DMG",
+        GunType.PISTOL: "+2 Damage, +2 Recoil",
+        GunType.SHOTGUN: "+4 DMG, +5 Recoil, -2 ACC",
+        GunType.SNIPER: "+4 Recoil, -2 ACC, +3 DMG",
+        GunType.ROCKET: "+4 Damage, -1 ACC, -1 SPD, +2 Recoil",
+    },
+    ManufacturerNormal.VLADOF: {
+        GunType.RIFLE: "+2 Hits, -5 ACC, +1 Recoil",
+        GunType.SUBMACHINE: "+1 Hit, +2 Recoil",
+        GunType.PISTOL: "+1 Range",
+        GunType.SHOTGUN: "+2 SPD, +2 Recoil",
+        GunType.SNIPER: "+1 Hit, +3 Recoil",
+        GunType.ROCKET: "+2 SPD, -1 ACC",
+    },
+}
+
+magazine_data = {
+    ManufacturerNormal.ATLAS: {
+        GunType.RIFLE: "1 MST, 1 RANGE",
+        GunType.SUBMACHINE: "+1 reload reroll per combat",
+        GunType.PISTOL: "+1 reload reroll per combat",
+        GunType.SHOTGUN: "1 ACC",
+        GunType.SNIPER: "1 SPD, 1 RECOIL",
+        GunType.ROCKET: "1 MST, -1 ACC",
+    },
+    ManufacturerNormal.COV: {
+        GunType.RIFLE: "1 ACC, -1 DAMAGE",
+        GunType.SUBMACHINE: "+1 Damage first attack per turn, +3 Recoil after reloading",
+        GunType.PISTOL: "+1 Damage first attack per turn, +3 Recoil after reloading",
+        GunType.SHOTGUN: "DOES NOTHING",
+        GunType.SNIPER: "1 DMG, 1 RECOIL",
+        GunType.ROCKET: "-1 ACC",
+    },
+    ManufacturerNormal.DAHL: {
+        GunType.RIFLE: "2 ACC, -1 SPD",
+        GunType.SUBMACHINE: "+1 ACC on your first attack per turn",
+        GunType.PISTOL: "+1 ACC on your first attack per turn",
+        GunType.SHOTGUN: "1 ACC",
+        GunType.SNIPER: "-1 RECOIL, -1 ACC",
+        GunType.ROCKET: "1 ACC",
+    },
+    ManufacturerNormal.HYPERION: {
+        GunType.RIFLE: "1 ACC",
+        GunType.SUBMACHINE: "+4 ACC after a reload",
+        GunType.PISTOL: "+4 ACC after a reload",
+        GunType.SHOTGUN: "-1 RECOIL",
+        GunType.SNIPER: "2 ACC, -1 RECOIL",
+        GunType.ROCKET: "1 ACC",
+    },
+    ManufacturerNormal.JAKOBS: {
+        GunType.RIFLE: "1 ACC, 1 DAMAGE, 4 RECOIL",
+        GunType.SUBMACHINE: "+1 Crit damage, Each Crit adds +1 Recoil",
+        GunType.PISTOL: "+1 Crit damage, Each Crit adds +1 Recoil",
+        GunType.SHOTGUN: "2 RECOIL",
+        GunType.SNIPER: "2 ACC, 3 RECOIL",
+        GunType.ROCKET: "2 DAMAGE, 3 RECOIL",
+    },
+    ManufacturerNormal.MALIWAN: {
+        GunType.RIFLE: "1 MST, 1 ACC",
+        GunType.SUBMACHINE: "+1 Damage on elemental damage die",
+        GunType.PISTOL: "+1 Damage on elemental damage die",
+        GunType.SHOTGUN: "1 ACC",
+        GunType.SNIPER: "1 ACC",
+        GunType.ROCKET: "2 SPD",
+    },
+    ManufacturerNormal.TEDIORE: {
+        GunType.RIFLE: "-1 DAMAGE, -1 ACC",
+        GunType.SUBMACHINE: "on tediore weapons, reload grenade damage is quadrupled",
+        GunType.PISTOL: "on tediore weapons, reload grenade damage is quadrupled",
+        GunType.SHOTGUN: "1 RECOIL",
+        GunType.SNIPER: "1 ACC, -1 DMG",
+        GunType.ROCKET: "-2 ACCURACY, -1 DMG",
+    },
+    ManufacturerNormal.TORGUE: {
+        GunType.RIFLE: "-1 RECOIL, -1 ACC",
+        GunType.SUBMACHINE: "+2 Damage per damage die on your attack after a reload",
+        GunType.PISTOL: "+2 Damage per damage die on your attack after a reload",
+        GunType.SHOTGUN: "2 RECOIL",
+        GunType.SNIPER: "2 DMG, 2 RECOIL",
+        GunType.ROCKET: "2 DAMAGE, -2 SPD",
+    },
+    ManufacturerNormal.VLADOF: {
+        GunType.RIFLE: "2 SPD, 1 RECOIL",
+        GunType.SUBMACHINE: "+1 Speed on turn when using this pistol, gives +2 recoil when using all the speed",
+        GunType.PISTOL: "+1 Speed on turn when using this pistol, gives +2 recoil when using all the speed",
+        GunType.SHOTGUN: "1 SPD",
+        GunType.SNIPER: "1 SPD, -1 ACC",
+        GunType.ROCKET: "3 SPD, 4 RECOIL",
+    },
+}
+redtext_data = [
+    {"id": 1, "name": "POP POP!", "effect": "Deals Crit Damage twice."},
+    {"id": 2, "name": "I never freeze", "effect": "Adds Cryo Element type."},
+    {"id": 3, "name": "Toasty!", "effect": "Adds Incendiary Element type."},
+    {"id": 4, "name": "Was he slow?", "effect": "Fires backwards."},
+    {
+        "id": 5,
+        "name": "We Hate You, Please Die.",
+        "effect": "Taunts the farthest Enemy each turn.",
+    },
+    {
+        "id": 6,
+        "name": "Tell them they're next",
+        "effect": "Won't deal Damage to the final Enemy in an encounter.",
+    },
+    {"id": 7, "name": "PAN SHOT!", "effect": "Always Hits the closest Enemy."},
+    {"id": 8, "name": "Envision Wyverns", "effect": "Adds Radiation Element type."},
+    {"id": 9, "name": "I'm melting!", "effect": "Adds Corrosive Element type."},
+    {
+        "id": 10,
+        "name": "The same thing that happens to everything else.",
+        "effect": "Adds Shock Element type.",
+    },
+    {
+        "id": 11,
+        "name": "360 quickscope",
+        "effect": "Adds a Crit to each Ranged Attack.",
+    },
+    {
+        "id": 12,
+        "name": "Any Questions?",
+        "effect": "Shoots pumpkin bombs that deal an extra 3d6 Explosive Damage.",
+    },
+    {
+        "id": 13,
+        "name": "Blood and Thunder",
+        "effect": "Take 1d6 Health Damage to deal +3d6 Shock Damage.",
+    },
+    {
+        "id": 14,
+        "name": "SI VIS PACEM, PARA BELLUM",
+        "effect": "Gain Extra Attack if Acting Before Enemies.",
+    },
+    {
+        "id": 15,
+        "name": "You're breathtaking!",
+        "effect": "Wielder cannot be targeted on the first turn of an encounter.",
+    },
+    {
+        "id": 16,
+        "name": "Pass turn.",
+        "effect": "Wielder may Throw a grenade during the End of Turn step.",
+    },
+    {
+        "id": 17,
+        "name": "I am Vengeance!",
+        "effect": "Deals 2x Damage to Enemies adjacent to allies.",
+    },
+    {
+        "id": 18,
+        "name": "Roll the dice",
+        "effect": "If Accuracy Roll is even, 2x Damage. If Accuracy Roll is odd, half Damage.",
+    },
+    {
+        "id": 19,
+        "name": "One among the fence",
+        "effect": "Add 21 Damage if you roll 13+ on your Accuracy Roll. (1/day)",
+    },
+    {
+        "id": 20,
+        "name": "Don't be sorry. Be better.",
+        "effect": "Reroll the Badass Die once per day.",
+    },
+    {
+        "id": 21,
+        "name": "THE PICKLES!",
+        "effect": "Shoots flaming cheeseburgers that deal an extra 2d6 Incendiary Damage.",
+    },
+    {
+        "id": 22,
+        "name": "Do a kickflip!",
+        "effect": "+4 on Traverse Checks while equipped.",
+    },
+    {
+        "id": 23,
+        "name": "Extinction is the Rule",
+        "effect": "Teleport to any square up to 4 away when you kill an Enemy.",
+    },
+    {
+        "id": 24,
+        "name": "Never Fight a Knight with a Perm",
+        "effect": "DMG Mod +6 against non-human Enemies.",
+    },
+    {
+        "id": 25,
+        "name": "Bye bye, little Butt Stallion!",
+        "effect": "Shots explode into rainbows that deal an extra 1d8 Damage.",
+    },
+    {
+        "id": 26,
+        "name": "Time 2 Hack",
+        "effect": "+4 on Interact Checks and Melee Damage while equipped.",
+    },
+    {
+        "id": 27,
+        "name": "HATE Magic...",
+        "effect": "so much +3 DMG Mod. Take 2d6 Vomit Damage if Reloaded.",
+    },
+    {
+        "id": 28,
+        "name": "OFF WITH THEIR HEADS!",
+        "effect": "Roll %s. 95%+: the Enemy's head falls off.",
+    },
+    {
+        "id": 29,
+        "name": "This is my BOOMSTICK!",
+        "effect": "Deals 3x Damage to skeletons.",
+    },
+    {
+        "id": 30,
+        "name": "Super easy, barely an inconvenience",
+        "effect": "Automatically pass the first Check each day.",
+    },
+    {
+        "id": 31,
+        "name": "Hold onto your butts.",
+        "effect": "When fired, the wielder and targets Hit are Knocked Back 2 squares.",
+    },
+    {
+        "id": 32,
+        "name": "The Wise Man's Fear",
+        "effect": "Deals 3x Damage to all wizards.",
+    },
+    {
+        "id": 33,
+        "name": "I don't want this isolation.",
+        "effect": "Won't fire unless adjacent to an ally or target.",
+    },
+    {
+        "id": 34,
+        "name": "TUFF with two Fs",
+        "effect": "Prevents the first 5 Health Damage each turn.",
+    },
+    {
+        "id": 35,
+        "name": "Unlikely Maths",
+        "effect": "Roll an extra die of each type rolled during an Attack and take the highest result(s).",
+    },
+    {
+        "id": 36,
+        "name": "Gravity's Rainbow",
+        "effect": "First Attack against a Badass target always deals max Damage.",
+    },
+    {
+        "id": 37,
+        "name": "Let's do this one last time...",
+        "effect": "Shoots webs that reduce target's Movement to 0 for 1 turn.",
+    },
+    {
+        "id": 38,
+        "name": "BIP!",
+        "effect": "Once per encounter, the wielder can run into squares with an Enemy, Knocking them Back 1 square.",
+    },
+    {
+        "id": 39,
+        "name": "The Heaviest Matter of the Universe",
+        "effect": "The wielder and targets Hit cannot take Movement Actions while equipped.",
+    },
+    {
+        "id": 40,
+        "name": "GREEN FLAME",
+        "effect": "Shoots burst of green flames while firing, dealing 2d6 Incendiary Damage to adjacent targets.",
+    },
+    {
+        "id": 41,
+        "name": "More like Bore Ragnarok!",
+        "effect": "Gain 1 Badass Token after a successful Talk Check while equipped.",
+    },
+    {
+        "id": 42,
+        "name": "That's levitation, Holmes!",
+        "effect": "Ignore difficult terrain while equipped.",
+    },
+    {
+        "id": 43,
+        "name": "Let's boo-boo.",
+        "effect": "Gain Extra Movement after drinking a potion while equipped.",
+    },
+    {
+        "id": 44,
+        "name": "Mmm Whatcha Say...",
+        "effect": "Gain a Ranged Attack if an Enemy is talking before an encounter.",
+    },
+    {
+        "id": 45,
+        "name": "Here Comes the FunCooker",
+        "effect": "When this gun scores a Crit, the Enemy suffers a miniature combustion, dealing 1d12 Explosive Damage to itself and all adjacent squares.",
+    },
+    {
+        "id": 46,
+        "name": "Overwhelming strength is boring.",
+        "effect": "\u00e2\u20ac\u201c6 Initiative. The first non-Badass, non- boss Enemy that is Melee Attacked dies instantly (1/day).",
+    },
+    {
+        "id": 47,
+        "name": "Stop talking, I will win.",
+        "effect": "It's what heroes do. Gun fires explosives that deal +3d6 Damage to all adjacent squares.",
+    },
+    {
+        "id": 48,
+        "name": "Richer and cleverer than everyone else!",
+        "effect": "Add 10 gold per Loot Pile when rolling for Enemy Drops.",
+    },
+    {
+        "id": 49,
+        "name": "METAL WILL DESTROY ALL EVIL!",
+        "effect": "Allies get +2 ACC Mod each turn you perform a Melee Attack.",
+    },
+    {
+        "id": 50,
+        "name": "Life is a conundrum of esoterica.",
+        "effect": "Gain 2 Badass Tokens the first time you roll for a Trauma each day.",
+    },
+]
+
+prefix_data = [
+    {
+        "name": "Loaded",
+        "normal": "+1 reload reroll / combat",
+        "affinity": ManufacturerNormal.ATLAS,
+        "boosted": "2 reload reroll / combat",
+    },
+    {
+        "name": "Stabbing",
+        "normal": "gun damage die added on melee attack",
+        "affinity": ManufacturerNormal.COV,
+        "boosted": "gun damage die added on melee attack",
+    },
+    {
+        "name": "Tactical",
+        "normal": "-1 recoil",
+        "affinity": ManufacturerNormal.DAHL,
+        "boosted": "-2 recoil",
+    },
+    {
+        "name": "Earnest",
+        "normal": "+1 ACC",
+        "affinity": ManufacturerNormal.HYPERION,
+        "boosted": "+2 ACC",
+    },
+    {
+        "name": "Deadly",
+        "normal": "+1 Crit Damage",
+        "affinity": ManufacturerNormal.JAKOBS,
+        "boosted": "+2 Crit Damage",
+    },
+    {
+        "name": "Bewitching",
+        "normal": "+1 Damage on elemental rolls",
+        "affinity": ManufacturerNormal.MALIWAN,
+        "boosted": "+2 Damage on elemental rolls",
+    },
+    {
+        "name": "Expendable",
+        "normal": "reload on a roll of 2 or less",
+        "affinity": ManufacturerNormal.TEDIORE,
+        "boosted": "reload on a roll of 5 or less",
+    },
+    {
+        "name": "Double Penetrating",
+        "normal": "+5 recoil, +1 hit",
+        "affinity": ManufacturerNormal.TORGUE,
+        "boosted": "+4 recoil, +2 hit",
+    },
+    {
+        "name": "Vengeful",
+        "normal": "+1 hit on 16+ACC",
+        "affinity": ManufacturerNormal.VLADOF,
+        "boosted": "+2 hits on 16+ACC",
+    },
+]
+
+
+boost_gripmanufacturermatch = "-1 Recoil on all attacks, once per encounter you can reroll an accuracy roll with this weapon"
+
 
 @router.post("/generate")
 def roll_gun(create_result: random_create_result, session: SessionDep) -> roll_response:
@@ -556,6 +1068,7 @@ def roll_gun(create_result: random_create_result, session: SessionDep) -> roll_r
     manufacturer_choice = create_result.get_option_for_label("enforce_manufacturer")
     if not (manufacturer_choice == None or len(manufacturer_choice) == 0):
         manufacturer = Manufacturer(manufacturer_choice[0])
+        manufacturer_normal = ManufacturerMappedToNormal[manufacturer]
 
     # PART 2 rarity (hmm dat was makkelijk)
     rarityRoll = create_result.get_roll_for_label("Rarity roll")
@@ -587,27 +1100,35 @@ def roll_gun(create_result: random_create_result, session: SessionDep) -> roll_r
         if elyroll > 100:
             elyroll = 100
     # TODO refactor deze map, of steek het tenminste in ne file
+    # => nope grote maps in de files is nu standaard
     element = None
     elementstr = ""
-    for row in elementalRarityRolArray:
+    for row in 5:
         if row["range"][0] <= elyroll and row["range"][1] >= elyroll:
             element = row["rarity"][rarity][0]
             elementstr = row["rarity"][rarity][1]
             break
 
     # PART4 prefix
-    if rarity in [Rarity.RARE, Rarity.EPIC, Rarity.LEGENDARY]:
-        prefixRoll = create_result.get_roll_for_label("Prefix")[0]
-        prefix = [prefixRoll]
-    else:
-        prefix = []
+    # d20 => 1-11 nothing, 12-20 has prefix
+    prefix_name = ""
+    prefix_effect = ""
+    prefixRoll = create_result.get_roll_for_label("Prefix")[0]
+    if prefixRoll > 11:
+        prefix = prefix_data[prefixRoll - 11]
+        prefix_name = prefix["name"]
+        prefix_effect = prefix["normal"]
+        if prefix["affinity"] == manufacturer_normal:
+            prefix_effect = prefix["boosted"]
 
     # PART5 redtext
+    redtext_name = ""
+    redtext_effect = ""
     if rarity in [Rarity.EPIC, Rarity.LEGENDARY]:
         redtextRoll = create_result.get_roll_for_label("Redtext")[0]
-        redtext = [int(redtextRoll / 2)]
-    else:
-        redtext = []
+        redtext = redtext_data[int(redtextRoll / 2)]
+        redtext_name = redtext["name"]
+        redtext_effect = redtext["effect"]
 
     # PART6 damage numbers
     damagerow = None
@@ -615,6 +1136,28 @@ def roll_gun(create_result: random_create_result, session: SessionDep) -> roll_r
         if row[0][0] <= create_result.level and row[0][1] >= create_result.level:
             damagerow = row[1]
             break
+
+    # PART7 parts
+    parts_roll = (
+        create_result.get_roll_for_label("Parts")[0]
+        * create_result.get_roll_for_label("Parts")[1]
+    ) + create_result.get_roll_for_label("Parts")[2]
+    # decode single number into 3 numbers from 1-9
+    sum_value = 3 + int((parts_roll - 1) * 24 / 1999)
+    base = sum_value // 3
+    remainder = sum_value % 3
+    digits = [base] * 3
+    for i in range(remainder):
+        digits[i] += 1
+    for i in range(3):
+        if digits[i] < 1:
+            digits[i] = 1
+        elif digits[i] > 9:
+            digits[i] = 9
+
+    barrel_roll = digits[0]
+    magazine_roll = digits[1]
+    grip_roll = digits[2]
 
     legun = GunCreate(
         name="nog niets",
