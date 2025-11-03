@@ -1,4 +1,3 @@
-from models.gun import Prefix, Postfix, RedText
 from sqlalchemy.orm import sessionmaker
 
 import os
