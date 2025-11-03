@@ -34,9 +34,22 @@ class GunCreate(BaseModel):
     manufacturer_effect: Optional[str] = None
     element: Optional[Element] = None
     elementstr: Optional[str] = None
-    prefix_ids: List[int] = []
-    postfix_ids: List[int] = []
-    redtext_ids: List[int] = []
+    prefix_name: Optional[str] = None
+    prefix_effect: Optional[str] = None
+    redtext_name: Optional[str] = None
+    redtext_effect: Optional[str] = None
+
+    barrel_manufacturer: ManufacturerNormal
+    barrel_effect: str
+    magazine_manufacturer: ManufacturerNormal
+    magazine_effect: str
+    grip_manufacturer: ManufacturerNormal
+    grip_effect: str
+    match_bonus: Optional[str]
+
+    # prefix_ids: List[int] = []
+    # postfix_ids: List[int] = []
+    # redtext_ids: List[int] = []
 
     range: int
     dmgroll: str
@@ -46,34 +59,6 @@ class GunCreate(BaseModel):
     mediumCrit: int
     highNormal: int
     highCrit: int
-
-
-# sad sqlmodel werkt niet deftig met foreign keys
-class GunResponse(BaseModel):
-    id: str = Field(primary_key=True)
-    name: str
-    description: Optional[str] = None
-    type: GunType
-    rarity: Rarity
-    manufacturer: Manufacturer
-    manufacturer_effect: Optional[str] = None
-    element: Optional[Element] = None
-    elementstr: Optional[str] = None
-
-    range: int
-    dmgroll: str
-    lowNormal: int
-    lowCrit: int
-    mediumNormal: int
-    mediumCrit: int
-    highNormal: int
-    highCrit: int
-
-    prefixes: List[Prefix]
-
-    postfixes: List[Postfix]
-
-    redtexts: List[RedText]
 
 
 @router.get("/")
@@ -1068,7 +1053,7 @@ def roll_gun(create_result: random_create_result, session: SessionDep) -> roll_r
     manufacturer_choice = create_result.get_option_for_label("enforce_manufacturer")
     if not (manufacturer_choice == None or len(manufacturer_choice) == 0):
         manufacturer = Manufacturer(manufacturer_choice[0])
-        manufacturer_normal = ManufacturerMappedToNormal[manufacturer]
+    manufacturer_normal = ManufacturerMappedToNormal[manufacturer]
 
     # PART 2 rarity (hmm dat was makkelijk)
     rarityRoll = create_result.get_roll_for_label("Rarity roll")
@@ -1103,7 +1088,7 @@ def roll_gun(create_result: random_create_result, session: SessionDep) -> roll_r
     # => nope grote maps in de files is nu standaard
     element = None
     elementstr = ""
-    for row in 5:
+    for row in elementalRarityRolArray:
         if row["range"][0] <= elyroll and row["range"][1] >= elyroll:
             element = row["rarity"][rarity][0]
             elementstr = row["rarity"][rarity][1]
@@ -1155,22 +1140,41 @@ def roll_gun(create_result: random_create_result, session: SessionDep) -> roll_r
         elif digits[i] > 9:
             digits[i] = 9
 
-    barrel_roll = digits[0]
-    magazine_roll = digits[1]
-    grip_roll = digits[2]
+    barrel_roll = digits[0] - 1
+    barrel_manufacturer = ManufacturerMappedToNormal[ManufacturerIndexed[barrel_roll]]
+    barrel = barrel_data[barrel_manufacturer][guntype]
+    magazine_roll = digits[1] - 1
+    magazine_manufacturer = ManufacturerMappedToNormal[
+        ManufacturerIndexed[magazine_roll]
+    ]
+    magazine = magazine_data[magazine_manufacturer][guntype]
+    grip_roll = digits[2] - 1
+    grip_manufacturer = ManufacturerMappedToNormal[ManufacturerIndexed[grip_roll]]
+    grip = grip_data[grip_manufacturer][guntype]
+
+    ismatching_grip = grip == manufacturer_normal
+    matchin_grip_text = boost_gripmanufacturermatch if ismatching_grip else ""
 
     legun = GunCreate(
-        name="nog niets",
-        description="ook nog niets",
+        name=f"{prefix_name} {manufacturer.value} {guntype.value}",
+        description=f"{redtext_name}",
         rarity=rarity,
         guntype=guntype,
         manufacturer=manufacturer,
         manufacturer_effect=guildRarityBonusMap[manufacturer][rarity],
         element=element,
         elementstr=elementstr,
-        prefix_ids=prefix,
-        postfix_ids=[],
-        redtext_ids=redtext,
+        prefix_name=prefix_name,
+        prefix_effect=prefix_effect,
+        redtext_effect=redtext_effect,
+        redtext_name=redtext_name,
+        barrel_manufacturer=barrel_manufacturer,
+        barrel_effect=barrel,
+        magazine_manufacturer=magazine_manufacturer,
+        magazine_effect=magazine,
+        grip_manufacturer=grip_manufacturer,
+        grip_effect=grip,
+        match_bonus=matchin_grip_text,
         range=gunRangeMap[guntype],
         dmgroll=damagerow[1],
         lowNormal=damagerow[0][0],
@@ -1184,25 +1188,16 @@ def roll_gun(create_result: random_create_result, session: SessionDep) -> roll_r
     return roll_response(item_id=gotten_gun.id, item_type="gun")
 
 
-@router.get("/{gun_id}", response_model=GunResponse)
-def get_gun(gun_id: str, session: SessionDep) -> GunResponse:
-    statement = (
-        select(Gun)
-        .options(selectinload(Gun.prefixes), selectinload(Gun.postfixes))
-        .where(Gun.id == gun_id)
-    )
+@router.get("/{gun_id}", response_model=Gun)
+def get_gun(gun_id: str, session: SessionDep) -> Gun:
+    statement = select(Gun).where(Gun.id == gun_id)
 
     gun = session.exec(statement).first()
 
     if gun is None:
         raise HTTPException(status_code=404, detail="Gun not found")
-    # Yup de sqlmodel naar pydantic werkt niet met foreig n eky object expansio
-    temp = Gun.model_dump(gun)
-    temp["prefixes"] = gun.prefixes
-    temp["postfixes"] = gun.postfixes
-    temp["redtexts"] = gun.redtexts
 
-    return GunResponse.model_validate(temp)
+    return gun
 
 
 @router.post("/")
@@ -1218,6 +1213,17 @@ def create_gun(gun_data: GunCreate, session: SessionDep) -> Gun:
         manufacturer_effect=gun_data.manufacturer_effect,
         element=gun_data.element,
         elementstr=gun_data.elementstr,
+        prefix_name=gun_data.prefix_name,
+        prefix_effect=gun_data.prefix_effect,
+        redtext_effect=gun_data.redtext_effect,
+        redtext_name=gun_data.redtext_name,
+        barrel_manufacturer=gun_data.barrel_manufacturer,
+        barrel_effect=gun_data.barrel_effect,
+        magazine_manufacturer=gun_data.magazine_manufacturer,
+        magazine_effect=gun_data.magazine_effect,
+        grip_manufacturer=gun_data.grip_manufacturer,
+        grip_effect=gun_data.grip_effect,
+        match_bonus=gun_data.match_bonus,
         range=gun_data.range,
         dmgroll=gun_data.dmgroll,
         lowNormal=gun_data.lowNormal,
@@ -1235,42 +1241,11 @@ def create_gun(gun_data: GunCreate, session: SessionDep) -> Gun:
     session.add(histoir)
     session.commit()
     session.refresh(gun)
-
-    for prefix_id in gun_data.prefix_ids:
-        prefix = session.get(Prefix, prefix_id)
-        if prefix:
-            gun.prefixes.append(prefix)
-        else:
-            raise HTTPException(
-                status_code=404, detail=f"Prefix with id {prefix_id} not found"
-            )
-
-    for postfix_id in gun_data.postfix_ids:
-        postfix = session.get(Postfix, postfix_id)
-        if postfix:
-            gun.postfixes.append(postfix)
-        else:
-            raise HTTPException(
-                status_code=404, detail=f"Postfix with id {postfix_id} not found"
-            )
-
-    for redtext_id in gun_data.redtext_ids:
-        redtext = session.get(RedText, redtext_id)
-        if redtext:
-            gun.redtexts.append(redtext)
-        else:
-            raise HTTPException(
-                status_code=404, detail=f"Redtext with id {redtext_id} not found"
-            )
-
-    session.commit()
-    session.refresh(gun)
-
     return gun
 
 
-@router.put("/{gun_id}", response_model=GunResponse)
-def update_gun(gun_id: str, gun: GunResponse, session: SessionDep) -> GunResponse:
+@router.put("/{gun_id}", response_model=Gun)
+def update_gun(gun_id: str, gun: Gun, session: SessionDep) -> Gun:
     statement = select(Gun).where(Gun.id == gun_id)
     results = session.exec(statement)
     gun_db = results.one()
@@ -1283,6 +1258,17 @@ def update_gun(gun_id: str, gun: GunResponse, session: SessionDep) -> GunRespons
     gun_db.manufacturer_effect = gun.manufacturer_effect
     gun_db.element = gun.element
     gun_db.elementstr = gun.elementstr
+    gun_db.redtext_effect = gun.redtext_effect
+    gun_db.redtext_name = gun.redtext_name
+    gun_db.prefix_effect = gun.prefix_effect
+    gun_db.prefix_name = gun.prefix_name
+    gun_db.barrel_effects = gun.barrel_effects
+    gun_db.barrel_manufacturer = gun.barrel_manufacturer
+    gun_db.magazine_effect = gun.magazine_effect
+    gun_db.magazine_manufacturer = gun.magazine_manufacturer
+    gun_db.grip_effect = gun.grip_effect
+    gun_db.grip_manufacturer = gun.grip_manufacturer
+    gun_db.match_bonus = gun.match_bonus
     gun_db.range = gun.range
     gun_db.dmgroll = gun.dmgroll
     gun_db.lowNormal = gun.lowNormal

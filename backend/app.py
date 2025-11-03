@@ -11,7 +11,6 @@ from endpoints import (
     authentication,
     hero,
     gun,
-    meta,
     shield,
     grenade,
     potion,
@@ -54,7 +53,6 @@ app.include_router(authentication.router)
 app.include_router(hero.router)
 app.include_router(gun.router)
 app.include_router(shield.router)
-app.include_router(meta.router)
 app.include_router(grenade.router)
 app.include_router(potion.router)
 app.include_router(mobs.router)

@@ -85,6 +85,14 @@ class Gun(SQLModel, table=True):
     prefix_name: str
     prefix_effect: str
 
+    barrel_manufacturer: ManufacturerNormal
+    barrel_effect: str
+    magazine_manufacturer: ManufacturerNormal
+    magazine_effect: str
+    grip_manufacturer: ManufacturerNormal
+    grip_effect: str
+    match_bonus: Optional[str] = None
+
     def __str__(self):
         fields = [
             f"id= {self.id}",

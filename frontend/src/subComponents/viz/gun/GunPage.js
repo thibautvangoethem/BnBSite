@@ -223,47 +223,91 @@ const GunDetails = ({ type, manufacturer, manufacturerEffect, rarity, element, e
     </Paper>
 );
 
-// Component for Prefixes
-const Prefixes = ({ prefixes }) => (
+const Prefix = ({ prefix_name, prefix_effect, isEditing, handleChange }) => (
     <Paper style={{ padding: '16px', marginBottom: '16px' }}>
-        <Typography variant="h5" gutterBottom>
-            Prefixes
-        </Typography>
-        {prefixes.map((prefix, index) => (
-            <Typography key={index} variant="body1" gutterBottom>
-                <strong>Name:</strong> {prefix.name}, <strong>Effect:</strong> {prefix.effect}
-            </Typography>
-        ))}
+        <EditableField
+            label="Prefix"
+            value={prefix_name}
+            isEditing={isEditing}
+            onChange={handleChange}
+            type="text"
+            name="prefix_name"
+        />
+        <EditableField
+            label="Effect"
+            value={prefix_effect}
+            isEditing={isEditing}
+            onChange={handleChange}
+            multiline={true}
+            name="prefix_effect"
+        />
     </Paper>
 );
 
-// Component for Postfixes
-const Postfixes = ({ postfixes }) => (
+
+const Redtext = ({ redtext_name, redtext_effect, isEditing, handleChange }) => (
     <Paper style={{ padding: '16px', marginBottom: '16px' }}>
-        <Typography variant="h5" gutterBottom>
-            Postfixes
-        </Typography>
-        {postfixes.map((postfix, index) => (
-            <Typography key={index} variant="body1" gutterBottom>
-                <strong>Name:</strong> {postfix.name}, <strong>Effect:</strong> {postfix.effect}
-            </Typography>
-        ))}
+        <EditableField
+            label="Redtext"
+            value={redtext_name}
+            isEditing={isEditing}
+            onChange={handleChange}
+            type="text"
+            name="redtext_name"
+        />
+        <EditableField
+            label="Effect"
+            value={redtext_effect}
+            isEditing={isEditing}
+            onChange={handleChange}
+            multiline={true}
+            name="redtext_effect"
+        />
     </Paper>
 );
 
-// Component for Red Texts
-const RedTexts = ({ redtexts }) => (
-    <Paper style={{ padding: '16px', marginBottom: '16px' }}>
-        <Typography variant="h5" gutterBottom>
-            Red Texts
-        </Typography>
-        {redtexts.map((redtext, index) => (
-            <Typography key={index} variant="body1" gutterBottom color="error">
-                <strong>Name:</strong> {redtext.name}, <strong>Effect:</strong> {redtext.effect}
-            </Typography>
-        ))}
-    </Paper>
-);
+
+// // Component for Prefixes
+// const Prefixes = ({ prefixes }) => (
+//     <Paper style={{ padding: '16px', marginBottom: '16px' }}>
+//         <Typography variant="h5" gutterBottom>
+//             Prefixes
+//         </Typography>
+//         {prefixes.map((prefix, index) => (
+//             <Typography key={index} variant="body1" gutterBottom>
+//                 <strong>Name:</strong> {prefix.name}, <strong>Effect:</strong> {prefix.effect}
+//             </Typography>
+//         ))}
+//     </Paper>
+// );
+
+// // Component for Postfixes
+// const Postfixes = ({ postfixes }) => (
+//     <Paper style={{ padding: '16px', marginBottom: '16px' }}>
+//         <Typography variant="h5" gutterBottom>
+//             Postfixes
+//         </Typography>
+//         {postfixes.map((postfix, index) => (
+//             <Typography key={index} variant="body1" gutterBottom>
+//                 <strong>Name:</strong> {postfix.name}, <strong>Effect:</strong> {postfix.effect}
+//             </Typography>
+//         ))}
+//     </Paper>
+// );
+
+// // Component for Red Texts
+// const RedTexts = ({ redtexts }) => (
+//     <Paper style={{ padding: '16px', marginBottom: '16px' }}>
+//         <Typography variant="h5" gutterBottom>
+//             Red Texts
+//         </Typography>
+//         {redtexts.map((redtext, index) => (
+//             <Typography key={index} variant="body1" gutterBottom color="error">
+//                 <strong>Name:</strong> {redtext.name}, <strong>Effect:</strong> {redtext.effect}
+//             </Typography>
+//         ))}
+//     </Paper>
+// );
 
 const GunPage = () => {
     const { id } = useParams();
@@ -372,9 +416,23 @@ const GunPage = () => {
                     isEditing={isEditing}
                     handleChange={handleChange}
                 />
-                {gun?.prefixes?.length > 0 && <Prefixes prefixes={gun.prefixes} />}
+                {gun?.prefix_name !== "" &&
+                    <Prefix
+                        prefix_name={gun?.prefix_name}
+                        prefix_effect={gun?.prefix_effect}
+                        isEditing={isEditing}
+                        handleChange={handleChange} />
+                }
+                {gun?.redtext_name !== "" &&
+                    <Redtext
+                        redtext_name={gun?.redtext_name}
+                        redtext_effect={gun?.redtext_effect}
+                        isEditing={isEditing}
+                        handleChange={handleChange} />
+                }
+                {/* {gun?.prefixes?.length > 0 && <Prefixes prefixes={gun.prefixes} />}
                 {gun?.postfixes?.length > 0 && <Postfixes postfixes={gun.postfixes} />}
-                {gun?.redtexts?.length > 0 && <RedTexts redtexts={gun.redtexts} />}
+                {gun?.redtexts?.length > 0 && <RedTexts redtexts={gun.redtexts} />} */}
             </Box>
         </Container>
     );
