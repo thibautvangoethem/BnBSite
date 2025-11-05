@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Typography, Grid, Box, Button } from '@mui/material';
+import { TextField, Typography, Grid, Box, Button, Paper, FormControl } from '@mui/material';
 import { DiceEnum } from '../../rolling/DiceEnum';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -36,33 +36,52 @@ const CustomRollingInputs = ({ onSerialize }) => {
     // Call the onSerialize function with the rollsConfig
     onSerialize(rollmodal);
   };
+  const handleWheel = (e, index) => {
+    e.preventDefault();
+    const newValues = [...values];
+    if (e.deltaY < 0) {
+      newValues[index] = values[index] + 1;
+    } else {
+      newValues[index] = Math.max(0, values[index] - 1);
+    }
+    setValues(newValues);
+  };
 
   return (
-    <Box>
-      <Typography variant="h4">Hoeveel rolls van welke dice?</Typography>
-      {labels.map((label, index) => (
-        <Grid container alignItems="center" spacing={2} key={index} mb={2}>
-          <Grid item>
-            <Typography variant="body1">{label}</Typography>
-          </Grid>
-          <Grid item>
-            <TextField
-              type="number"
-              value={values[index]}
-              onChange={(e) => {
-                const newValues = [...values];
-                newValues[index] = parseInt(e.target.value) || 0;
-                setValues(newValues);
-              }}
-              fullWidth
-              variant="outlined"
-            />
-          </Grid>
-        </Grid>
-      ))}
-      <Button variant="contained" color="primary" onClick={handleSerialize}>
-        ROLL ROLL ROLL!
-      </Button>
+    <Box p={2}>
+      <Paper elevation={3} p={2}>
+        <Box p={2}>
+          <Typography variant="h4" gutterBottom>Hoeveel rolls van welke dice?</Typography>
+          {labels.map((label, index) => (
+            <Grid container alignItems="center" spacing={2} key={index} mb={2}>
+              <Grid item>
+                <Typography variant="body1">{label}</Typography>
+              </Grid>
+              <Grid item>
+                <FormControl fullWidth>
+                  <TextField
+                    type="number"
+                    value={values[index]}
+                    onChange={(e) => {
+                      const newValues = [...values];
+                      newValues[index] = e.target.value === '' ? 0 : parseInt(e.target.value) || 0;
+                      setValues(newValues);
+                    }}
+                    onWheel={(e) => handleWheel(e, index)}
+                    fullWidth
+                    variant="outlined"
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
+          ))}
+          <Box mt={2}>
+            <Button variant="contained" color="primary" onClick={handleSerialize}>
+              ROLL ROLL ROLL!
+            </Button>
+          </Box>
+        </Box>
+      </Paper>
     </Box>
   );
 };
