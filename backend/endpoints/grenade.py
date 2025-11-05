@@ -305,8 +305,8 @@ def generate_grenade(
 def create_grenade(grenade_data: GrenadeCreate, session: SessionDep) -> Grenade:
     gren = Grenade(
         id=str(uuid.uuid4()),
-        name="",
-        description="",
+        name=f"{grenade_data.rarity.value} {grenade_data.manufacturer.value} Grenade",
+        description=f"{grenade_data.red_text_name}",
         rarity=grenade_data.rarity,
         manufacturer=grenade_data.manufacturer,
         manufacturer_effect=grenade_data.manufacturer_effect,

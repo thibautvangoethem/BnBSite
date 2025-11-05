@@ -109,7 +109,7 @@ def get_create_descritpion_test(session: SessionDep) -> random_create_descriptio
                 roll_description(label="Prefix", diceList=[Dice.D20]),
                 roll_description(label="Redtext", diceList=[Dice.D100]),
                 roll_description(
-                    label="Parts", diceList=[Dice.D100, Dice.D20, Dice.D100]
+                    label="Parts", diceList=[Dice.D10, Dice.D10, Dice.D10]
                 ),
             ],
             uuid=str(uuid4()),
@@ -512,76 +512,76 @@ damageMap = {
 
 grip_data = {
     ManufacturerNormal.ATLAS: {
-        GunType.RIFLE: "1 RANGE",
-        GunType.SUBMACHINE: "1 RANGE",
+        GunType.RIFLE: "+1 RANGE",
+        GunType.SUBMACHINE: "+1 RANGE",
         GunType.PISTOL: "-1 recoil",
-        GunType.SHOTGUN: "1 SPD, 1 MST",
-        GunType.SNIPER: "2 RANGE, 3 RECOIL",
-        GunType.ROCKET: "2 RANGE, -1 SPD",
+        GunType.SHOTGUN: "+1 SPD, +1 MST",
+        GunType.SNIPER: "+2 RANGE, +3 RECOIL",
+        GunType.ROCKET: "+2 RANGE, -1 SPD",
     },
     ManufacturerNormal.COV: {
-        GunType.RIFLE: "-1 ACC, 1 DMG",
-        GunType.SUBMACHINE: "1 HIT, -2 ACC, RELOAD ON 3 OR LESS",
+        GunType.RIFLE: "-1 ACC, +1 DMG",
+        GunType.SUBMACHINE: "+1 HIT, -2 ACC, RELOAD ON 3 OR LESS",
         GunType.PISTOL: "+1 Damage, +1 recoil",
-        GunType.SHOTGUN: "2 DMG, 2 RECOIL",
-        GunType.SNIPER: "2 RECOIL, 1 SPD",
+        GunType.SHOTGUN: "+2 DMG, +2 RECOIL",
+        GunType.SNIPER: "+2 RECOIL, +1 SPD",
         GunType.ROCKET: "-2 ACC, +1 MELEE DAMAGE DIE",
     },
     ManufacturerNormal.DAHL: {
         GunType.RIFLE: "-1 DMG, -1 RECOIL",
-        GunType.SUBMACHINE: "1 ACC, -1 DMG",
+        GunType.SUBMACHINE: "+1 ACC, -1 DMG",
         GunType.PISTOL: "+1 ACC",
-        GunType.SHOTGUN: "1 ACC, -1 DMG",
+        GunType.SHOTGUN: "+1 ACC, -1 DMG",
         GunType.SNIPER: "-2 DMG, -2 RECOIL",
-        GunType.ROCKET: "1 ACC, -1 DMG",
+        GunType.ROCKET: "+1 ACC, -1 DMG",
     },
     ManufacturerNormal.HYPERION: {
-        GunType.RIFLE: "2 ACC, -2 DMG",
+        GunType.RIFLE: "+2 ACC, -2 DMG",
         GunType.SUBMACHINE: "-2 DAMAGE, +2 ACC",
         GunType.PISTOL: "+2 ACC first attack per turn",
-        GunType.SHOTGUN: "-1 DMG, 1 ACC",
-        GunType.SNIPER: "2 ACC, -2 DMG",
-        GunType.ROCKET: "2 ACC, -2 DMG",
+        GunType.SHOTGUN: "-1 DMG, +1 ACC",
+        GunType.SNIPER: "+2 ACC, -2 DMG",
+        GunType.ROCKET: "+2 ACC, -2 DMG",
     },
     ManufacturerNormal.JAKOBS: {
-        GunType.RIFLE: "2 DMG, 2 RECOIL, 2 CRIT DAMAGE",
-        GunType.SUBMACHINE: "-4 ACC, 2 CRIT DMG",
+        GunType.RIFLE: "+2 DMG, +2 RECOIL, +2 CRIT DAMAGE",
+        GunType.SUBMACHINE: "-4 ACC, +2 CRIT DMG",
         GunType.PISTOL: "+2 Crit damage, +3 recoil",
-        GunType.SHOTGUN: "2 DMG, 2 RECOIL",
-        GunType.SNIPER: "4 DMG, 4 RECOIL, -4 ACC",
-        GunType.ROCKET: "2 DMG, 2 CRIT DAMAGE, 5 RECOIL",
+        GunType.SHOTGUN: "+2 DMG, +2 RECOIL",
+        GunType.SNIPER: "+4 DMG, +4 RECOIL, -4 ACC",
+        GunType.ROCKET: "+2 DMG, +2 CRIT DAMAGE, +5 RECOIL",
     },
     ManufacturerNormal.MALIWAN: {
-        GunType.RIFLE: "1 ELEMENTEL DAMAGE DIE",
-        GunType.SUBMACHINE: "1 ELEMENTAL DAMAGE DIE",
+        GunType.RIFLE: "+1 ELEMENTEL DAMAGE DIE",
+        GunType.SUBMACHINE: "+1 ELEMENTAL DAMAGE DIE",
         GunType.PISTOL: "+1 ACC on elemental guns",
-        GunType.SHOTGUN: "1 MST, +1 ELEMENTAL DAMAGE DIE",
-        GunType.SNIPER: "2 MST, 2 RECOIL",
-        GunType.ROCKET: "1 ELEMENTAL DAMAGE DIE",
+        GunType.SHOTGUN: "+1 MST, +1 ELEMENTAL DAMAGE DIE",
+        GunType.SNIPER: "+2 MST, +2 RECOIL",
+        GunType.ROCKET: "+1 ELEMENTAL DAMAGE DIE",
     },
     ManufacturerNormal.TEDIORE: {
         GunType.RIFLE: "-1 ACC, -1 RECOIL",
         GunType.SUBMACHINE: "-1 DMG",
         GunType.PISTOL: "on reload, +2 ACC next attack, +1 recoil",
         GunType.SHOTGUN: "-1 DMG",
-        GunType.SNIPER: "2 ACC, -4 DMG",
+        GunType.SNIPER: "+2 ACC, -4 DMG",
         GunType.ROCKET: "-2 DMG, -1 ACC, +2 MST",
     },
     ManufacturerNormal.TORGUE: {
-        GunType.RIFLE: "2 DAMAGE, -1 ACCURACY, 2 RECOIL",
-        GunType.SUBMACHINE: "1 DMG",
+        GunType.RIFLE: "+2 DAMAGE, -1 ACCURACY, +2 RECOIL",
+        GunType.SUBMACHINE: "+1 DMG",
         GunType.PISTOL: "+2 Damage, +2 recoil",
-        GunType.SHOTGUN: "2 DMG, 4 RECOIL",
-        GunType.SNIPER: "2 DMG, -2 RECOIL",
-        GunType.ROCKET: "4 DAMAGE, -3 ACC, 2 RECOIL",
+        GunType.SHOTGUN: "+2 DMG, +4 RECOIL",
+        GunType.SNIPER: "+2 DMG, -2 RECOIL",
+        GunType.ROCKET: "+4 DAMAGE, -3 ACC, +2 RECOIL",
     },
     ManufacturerNormal.VLADOF: {
-        GunType.RIFLE: "1 HITS, -2 DMG",
-        GunType.SUBMACHINE: "2 SPD",
+        GunType.RIFLE: "+1 HITS, -2 DMG",
+        GunType.SUBMACHINE: "+2 SPD",
         GunType.PISTOL: "+1 ACC, +1 Recoil",
         GunType.SHOTGUN: "-5 ACC, +1 HIT",
-        GunType.SNIPER: "1 SPD, -1 ACC",
-        GunType.ROCKET: "1 HITS, 1 SPD, 2 RECOIL",
+        GunType.SNIPER: "+1 SPD, -1 ACC",
+        GunType.ROCKET: "+1 HITS, +1 SPD, +2 RECOIL",
     },
 }
 
@@ -662,59 +662,59 @@ barrel_data = {
 
 magazine_data = {
     ManufacturerNormal.ATLAS: {
-        GunType.RIFLE: "1 MST, 1 RANGE",
+        GunType.RIFLE: "+1 MST, +1 RANGE",
         GunType.SUBMACHINE: "+1 reload reroll per combat",
         GunType.PISTOL: "+1 reload reroll per combat",
-        GunType.SHOTGUN: "1 ACC",
-        GunType.SNIPER: "1 SPD, 1 RECOIL",
-        GunType.ROCKET: "1 MST, -1 ACC",
+        GunType.SHOTGUN: "+1 ACC",
+        GunType.SNIPER: "+1 SPD, +1 RECOIL",
+        GunType.ROCKET: "+1 MST, -1 ACC",
     },
     ManufacturerNormal.COV: {
-        GunType.RIFLE: "1 ACC, -1 DAMAGE",
+        GunType.RIFLE: "+1 ACC, -1 DAMAGE",
         GunType.SUBMACHINE: "+1 Damage first attack per turn, +3 Recoil after reloading",
         GunType.PISTOL: "+1 Damage first attack per turn, +3 Recoil after reloading",
         GunType.SHOTGUN: "DOES NOTHING",
-        GunType.SNIPER: "1 DMG, 1 RECOIL",
+        GunType.SNIPER: "+1 DMG, +1 RECOIL",
         GunType.ROCKET: "-1 ACC",
     },
     ManufacturerNormal.DAHL: {
-        GunType.RIFLE: "2 ACC, -1 SPD",
+        GunType.RIFLE: "+2 ACC, -1 SPD",
         GunType.SUBMACHINE: "+1 ACC on your first attack per turn",
         GunType.PISTOL: "+1 ACC on your first attack per turn",
-        GunType.SHOTGUN: "1 ACC",
+        GunType.SHOTGUN: "+1 ACC",
         GunType.SNIPER: "-1 RECOIL, -1 ACC",
-        GunType.ROCKET: "1 ACC",
+        GunType.ROCKET: "+1 ACC",
     },
     ManufacturerNormal.HYPERION: {
-        GunType.RIFLE: "1 ACC",
+        GunType.RIFLE: "+1 ACC",
         GunType.SUBMACHINE: "+4 ACC after a reload",
         GunType.PISTOL: "+4 ACC after a reload",
         GunType.SHOTGUN: "-1 RECOIL",
-        GunType.SNIPER: "2 ACC, -1 RECOIL",
-        GunType.ROCKET: "1 ACC",
+        GunType.SNIPER: "+2 ACC, -1 RECOIL",
+        GunType.ROCKET: "+1 ACC",
     },
     ManufacturerNormal.JAKOBS: {
-        GunType.RIFLE: "1 ACC, 1 DAMAGE, 4 RECOIL",
+        GunType.RIFLE: "+1 ACC, +1 DAMAGE, +4 RECOIL",
         GunType.SUBMACHINE: "+1 Crit damage, Each Crit adds +1 Recoil",
         GunType.PISTOL: "+1 Crit damage, Each Crit adds +1 Recoil",
-        GunType.SHOTGUN: "2 RECOIL",
-        GunType.SNIPER: "2 ACC, 3 RECOIL",
-        GunType.ROCKET: "2 DAMAGE, 3 RECOIL",
+        GunType.SHOTGUN: "+2 RECOIL",
+        GunType.SNIPER: "+2 ACC, +3 RECOIL",
+        GunType.ROCKET: "+2 DAMAGE, +3 RECOIL",
     },
     ManufacturerNormal.MALIWAN: {
-        GunType.RIFLE: "1 MST, 1 ACC",
+        GunType.RIFLE: "+1 MST, +1 ACC",
         GunType.SUBMACHINE: "+1 Damage on elemental damage die",
         GunType.PISTOL: "+1 Damage on elemental damage die",
-        GunType.SHOTGUN: "1 ACC",
-        GunType.SNIPER: "1 ACC",
-        GunType.ROCKET: "2 SPD",
+        GunType.SHOTGUN: "+1 ACC",
+        GunType.SNIPER: "+1 ACC",
+        GunType.ROCKET: "+2 SPD",
     },
     ManufacturerNormal.TEDIORE: {
         GunType.RIFLE: "-1 DAMAGE, -1 ACC",
         GunType.SUBMACHINE: "on tediore weapons, reload grenade damage is quadrupled",
         GunType.PISTOL: "on tediore weapons, reload grenade damage is quadrupled",
-        GunType.SHOTGUN: "1 RECOIL",
-        GunType.SNIPER: "1 ACC, -1 DMG",
+        GunType.SHOTGUN: "+1 RECOIL",
+        GunType.SNIPER: "+1 ACC, -1 DMG",
         GunType.ROCKET: "-2 ACCURACY, -1 DMG",
     },
     ManufacturerNormal.TORGUE: {
@@ -1123,36 +1123,29 @@ def roll_gun(create_result: random_create_result, session: SessionDep) -> roll_r
             break
 
     # PART7 parts
-    parts_roll = (
-        create_result.get_roll_for_label("Parts")[0]
-        * create_result.get_roll_for_label("Parts")[1]
-    ) + create_result.get_roll_for_label("Parts")[2]
-    # decode single number into 3 numbers from 1-9
-    sum_value = 3 + int((parts_roll - 1) * 24 / 1999)
-    base = sum_value // 3
-    remainder = sum_value % 3
-    digits = [base] * 3
-    for i in range(remainder):
-        digits[i] += 1
-    for i in range(3):
-        if digits[i] < 1:
-            digits[i] = 1
-        elif digits[i] > 9:
-            digits[i] = 9
-
-    barrel_roll = digits[0] - 1
-    barrel_manufacturer = ManufacturerMappedToNormal[ManufacturerIndexed[barrel_roll]]
+    barrel_roll = create_result.get_roll_for_label("Parts")[0] - 1
+    barrel_manufacturer = (
+        ManufacturerMappedToNormal[ManufacturerIndexed[barrel_roll]]
+        if barrel_roll != 9
+        else manufacturer_normal
+    )
     barrel = barrel_data[barrel_manufacturer][guntype]
-    magazine_roll = digits[1] - 1
-    magazine_manufacturer = ManufacturerMappedToNormal[
-        ManufacturerIndexed[magazine_roll]
-    ]
+    magazine_roll = create_result.get_roll_for_label("Parts")[1] - 1
+    magazine_manufacturer = (
+        ManufacturerMappedToNormal[ManufacturerIndexed[magazine_roll]]
+        if magazine_roll != 9
+        else manufacturer_normal
+    )
     magazine = magazine_data[magazine_manufacturer][guntype]
-    grip_roll = digits[2] - 1
-    grip_manufacturer = ManufacturerMappedToNormal[ManufacturerIndexed[grip_roll]]
+    grip_roll = create_result.get_roll_for_label("Parts")[2] - 1
+    grip_manufacturer = (
+        ManufacturerMappedToNormal[ManufacturerIndexed[grip_roll]]
+        if grip_roll != 9
+        else manufacturer_normal
+    )
     grip = grip_data[grip_manufacturer][guntype]
 
-    ismatching_grip = grip == manufacturer_normal
+    ismatching_grip = grip_manufacturer == manufacturer_normal
     matchin_grip_text = boost_gripmanufacturermatch if ismatching_grip else ""
 
     legun = GunCreate(
@@ -1262,7 +1255,7 @@ def update_gun(gun_id: str, gun: Gun, session: SessionDep) -> Gun:
     gun_db.redtext_name = gun.redtext_name
     gun_db.prefix_effect = gun.prefix_effect
     gun_db.prefix_name = gun.prefix_name
-    gun_db.barrel_effects = gun.barrel_effects
+    gun_db.barrel_effect = gun.barrel_effect
     gun_db.barrel_manufacturer = gun.barrel_manufacturer
     gun_db.magazine_effect = gun.magazine_effect
     gun_db.magazine_manufacturer = gun.magazine_manufacturer
