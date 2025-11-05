@@ -721,17 +721,17 @@ magazine_data = {
         GunType.RIFLE: "-1 RECOIL, -1 ACC",
         GunType.SUBMACHINE: "+2 Damage per damage die on your attack after a reload",
         GunType.PISTOL: "+2 Damage per damage die on your attack after a reload",
-        GunType.SHOTGUN: "2 RECOIL",
-        GunType.SNIPER: "2 DMG, 2 RECOIL",
-        GunType.ROCKET: "2 DAMAGE, -2 SPD",
+        GunType.SHOTGUN: "+2 RECOIL",
+        GunType.SNIPER: "+2 DMG, +2 RECOIL",
+        GunType.ROCKET: "+2 DAMAGE, -2 SPD",
     },
     ManufacturerNormal.VLADOF: {
-        GunType.RIFLE: "2 SPD, 1 RECOIL",
+        GunType.RIFLE: "+2 SPD, +1 RECOIL",
         GunType.SUBMACHINE: "+1 Speed on turn when using this pistol, gives +2 recoil when using all the speed",
         GunType.PISTOL: "+1 Speed on turn when using this pistol, gives +2 recoil when using all the speed",
-        GunType.SHOTGUN: "1 SPD",
-        GunType.SNIPER: "1 SPD, -1 ACC",
-        GunType.ROCKET: "3 SPD, 4 RECOIL",
+        GunType.SHOTGUN: "+1 SPD",
+        GunType.SNIPER: "+1 SPD, -1 ACC",
+        GunType.ROCKET: "+3 SPD, +4 RECOIL",
     },
 }
 redtext_data = [
@@ -935,7 +935,7 @@ redtext_data = [
     {
         "id": 46,
         "name": "Overwhelming strength is boring.",
-        "effect": "\u00e2\u20ac\u201c6 Initiative. The first non-Badass, non- boss Enemy that is Melee Attacked dies instantly (1/day).",
+        "effect": "+6 Initiative. The first non-Badass, non- boss Enemy that is Melee Attacked dies instantly (1/day).",
     },
     {
         "id": 47,
@@ -964,7 +964,7 @@ prefix_data = [
         "name": "Loaded",
         "normal": "+1 reload reroll / combat",
         "affinity": ManufacturerNormal.ATLAS,
-        "boosted": "2 reload reroll / combat",
+        "boosted": "+2 reload reroll / combat",
     },
     {
         "name": "Stabbing",
