@@ -8,7 +8,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import Mail from '@mui/icons-material/Mail';
-import foto from '../../assets/images/borderland-joren-soda.png';
+import foto from '../../assets/images/borderlands_standard.png';
 
 const useStyles = makeStyles((theme) => ({
     footer: {
@@ -43,7 +43,7 @@ const Homepage = () => {
                             </Typography>
                             <img
                                 src={foto}
-                                alt="Description of image"
+                                alt="So apparently eslint asks you to think about usability by filling in this alt field, huh neat"
                                 style={{ width: '100%', height: 'auto', marginBottom: '20px' }}
                             />
                         </Container>

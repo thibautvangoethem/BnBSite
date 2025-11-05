@@ -266,48 +266,73 @@ const Redtext = ({ redtext_name, redtext_effect, isEditing, handleChange }) => (
     </Paper>
 );
 
-
-// // Component for Prefixes
-// const Prefixes = ({ prefixes }) => (
-//     <Paper style={{ padding: '16px', marginBottom: '16px' }}>
-//         <Typography variant="h5" gutterBottom>
-//             Prefixes
-//         </Typography>
-//         {prefixes.map((prefix, index) => (
-//             <Typography key={index} variant="body1" gutterBottom>
-//                 <strong>Name:</strong> {prefix.name}, <strong>Effect:</strong> {prefix.effect}
-//             </Typography>
-//         ))}
-//     </Paper>
-// );
-
-// // Component for Postfixes
-// const Postfixes = ({ postfixes }) => (
-//     <Paper style={{ padding: '16px', marginBottom: '16px' }}>
-//         <Typography variant="h5" gutterBottom>
-//             Postfixes
-//         </Typography>
-//         {postfixes.map((postfix, index) => (
-//             <Typography key={index} variant="body1" gutterBottom>
-//                 <strong>Name:</strong> {postfix.name}, <strong>Effect:</strong> {postfix.effect}
-//             </Typography>
-//         ))}
-//     </Paper>
-// );
-
-// // Component for Red Texts
-// const RedTexts = ({ redtexts }) => (
-//     <Paper style={{ padding: '16px', marginBottom: '16px' }}>
-//         <Typography variant="h5" gutterBottom>
-//             Red Texts
-//         </Typography>
-//         {redtexts.map((redtext, index) => (
-//             <Typography key={index} variant="body1" gutterBottom color="error">
-//                 <strong>Name:</strong> {redtext.name}, <strong>Effect:</strong> {redtext.effect}
-//             </Typography>
-//         ))}
-//     </Paper>
-// );
+const Parts = ({ barrel_manufacturer, barrel_effect, magazine_manufacturer, magazine_effect, grip_manufacturer, grip_effect, match_bonus, isEditing, handleChange }) => (
+    <Paper style={{ padding: '16px', marginBottom: '16px' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '16px' }}>
+            <div style={{ flex: 1 }}>
+                <EditableField
+                    label="Barrel"
+                    value={barrel_manufacturer}
+                    isEditing={isEditing}
+                    onChange={handleChange}
+                    type="text"
+                    name="barrel_manufacturer"
+                />
+                <EditableField
+                    label="Magazine"
+                    value={magazine_manufacturer}
+                    isEditing={isEditing}
+                    onChange={handleChange}
+                    type="text"
+                    name="magazine_manufacturer"
+                />
+                <EditableField
+                    label="Grip"
+                    value={grip_manufacturer}
+                    isEditing={isEditing}
+                    onChange={handleChange}
+                    type="text"
+                    name="grip_manufacturer"
+                />
+            </div>
+            <div style={{ flex: 1 }}>
+                <EditableField
+                    label="Barrel effect"
+                    value={barrel_effect}
+                    isEditing={isEditing}
+                    onChange={handleChange}
+                    multiline={true}
+                    name="barrel_effect"
+                />
+                <EditableField
+                    label="magazine effect"
+                    value={magazine_effect}
+                    isEditing={isEditing}
+                    onChange={handleChange}
+                    multiline={true}
+                    name="magazine_effect"
+                />
+                <EditableField
+                    label="Grip effect"
+                    value={grip_effect}
+                    isEditing={isEditing}
+                    onChange={handleChange}
+                    multiline={true}
+                    name="grip_effect"
+                />
+            </div>
+        </div>
+        {match_bonus !== "" && <EditableField
+            label="Matching grip:"
+            value={match_bonus}
+            isEditing={isEditing}
+            onChange={handleChange}
+            multiline={true}
+            name="match_bonus"
+        />
+        }
+    </Paper>
+);
 
 const GunPage = () => {
     const { id } = useParams();
@@ -430,6 +455,17 @@ const GunPage = () => {
                         isEditing={isEditing}
                         handleChange={handleChange} />
                 }
+                <Parts
+                    barrel_manufacturer={gun?.barrel_manufacturer}
+                    barrel_effect={gun?.barrel_effect}
+                    magazine_manufacturer={gun?.magazine_manufacturer}
+                    magazine_effect={gun?.magazine_effect}
+                    grip_manufacturer={gun?.grip_manufacturer}
+                    grip_effect={gun?.grip_effect}
+                    match_bonus={gun?.match_bonus}
+                    isEditing={isEditing}
+                    handleChange={handleChange}
+                />
                 {/* {gun?.prefixes?.length > 0 && <Prefixes prefixes={gun.prefixes} />}
                 {gun?.postfixes?.length > 0 && <Postfixes postfixes={gun.postfixes} />}
                 {gun?.redtexts?.length > 0 && <RedTexts redtexts={gun.redtexts} />} */}
