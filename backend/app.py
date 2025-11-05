@@ -49,6 +49,22 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+# railway doesnt have easy restart options, so will literally make the health check fail if one is needed
+health_status = {"status": "healthy"}
+
+
+@app.get("/health")
+async def health_check():
+    return health_status
+
+
+@app.post("/health/fail")
+async def fail_health_check():
+    global health_status
+    health_status = {"status": "unhealthy"}
+    return health_status
+
+
 app.include_router(authentication.router)
 app.include_router(hero.router)
 app.include_router(gun.router)
