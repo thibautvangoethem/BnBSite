@@ -2,6 +2,10 @@ from fastapi import APIRouter
 from fastapi import Depends, HTTPException, status, Query
 from fastapi.security import OAuth2PasswordBearer
 from typing import Annotated
+from backend.models.classmod import ClassMod
+from backend.models.gun import Gun
+from backend.models.potion import Potion
+from backend.models.shield import Shield
 from models.vendor import *
 from models.common import *
 from appglobals import SessionDep, oauth2_scheme
@@ -24,6 +28,88 @@ router = APIRouter(
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
+class ItemMini:
+    id: str
+    name: str
+    type: str
+    description: Optional[str]
+    rarity: Optional[Rarity]
+
+
+class VendorReturn(BaseModel):
+    # general metadata
+    id: str = Field(primary_key=True)
+    name: str = ""
+    description: str = None
+    quote: str = ""  # single quote chosen
+
+    # data about currently in stock items
+    item_of_the_day: ItemMini
+    normal_items: list[ItemMini]
+    bought_items: list[str]  # multiple ; delimeted ids
+
+
+def get_item_mini(id: str, session: SessionDep) -> ItemMini:
+    item_classes = {
+        "gun": Gun,
+        "grenade": Grenade,
+        "shield": Shield,
+        "potion": Potion,
+        "classmod": ClassMod,
+    }
+
+    statement = select(RollHistory).where(RollHistory.id == id)
+    item: RollHistory = session.exec(statement).first()
+    item_type = item.type
+
+    if item_type in item_classes:
+        # tocheck will the reflection like select still work here even if the id is a reference
+        statement = select(item_classes[item_type]).where(
+            item_classes[item_type].id == id
+        )
+        thing = session.exec(statement).first()
+
+        if item_type == "potion":
+            return ItemMini(
+                id=id,
+                name=thing.name,
+                type=item_type,
+                description=thing.text,
+                rarity=None,
+            )
+        else:
+            return ItemMini(
+                id=id,
+                name=thing.name,
+                type=item_type,
+                description=thing.description,
+                rarity=thing.rarity,
+            )
+
+
+def get_vendor_return(id: str, session: SessionDep) -> VendorReturn:
+    statement = select(Vendor).where(Vendor.id == id)
+    vendor: Vendor = session.exec(statement).first()
+
+    if vendor is None:
+        raise HTTPException(status_code=404, detail="vendor not found")
+
+    chosen_quote = random.choice(vendor.quotes.split(";"))
+    iod = get_item_mini(vendor.item_of_the_day)
+    normals = [get_item_mini(item) for item in vendor.normal_items.split(";")]
+    boughts = vendor.bought_items.split(";")
+
+    return VendorReturn(
+        id=vendor.id,
+        name=vendor.name,
+        description=vendor.description,
+        quote=chosen_quote,
+        item_of_the_day=iod,
+        normal_items=normals,
+        bought_items=boughts,
+    )
+
+
 def roll_item(item_type: str) -> RollHistory:
     item_type = item_type.lower()
     if item_type == "gun":
@@ -38,28 +124,15 @@ def roll_item(item_type: str) -> RollHistory:
         pass
 
 
-class vendor_return(BaseModel):
-    # general metadata
-    id: str = Field(primary_key=True)
-    name: str = ""
-    description: str = None
-    quote: str = ""  # single quote chosen
-
-    # data about currently in stock items
-    item_of_the_day: RollHistory
-    normal_items: list[RollHistory]
-    bought_items: list[str]  # multiple ; delimeted ids
-
-
-@router.get("/{vendor_id}/reroll_normal", response_model=Vendor)
-def rerollvendorNormal(vendor_id: str, session: SessionDep) -> vendor_return:
+@router.get("/{vendor_id}/reroll_normal", response_model=VendorReturn)
+def rerollvendorNormal(vendor_id: str, session: SessionDep) -> VendorReturn:
     rolled_items = list()
 
     return get_vendor(vendor_id, session)
 
 
-@router.get("/{vendor_id}/reroll_iod", response_model=vendor_return)
-def rerollvendoriod(vendor_id: str, session: SessionDep) -> vendor_return:
+@router.get("/{vendor_id}/reroll_iod", response_model=VendorReturn)
+def rerollvendoriod(vendor_id: str, session: SessionDep) -> VendorReturn:
     statement = select(Vendor).where(Vendor.id == vendor_id)
     vendor = session.exec(statement).first()
     if vendor is None:
@@ -74,8 +147,8 @@ def rerollvendoriod(vendor_id: str, session: SessionDep) -> vendor_return:
     return get_vendor(vendor_id, session)
 
 
-@router.get("/{vendor_id}/buy/{item_id}", response_model=vendor_return)
-def buyitem(vendor_id: str, item_id: str, session: SessionDep) -> vendor_return:
+@router.get("/{vendor_id}/buy/{item_id}", response_model=VendorReturn)
+def buyitem(vendor_id: str, item_id: str, session: SessionDep) -> VendorReturn:
     statement = select(Vendor).where(Vendor.id == vendor_id)
 
     vendor = session.exec(statement).first()
@@ -104,28 +177,6 @@ def buyitem(vendor_id: str, item_id: str, session: SessionDep) -> vendor_return:
     return get_vendor(vendor_id, session)
 
 
-@router.get("/{vendor_id}", response_model=vendor_return)
-def get_vendor(vendor_id: str, session: SessionDep) -> vendor_return:
-    statement = select(Vendor).where(Vendor.id == vendor_id)
-
-    vendor = session.exec(statement).first()
-
-    if vendor is None:
-        raise HTTPException(status_code=404, detail="vendor not found")
-
-    chosen_quote = random.choice(vendor.quotes.split(";"))
-    statement = select(RollHistory).where(RollHistory.id == vendor.item_of_the_day)
-    iod = session.exec(statement).first()
-    statement = select(RollHistory).where(RollHistory.id in vendor.normal_items)
-    normals = session.exec(statement).all()
-    bouhgts = vendor.bought_items.split(";")
-
-    return vendor_return(
-        id=vendor.id,
-        name=vendor.name,
-        description=vendor.description,
-        quote=chosen_quote,
-        item_of_the_day=iod,
-        normal_items=normals,
-        bought_items=bouhgts,
-    )
+@router.get("/{vendor_id}", response_model=VendorReturn)
+def get_vendor(vendor_id: str, session: SessionDep) -> VendorReturn:
+    return get_vendor_return(id=vendor_id, session=session)

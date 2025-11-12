@@ -14,8 +14,7 @@ class Vendor(SQLModel, table=True):
     item_of_the_day_minimum = Rarity
 
     # data about currently in stock items
-    item_of_the_day: (
-        str  # a single str id for an item (can query rollhistory to get info)
-    )
+    item_of_the_day: str  # a single str id for an item (can query to get info)
+
     normal_items: str  # multiple ; delimeted ids
     bought_items: str  # multiple ; delimeted ids
