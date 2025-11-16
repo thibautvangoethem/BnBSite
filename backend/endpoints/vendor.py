@@ -1,22 +1,18 @@
 from fastapi import APIRouter
-from fastapi import Depends, HTTPException, status, Query
+from fastapi import HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from typing import Annotated
 from models.classmod import ClassMod
 from models.gun import Gun
 from models.potion import Potion
 from models.shield import Shield
 from models.vendor import *
 from models.common import *
-from appglobals import SessionDep, oauth2_scheme
+from appglobals import SessionDep
 from sqlmodel import select
-from sqlalchemy.orm import selectinload
 from models.roll_data import *
-from uuid import uuid4
 from models.grenade import Grenade
 from models.rollhistory import RollHistory
 import random
-from datetime import datetime
 
 import uuid
 

@@ -1,17 +1,11 @@
 from fastapi import APIRouter
-from fastapi import Depends, HTTPException, status, Query
 from fastapi.security import OAuth2PasswordBearer
-from typing import Annotated
 from models.gun import *
 from models.common import *
-from appglobals import SessionDep, oauth2_scheme
-from sqlmodel import select
-from sqlalchemy.orm import selectinload
+from appglobals import SessionDep
 from models.roll_data import *
 from uuid import uuid4
 
-
-import uuid
 
 router = APIRouter(
     prefix="/mobs",

@@ -1,8 +1,7 @@
-import math
 import random
 from uuid import uuid4
-from models.gun import GunCreate
-from models.potion import PotionCreate
+import uuid
+from models.gun import Gun
 from rollers.roller import Roller
 from models.common import (
     Dice,
@@ -967,7 +966,7 @@ class GunRoller(Roller):
         )
 
     @staticmethod
-    def generate(create_result: random_create_result) -> PotionCreate:
+    def generate(create_result: random_create_result) -> Gun:
         # PART 1 gun roll
         gunroll = create_result.get_roll_for_label("Gun roll")
 
@@ -1093,11 +1092,12 @@ class GunRoller(Roller):
         ismatching_grip = grip_manufacturer == manufacturer_normal
         matchin_grip_text = boost_gripmanufacturermatch if ismatching_grip else ""
 
-        return GunCreate(
+        return Gun(
+            id=str(uuid.uuid4()),
             name=f"{prefix_name} {manufacturer.value} {guntype.value}",
             description=f"{redtext_name}",
             rarity=rarity,
-            guntype=guntype,
+            type=guntype,
             manufacturer=manufacturer,
             manufacturer_effect=guildRarityBonusMap[manufacturer][rarity],
             element=element,

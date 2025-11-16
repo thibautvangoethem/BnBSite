@@ -1,10 +1,8 @@
 from uuid import uuid4
-from models.grenade import GrenadeCreate
+import uuid
+from models.grenade import Grenade
 from rollers.roller import Roller
-from models.classmod import ClassModCreate
 from models.common import (
-    ClassIndexed,
-    Classes,
     Dice,
     Manufacturer,
     ManufacturerIndexed,
@@ -210,7 +208,7 @@ class GrenadeRoller(Roller):
         )
 
     @staticmethod
-    def generate(create_result: random_create_result) -> GrenadeCreate:
+    def generate(create_result: random_create_result) -> Grenade:
         rarity_roll = create_result.get_roll_for_label("Rarity roll")[0]
 
         rarity = get_rarity(rarity_roll)
@@ -244,7 +242,10 @@ class GrenadeRoller(Roller):
 
         data = get_level_data(create_result.level)
 
-        return GrenadeCreate(
+        return Grenade(
+            id=str(uuid.uuid4()),
+            name=f"{rarity.value} {manufacturer.value} Grenade",
+            description=f"{redtext_name}",
             rarity=rarity,
             manufacturer=manufacturer,
             manufacturer_effect=manufacturer_text,

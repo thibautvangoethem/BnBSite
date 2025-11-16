@@ -1,21 +1,16 @@
 from datetime import datetime
 from fastapi import APIRouter
-from fastapi import Depends, HTTPException, status, Query
+from fastapi import HTTPException, Query
 from fastapi.security import OAuth2PasswordBearer
 from typing import Annotated
 from rollers.gunroller import GunRoller
 from models.rollhistory import RollHistory
 from models.gun import *
 from models.common import *
-from appglobals import SessionDep, oauth2_scheme
+from appglobals import SessionDep
 from sqlmodel import select
-from sqlalchemy.orm import selectinload
 from models.roll_data import *
-from uuid import uuid4
-import random
 
-
-import uuid
 
 router = APIRouter(
     prefix="/guns",
@@ -43,7 +38,7 @@ def get_create_descritpion_test(session: SessionDep) -> random_create_descriptio
 @router.post("/generate")
 def roll_gun(create_result: random_create_result, session: SessionDep) -> roll_response:
 
-    gotten_gun = create_gun(gun_data=GunRoller.generate(create_result), session=session)
+    gotten_gun = create_gun(gun=GunRoller.generate(create_result), session=session)
     return roll_response(item_id=gotten_gun.id, item_type="gun")
 
 
@@ -60,39 +55,8 @@ def get_gun(gun_id: str, session: SessionDep) -> Gun:
 
 
 @router.post("/")
-def create_gun(gun_data: GunCreate, session: SessionDep) -> Gun:
+def create_gun(gun: Gun, session: SessionDep) -> Gun:
     # Create a new Gun instance
-    gun = Gun(
-        id=str(uuid.uuid4()),
-        type=gun_data.guntype,
-        name=gun_data.name,
-        description=gun_data.description,
-        rarity=gun_data.rarity,
-        manufacturer=gun_data.manufacturer,
-        manufacturer_effect=gun_data.manufacturer_effect,
-        element=gun_data.element,
-        elementstr=gun_data.elementstr,
-        prefix_name=gun_data.prefix_name,
-        prefix_effect=gun_data.prefix_effect,
-        redtext_effect=gun_data.redtext_effect,
-        redtext_name=gun_data.redtext_name,
-        barrel_manufacturer=gun_data.barrel_manufacturer,
-        barrel_effect=gun_data.barrel_effect,
-        magazine_manufacturer=gun_data.magazine_manufacturer,
-        magazine_effect=gun_data.magazine_effect,
-        grip_manufacturer=gun_data.grip_manufacturer,
-        grip_effect=gun_data.grip_effect,
-        match_bonus=gun_data.match_bonus,
-        range=gun_data.range,
-        dmgroll=gun_data.dmgroll,
-        lowNormal=gun_data.lowNormal,
-        lowCrit=gun_data.lowCrit,
-        mediumNormal=gun_data.mediumNormal,
-        mediumCrit=gun_data.mediumCrit,
-        highNormal=gun_data.highNormal,
-        highCrit=gun_data.highCrit,
-    )
-
     session.add(gun)
     histoir = RollHistory(
         id=gun.id, date=datetime.now(), description=str(gun), type="Gun"

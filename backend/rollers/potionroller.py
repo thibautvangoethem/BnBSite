@@ -1,6 +1,6 @@
 import math
 from uuid import uuid4
-from models.potion import PotionCreate
+from models.potion import Potion
 from rollers.roller import Roller
 from models.common import (
     Dice,
@@ -159,13 +159,13 @@ class PotionRoller(Roller):
         )
 
     @staticmethod
-    def generate(create_result: random_create_result) -> PotionCreate:
+    def generate(create_result: random_create_result) -> Potion:
         base_roll = create_result.get_roll_for_label("Base roll")[0]
 
         index = math.floor((base_roll - 1) / 5)
 
         result = potionMap[index]
-        pot: PotionCreate = PotionCreate(name=result[0], text=result[1])
+        pot: Potion = Potion(id=str(uuid4()), name=result[0], text=result[1])
         if index in [0, 5, 10, 15]:
             tina_roll = create_result.get_roll_for_label("Tina roll")[0]
             match index:
@@ -180,7 +180,9 @@ class PotionRoller(Roller):
                 case _:
                     print("thibaut heeft weer liggen koken met de code")
             result = tina_potions[min(tina_roll, len(tina_potions) - 1)]
-            return PotionCreate(
+            return Potion(
+                id=str(uuid4()),
                 name=f"Tina potion numero {tina_roll}",
                 text=result[0] + ": " + result[1],
             )
+        return pot

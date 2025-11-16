@@ -1,20 +1,15 @@
 from fastapi import APIRouter
-from fastapi import Depends, HTTPException, status, Query
+from fastapi import HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from typing import Annotated
 from rollers.classmodroller import ClassModRoller
 from models.classmod import *
 from models.common import *
-from appglobals import SessionDep, oauth2_scheme
+from appglobals import SessionDep
 from sqlmodel import select
-from sqlalchemy.orm import selectinload
 from models.roll_data import *
-from uuid import uuid4
-from models.grenade import Grenade
 from models.rollhistory import RollHistory
 from datetime import datetime
 
-import uuid
 
 router = APIRouter(
     prefix="/classmods",
@@ -39,27 +34,19 @@ def generate_classmod(
 
 
 @router.post("/")
-def create_classmod(classmod_data: ClassModCreate, session: SessionDep) -> ClassMod:
-    cl = ClassMod(
-        id=str(uuid.uuid4()),
-        name=f"{classmod_data.rarity.value} {classmod_data.prefix} {classmod_data.suffix}",
-        description="",
-        rarity=classmod_data.rarity,
-        class_type=classmod_data.class_type,
-        prefix=classmod_data.prefix,
-        prefix_effect=classmod_data.prefix_effect,
-        suffix=classmod_data.suffix,
-        suffix_effect=classmod_data.suffix_effect,
-    )
-    session.add(cl)
+def create_classmod(classmod_data: ClassMod, session: SessionDep) -> ClassMod:
+    session.add(classmod_data)
     histoir = RollHistory(
-        id=cl.id, date=datetime.now(), description=str(cl), type="Classmod"
+        id=classmod_data.id,
+        date=datetime.now(),
+        description=str(classmod_data),
+        type="Classmod",
     )
     session.add(histoir)
     session.commit()
-    session.refresh(cl)
+    session.refresh(classmod_data)
 
-    return cl
+    return classmod_data
 
 
 @router.put("/{classmod_id}", response_model=ClassMod)

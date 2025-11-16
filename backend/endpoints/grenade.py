@@ -1,21 +1,16 @@
 from fastapi import APIRouter
-from fastapi import Depends, HTTPException, status, Query
+from fastapi import HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from typing import Annotated
 from rollers.grenaderoller import GrenadeRoller
 from models.gun import *
 from models.common import *
-from appglobals import SessionDep, oauth2_scheme
+from appglobals import SessionDep
 from sqlmodel import select
-from sqlalchemy.orm import selectinload
 from models.roll_data import *
-from uuid import uuid4
-from models.grenade import Grenade, GrenadeCreate
+from models.grenade import Grenade
 from models.rollhistory import RollHistory
 from datetime import datetime
 
-
-import uuid
 
 router = APIRouter(
     prefix="/grenades",
@@ -53,30 +48,19 @@ def generate_grenade(
 
 
 @router.post("/")
-def create_grenade(grenade_data: GrenadeCreate, session: SessionDep) -> Grenade:
-    gren = Grenade(
-        id=str(uuid.uuid4()),
-        name=f"{grenade_data.rarity.value} {grenade_data.manufacturer.value} Grenade",
-        description=f"{grenade_data.red_text_name}",
-        rarity=grenade_data.rarity,
-        manufacturer=grenade_data.manufacturer,
-        manufacturer_effect=grenade_data.manufacturer_effect,
-        primer_effect=grenade_data.primer_effect,
-        detonater_effect=grenade_data.detonater_effect,
-        red_text_name=grenade_data.red_text_name,
-        red_text_description=grenade_data.red_text_description,
-        damage=grenade_data.damage,
-        radius=grenade_data.radius,
-    )
-    session.add(gren)
+def create_grenade(grenade_data: Grenade, session: SessionDep) -> Grenade:
+    session.add(grenade_data)
     histoir = RollHistory(
-        id=gren.id, date=datetime.now(), description=str(gren), type="Grenade"
+        id=grenade_data.id,
+        date=datetime.now(),
+        description=str(grenade_data),
+        type="Grenade",
     )
     session.add(histoir)
     session.commit()
-    session.refresh(gren)
+    session.refresh(grenade_data)
 
-    return gren
+    return grenade_data
 
 
 @router.put("/{grenade_id}", response_model=Grenade)

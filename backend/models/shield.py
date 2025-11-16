@@ -1,9 +1,5 @@
-from enum import Enum
-from models.common import Rarity, Manufacturer
-
-from typing import List, Optional
-from sqlmodel import Field, Relationship, SQLModel
-from pydantic import BaseModel
+from typing import Optional
+from sqlmodel import Field, SQLModel
 from typing import Optional
 
 

@@ -1,10 +1,7 @@
-import json
-import math
 import random
 from uuid import uuid4
 import uuid
 from models.shield import Shield
-from models.potion import PotionCreate
 from rollers.roller import Roller
 from models.common import (
     Dice,
@@ -754,7 +751,7 @@ class ShieldRoller(Roller):
         )
 
     @staticmethod
-    def generate(create_result: random_create_result) -> PotionCreate:
+    def generate(create_result: random_create_result) -> Shield:
         level = create_result.level
         recharge_delay = 1
 

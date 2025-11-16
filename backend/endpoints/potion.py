@@ -49,8 +49,7 @@ def generate_potion(
 
 
 @router.post("/")
-def create_potion(potion_data: PotionCreate, session: SessionDep) -> Potion:
-    pot = Potion(id=str(uuid.uuid4()), name=potion_data.name, text=potion_data.text)
+def create_potion(pot: Potion, session: SessionDep) -> Potion:
     session.add(pot)
     histoir = RollHistory(
         id=pot.id, date=datetime.now(), description=str(pot), type="Potion"

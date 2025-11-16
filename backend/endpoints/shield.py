@@ -1,22 +1,16 @@
 from datetime import datetime
 from fastapi import APIRouter
-from fastapi import Depends, HTTPException, status, Query
+from fastapi import HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from typing import Annotated
 from rollers.shieldroller import ShieldRoller
 from models.rollhistory import RollHistory
 from models.gun import *
 from models.common import *
-from appglobals import SessionDep, oauth2_scheme
+from appglobals import SessionDep
 from sqlmodel import select
-from sqlalchemy.orm import selectinload
 from models.roll_data import *
-from uuid import uuid4
 from models.shield import Shield
-import random
-import json
 
-import uuid
 
 router = APIRouter(
     prefix="/shields",

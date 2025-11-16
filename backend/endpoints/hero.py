@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from fastapi import Depends, HTTPException, status, Query
+from fastapi import Depends, HTTPException, Query
 from fastapi.security import OAuth2PasswordBearer
 from typing import Annotated
 from models.hero import Hero

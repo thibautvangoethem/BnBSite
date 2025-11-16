@@ -1,25 +1,7 @@
-from enum import Enum
 from models.common import Rarity, Manufacturer
 
-from typing import List, Optional
-from sqlmodel import Field, Relationship, SQLModel
-from pydantic import BaseModel
 from typing import Optional
-
-
-class GrenadeCreate(BaseModel):
-    rarity: Rarity
-    manufacturer: Manufacturer
-
-    manufacturer_effect: str
-    primer_effect: str
-    detonater_effect: str
-
-    red_text_name: Optional[str]
-    red_text_description: Optional[str]
-
-    damage: str
-    radius: str
+from sqlmodel import Field, SQLModel
 
 
 class Grenade(SQLModel, table=True):

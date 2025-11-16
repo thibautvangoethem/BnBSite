@@ -1,6 +1,7 @@
 from uuid import uuid4
+import uuid
 from rollers.roller import Roller
-from models.classmod import ClassModCreate
+from models.classmod import ClassMod
 from models.common import ClassIndexed, Classes, Dice, Rarity
 from models.roll_data import *
 
@@ -399,7 +400,7 @@ class ClassModRoller(Roller):
         )
 
     @staticmethod
-    def generate(create_result: random_create_result) -> ClassModCreate:
+    def generate(create_result: random_create_result) -> ClassMod:
         # rarity
         rarity_roll = create_result.get_roll_for_label("Rarity roll")[0]
         rarity = get_rarity(rarity_roll)
@@ -426,7 +427,10 @@ class ClassModRoller(Roller):
         suffix_name = class_suffix_mapping[clazz][suffix_index]
         suffix_effect = suffix_data[suffix_name]["effects"][rarity]
 
-        return ClassModCreate(
+        return ClassMod(
+            id=str(uuid.uuid4()),
+            name=f"{rarity.value} {prefix_name} ClassMod {suffix_name}",
+            description="",
             rarity=rarity,
             class_type=clazz,
             prefix=prefix_name,

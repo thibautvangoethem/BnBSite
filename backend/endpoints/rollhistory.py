@@ -1,11 +1,10 @@
-import math
 from typing import List
 from fastapi import APIRouter
-from fastapi import Depends, HTTPException, status, Query
+from fastapi import HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from models.rollhistory import RollHistory
 from models.common import *
-from appglobals import SessionDep, oauth2_scheme
+from appglobals import SessionDep
 from sqlmodel import select
 from models.roll_data import *
 from models.potion import *
