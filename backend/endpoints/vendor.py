@@ -2,10 +2,10 @@ from fastapi import APIRouter
 from fastapi import Depends, HTTPException, status, Query
 from fastapi.security import OAuth2PasswordBearer
 from typing import Annotated
-from backend.models.classmod import ClassMod
-from backend.models.gun import Gun
-from backend.models.potion import Potion
-from backend.models.shield import Shield
+from models.classmod import ClassMod
+from models.gun import Gun
+from models.potion import Potion
+from models.shield import Shield
 from models.vendor import *
 from models.common import *
 from appglobals import SessionDep, oauth2_scheme
@@ -28,7 +28,7 @@ router = APIRouter(
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-class ItemMini:
+class ItemMini(BaseModel):
     id: str
     name: str
     type: str
@@ -177,6 +177,44 @@ def buyitem(vendor_id: str, item_id: str, session: SessionDep) -> VendorReturn:
     return get_vendor(vendor_id, session)
 
 
+@router.get("/debug/{vendor_id}", response_model=Vendor)
+def get_debug_vendor(vendor_id: str, session: SessionDep) -> Vendor:
+    statement = select(Vendor).where(Vendor.id == id)
+    vendor: Vendor = session.exec(statement).first()
+
+    if vendor is None:
+        raise HTTPException(status_code=404, detail="vendor not found")
+    return vendor
+
+
 @router.get("/{vendor_id}", response_model=VendorReturn)
 def get_vendor(vendor_id: str, session: SessionDep) -> VendorReturn:
     return get_vendor_return(id=vendor_id, session=session)
+
+
+class VendorCreate(BaseModel):
+    # general metadata
+    name: str = ""
+    description: str = None
+    quotes: str = ""  # ; delimeted list
+    normal_item_amount: int
+    supported_items: str  # ; delimeted list
+    item_of_the_day_minimum: Rarity
+
+
+@router.post("/")
+def create_vendor(vendor: VendorCreate, session: SessionDep) -> Vendor:
+    toadd = Vendor()
+    toadd.id = str(uuid.uuid4())
+    toadd.description = vendor.description
+    toadd.quotes = vendor.quotes
+    toadd.normal_item_amount = vendor.normal_item_amount
+    toadd.supported_items = vendor.supported_items
+    toadd.item_of_the_day_minimum = vendor.item_of_the_day_minimum
+
+    # todo roll the new vendor the first time
+
+    session.add(toadd)
+    session.commit()
+    session.refresh(vendor)
+    return vendor

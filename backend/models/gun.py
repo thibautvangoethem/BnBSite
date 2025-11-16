@@ -1,4 +1,6 @@
 from enum import Enum
+
+from pydantic import BaseModel
 from models.common import *
 from typing import List, Optional
 from sqlmodel import Field, SQLModel
@@ -56,6 +58,39 @@ from sqlmodel import Field, SQLModel
 #     guns: List["Gun"] = Relationship(
 #         back_populates="redtexts", link_model=GunRedTextLink
 #     )
+
+
+# custom creation of gun
+class GunCreate(BaseModel):
+    name: str
+    description: Optional[str] = None
+    guntype: GunType
+    rarity: Rarity
+    manufacturer: Manufacturer
+    manufacturer_effect: Optional[str] = None
+    element: Optional[Element] = None
+    elementstr: Optional[str] = None
+    prefix_name: Optional[str] = None
+    prefix_effect: Optional[str] = None
+    redtext_name: Optional[str] = None
+    redtext_effect: Optional[str] = None
+
+    barrel_manufacturer: ManufacturerNormal
+    barrel_effect: str
+    magazine_manufacturer: ManufacturerNormal
+    magazine_effect: str
+    grip_manufacturer: ManufacturerNormal
+    grip_effect: str
+    match_bonus: Optional[str]
+
+    range: int
+    dmgroll: str
+    lowNormal: int
+    lowCrit: int
+    mediumNormal: int
+    mediumCrit: int
+    highNormal: int
+    highCrit: int
 
 
 class Gun(SQLModel, table=True):

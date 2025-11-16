@@ -62,19 +62,3 @@ class Shield(SQLModel, table=True):
         ]
         # Filter out None values and join the fields
         return f"Shield({', '.join(filter(None, fields))})"
-
-
-# class ShieldRead(BaseModel):
-#     name: Optional[str]
-#     description: Optional[str]
-#     rarity: str
-#     manufacturer: str
-#     capacity: int
-#     recharge_rate: int
-#     recharge_delay: int
-#     manufacturer_effect: Optional[str]
-#     capacitor_effect: Optional[str]
-#     battery_effect: Optional[str]
-#     red_text: Optional[str]
-
-#     model_config = {"from_attributes": True}

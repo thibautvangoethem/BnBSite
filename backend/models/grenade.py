@@ -7,6 +7,21 @@ from pydantic import BaseModel
 from typing import Optional
 
 
+class GrenadeCreate(BaseModel):
+    rarity: Rarity
+    manufacturer: Manufacturer
+
+    manufacturer_effect: str
+    primer_effect: str
+    detonater_effect: str
+
+    red_text_name: Optional[str]
+    red_text_description: Optional[str]
+
+    damage: str
+    radius: str
+
+
 class Grenade(SQLModel, table=True):
     id: str = Field(primary_key=True)
     name: Optional[str]

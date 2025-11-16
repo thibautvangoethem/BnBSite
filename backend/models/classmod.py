@@ -1,5 +1,16 @@
+from pydantic import BaseModel
 from models.common import Rarity, Classes
 from sqlmodel import Field, SQLModel
+
+
+# base pydantic model for creating a classmod
+class ClassModCreate(BaseModel):
+    rarity: Rarity
+    class_type: Classes
+    prefix: str
+    prefix_effect: str
+    suffix: str
+    suffix_effect: str
 
 
 class ClassMod(SQLModel, table=True):

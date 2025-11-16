@@ -1,4 +1,10 @@
+from pydantic import BaseModel
 from sqlmodel import SQLModel, Field
+
+
+class PotionCreate(BaseModel):
+    name: str
+    text: str
 
 
 class Potion(SQLModel, table=True):
